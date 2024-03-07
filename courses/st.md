@@ -1,0 +1,17 @@
+### [Početna](../README.md) | [Prva godina](../main_pages/prva.md) | [Druga godina](../main_pages/druga.md) | [Treća godina](../main_pages/treca.md) | [Četvrta godina](../main_pages/cetvrta.md)
+
+---
+
+## Statistika
+
+<br>
+
+[Sajt profesorke](http://www.matf.bg.ac.rs/p/bojana-milosevic/kurs/1123/statistika-i-smer/)
+
+[Sajt asistenta](http://www.matf.bg.ac.rs/p/mihajlo-srbakoski/kurs/1146/statistika/)
+
+[Moodle](https://hilbert.matf.bg.ac.rs/moodle/course/view.php?id=216)
+
+[Knjiga i skripta](https://drive.google.com/drive/u/0/folders/1UoSypxLiF4QIHsQJ9Eo2G_5VVPriSlCJ)
+
+[Snimci](https://www.youtube.com/playlist?list=PL9cP0JUvDP46M0zGGcxv57QV3ox8ukF2L)
