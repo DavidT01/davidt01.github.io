@@ -14,4 +14,6 @@
 
 [Knjiga i skripta](https://drive.google.com/drive/u/0/folders/1UoSypxLiF4QIHsQJ9Eo2G_5VVPriSlCJ)
 
+[Verovatnoća - obnavljanje](https://drive.google.com/drive/u/0/folders/1UoSypxLiF4QIHsQJ9Eo2G_5VVPriSlCJ)
+
 [Snimci](https://www.youtube.com/playlist?list=PL9cP0JUvDP46M0zGGcxv57QV3ox8ukF2L)
