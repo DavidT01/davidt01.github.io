@@ -8,4 +8,4 @@
 
 [Sajt kursa](https://www.programskijezici.matf.bg.ac.rs/ProgramskeParadigmeI.html)
 
-[Snimci (vežbe)](https://www.youtube.com/playlist?list=PLOGAKiQpHThNfTNo7MmKkEJVCX_61qYFT)
+[Snimci vežbi](https://www.youtube.com/playlist?list=PLOGAKiQpHThNfTNo7MmKkEJVCX_61qYFT)
