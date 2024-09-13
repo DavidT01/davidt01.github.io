@@ -10,6 +10,6 @@
 |:---:|:---:|
 | Razvoj softvera | [Projektovanje baza podataka](../courses/projbp.md) |
 | Alati za razvoj softvera | Specijalni kurs |
-| Računarske mreže | Funkcionalno programiranje |
-| Računarska inteligencija | Uvod u interaktivno dokazivanje teorema |
-| [Primena projektivne geometrije u računarstvu](../courses/ppgr.md) | Algebra 2 |
+| Računarske mreže | Konstrukcija kompilatora |
+| Računarska inteligencija | Osnove matematičkog modelovanja |
+| [Primena projektivne geometrije u računarstvu](../courses/ppgr.md) | K kursevi |
