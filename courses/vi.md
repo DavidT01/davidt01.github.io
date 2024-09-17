@@ -10,4 +10,6 @@
 
 [Sajt kursa](https://matfvi.github.io/site/index.html)
 
-[Pitanja](https://poincare.matf.bg.ac.rs/~predrag.janicic/courses/VI-pitanja.pdf)
+[Materijali (predavanja)[https://drive.google.com/drive/u/0/folders/13YQjUekHxBCPeULQ4amhuZ_-4WWuoIRu]
+
+[Rokovi](https://drive.google.com/drive/u/0/folders/15GDrrF8wI6JvpL7tGjcWIxVUl140b8-w)
