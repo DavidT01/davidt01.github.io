@@ -11,5 +11,5 @@
 | [Relacione baze podataka](../courses/rbp.md) | [Programiranje baza podataka](../courses/pbp.md) |
 | [Računarska grafika](../courses/rg.md) | [Veštačka inteligencija](../courses/vi.md) |
 | [Prevođenje programskih jezika](../courses/ppj.md) | [Programske paradigme](../courses/pp.md) |
-| [Uvod u numeričku matematiku](../courses/unm.md) | Istraživanje podataka 1 |
-| Verovatnoća | [Statistika](../courses/st.md) |
+| [Uvod u numeričku matematiku](../courses/unm.md) | [Istraživanje podataka 1](../courses/ip1.md) |
+| [Verovatnoća](../courses/vrv.md) | [Statistika](../courses/st.md) |
