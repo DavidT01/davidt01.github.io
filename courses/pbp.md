@@ -8,8 +8,6 @@
 
 [Sajt kursa](https://matf-pbp.github.io)
 
-[Snimci predavanja](https://docs.google.com/spreadsheets/d/170ExtKtxj4Rqb61NrRDB-iy2nzBB34lFOHd5hb_y9fI/edit#gid=0)
+[Materijali (predavanja)](https://drive.google.com/drive/u/0/folders/1rhBjxc7mkE-LNecNzK9JZjhA5-KcmrqW)
 
 [Materijali (vežbe)](http://www.matf.bg.ac.rs/p/boris-cvitak/kurs/927/programiranje-baza-podataka/)
-
-[Skripta](https://poincare.matf.bg.ac.rs/~nina.radojicic/pbpVesna.pdf)
