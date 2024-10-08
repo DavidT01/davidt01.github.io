@@ -2,6 +2,6 @@
 
 ---
 
-## Primena bioinformatika
+## Primenjena bioinformatika
 
 <br>
