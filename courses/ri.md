@@ -6,3 +6,6 @@
 
 <br>
 
+[Sajt profesora](https://matf-r-i.github.io/info/)
+
+[Materijali (vežbe)](https://poincare.matf.bg.ac.rs/~stefan.kapunac/ri.html)
