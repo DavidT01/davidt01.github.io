@@ -6,3 +6,4 @@
 
 <br>
 
+#### [Primenjena bioinformatika](./pbi.md)
