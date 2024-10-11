@@ -6,3 +6,6 @@
 
 <br>
 
+[Stranica kursa](https://matf-bg-ac-rs.gitlab.io/course-rs/rs/)
+
+[Odgovori na pitanja](https://drive.google.com/drive/u/0/folders/1Z61efvqS3gPbj4ARDIty0FY6JhHSrKU0)
