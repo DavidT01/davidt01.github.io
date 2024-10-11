@@ -9,3 +9,5 @@
 [Sajt profesora](https://matf-r-i.github.io/info/)
 
 [Materijali (vežbe)](https://poincare.matf.bg.ac.rs/~stefan.kapunac/ri.html)
+
+[Skripta](https://drive.google.com/drive/u/0/folders/1h1v4FObZPRr8CntjbrzaGkFvQHjIqILC)
