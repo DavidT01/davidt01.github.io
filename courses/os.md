@@ -8,7 +8,7 @@
 
 [Knjiga i rokovi](https://drive.google.com/drive/folders/1FRBrvMzTgsBfz_n4KInYKQxGAcap7Ish)
 
-[Kodovi](https://github.com/osmatf/osvezbe/)
+[Materijali](https://github.com/osmatf/osvezbe/)
 
 Snimci - [1](https://drive.google.com/file/d/1L6xfgd2KngMngM2b0ygB952CHgP6JUgc/view) |
 [2](https://drive.google.com/file/d/1S5T8NMdYaM0VcOgkfivbN8-ylFlt-bo0/view) |
