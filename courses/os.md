@@ -10,7 +10,7 @@
 
 [Materijali](https://github.com/osmatf/osvezbe/)
 
-Snimci - [1](https://drive.google.com/file/d/1L6xfgd2KngMngM2b0ygB952CHgP6JUgc/view) |
+Snimci: [1](https://drive.google.com/file/d/1L6xfgd2KngMngM2b0ygB952CHgP6JUgc/view) |
 [2](https://drive.google.com/file/d/1S5T8NMdYaM0VcOgkfivbN8-ylFlt-bo0/view) |
 [3](https://drive.google.com/file/d/1Xzzcblzzhd9lADPLFwdlmF3-dFsdIf-4/view) |
 [4](https://drive.google.com/file/d/1H5R9SdZ65SVXwvkgecYnDh7EiVXU7nfS/view) |
