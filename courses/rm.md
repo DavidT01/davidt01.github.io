@@ -9,3 +9,5 @@
 [Moodle](https://elearning.rcub.bg.ac.rs/moodle/course/view.php?id=1558)
 
 [Materijali (vežbe)](https://github.com/MATF-Computer-Networks/RM-materials/tree/latest-4i)
+
+Snimci (vežbe): [Java](https://www.youtube.com/playlist?list=PLOGAKiQpHThNuKZi77U8JBozbNkyZ_Ag1), [Teorija](https://tubedu.org/w/p/pptG18y3LxhQumKmuTovDP?playlistPosition=1)
