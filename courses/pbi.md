@@ -6,4 +6,4 @@
 
 <br>
 
-(CGC platforma)[https://cgc.sbgenomics.com/home]
+[CGC platforma](https://cgc.sbgenomics.com/home)
