@@ -8,6 +8,8 @@
 
 [Moodle](https://elearning.rcub.bg.ac.rs/moodle/course/view.php?id=1558)
 
+[Skripta](https://drive.google.com/drive/u/0/folders/1SmnPawDXqJyEhh76blcRWB9sQ3LH-vif)
+
 [Pitanja](https://siwiki.rs/w/index.php?title=Рачунарске_мреже_1/Питања&oldid=6412#Pitanje_1)
 
 [Materijali (vežbe)](https://github.com/MATF-Computer-Networks/RM-materials/tree/latest-4i)
