@@ -14,4 +14,4 @@
 
 [Materijali (vežbe)](https://github.com/MATF-Computer-Networks/RM-materials/tree/latest-4i)
 
-Snimci (vežbe): [Java](https://www.youtube.com/playlist?list=PLOGAKiQpHThNuKZi77U8JBozbNkyZ_Ag1), [teorija](https://tubedu.org/w/p/pptG18y3LxhQumKmuTovDP?playlistPosition=1)
+Snimci (vežbe): [Ristović](https://www.youtube.com/playlist?list=PLOGAKiQpHThNuKZi77U8JBozbNkyZ_Ag1), [Katić](https://tubedu.org/w/p/pptG18y3LxhQumKmuTovDP?playlistPosition=1)
