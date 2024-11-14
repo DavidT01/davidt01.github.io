@@ -8,7 +8,7 @@
 
 [Sajt profesora](https://matf-r-i.github.io/info/)
 
-[Snimci (predavanja)](https://www.youtube.com/watch?v=ooauLCvV6iI&list=PLY5TIIz8YzmXSD4zvG0XIRwOWv--z8rIA)
+[Snimci (predavanja)](https://www.youtube.com/playlist?list=PLY5TIIz8YzmXSD4zvG0XIRwOWv--z8rIA)
 
 [Skripta](https://drive.google.com/drive/u/0/folders/1h1v4FObZPRr8CntjbrzaGkFvQHjIqILC)
 
