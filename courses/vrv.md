@@ -10,4 +10,4 @@
 
 [Sajt asistenta](http://www.matf.bg.ac.rs/p/mihajlo-srbakoski/kurs/1067/verovatnoca/)
 
-[Skripta za usmeni](https://drive.google.com/drive/u/0/folders/1u3vvD3mK3EDK-09M_2A4y0gn9-tDZ0Cs)
+[Skripta i formule](https://drive.google.com/drive/u/0/folders/1wRlRA71rB3SkH1fBurvZVa5WYCb3pPA5)
