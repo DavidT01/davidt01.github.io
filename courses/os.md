@@ -10,7 +10,8 @@
 
 [Materijali](https://github.com/osmatf/osvezbe/)
 
-Snimci: [1](https://drive.google.com/file/d/1L6xfgd2KngMngM2b0ygB952CHgP6JUgc/view) |
+Snimci: 
+- Kuzmanović - [1](https://drive.google.com/file/d/1L6xfgd2KngMngM2b0ygB952CHgP6JUgc/view) |
 [2](https://drive.google.com/file/d/1S5T8NMdYaM0VcOgkfivbN8-ylFlt-bo0/view) |
 [3](https://drive.google.com/file/d/1Xzzcblzzhd9lADPLFwdlmF3-dFsdIf-4/view) |
 [4](https://drive.google.com/file/d/1H5R9SdZ65SVXwvkgecYnDh7EiVXU7nfS/view) |
@@ -22,3 +23,4 @@ Snimci: [1](https://drive.google.com/file/d/1L6xfgd2KngMngM2b0ygB952CHgP6JUgc/vi
 [10](https://drive.google.com/file/d/1-7mSnCkZyRFdeIVbR2wZbe-A0Y_c3awa/view) |
 [11](https://drive.google.com/file/d/1E0x27Jk-7pH0J2iCdomAPpBSN-tCfkFO/view) |
 [12](https://drive.google.com/file/d/1sgX125WGJbCkiUkZ4QEFRxVdkb8YAcK1/view)
+- [Vidojević](https://www.youtube.com/playlist?list=PLw22IijXzJsCw6pMu31r4ht1m_-7lSaij)
