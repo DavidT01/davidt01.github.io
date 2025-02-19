@@ -7,3 +7,5 @@
 <br>
 
 #### [Primenjena bioinformatika](./pbi.md)
+
+#### [Razvoj bezbednog softvera](./rbs.md)
