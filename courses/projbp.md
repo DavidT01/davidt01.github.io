@@ -6,8 +6,8 @@
 
 <br>
 
-[Sajt profesora](https://poincare.matf.bg.ac.rs/~sasa.malkov/nastava.pbp.php)
+[Sajt predmeta](https://www.bazepodataka.matf.bg.ac.rs/ProjektovanjeBazaPodataka.html)
 
-[Sajt asistenta](https://poincare.matf.bg.ac.rs/~nikola.katic/pbp/)
+[Sajt asistenta](https://poincare.matf.bg.ac.rs/~vasilije.todorovic/pbp.html)
 
-[Ispitna pitanja](https://poincare.matf.bg.ac.rs/~sasa.malkov/files/pbp.r273.2023/public/Primeri%20ispitnih%20pitanja%202021.pdf)
+[Skripta i odgovori na pitanja](https://drive.google.com/drive/u/0/folders/1ro0DwIBE6d-rjUTdkxjM_I90R8MhiwgX)
