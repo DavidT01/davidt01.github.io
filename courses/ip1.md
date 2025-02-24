@@ -6,3 +6,6 @@
 
 <br>
 
+[Skripta](https://drive.google.com/drive/u/0/folders/13UIU48o7CXahNPsfYBHUVk_oX-qHZNVA)
+
+[Materijali (vežbe)](https://poincare.matf.bg.ac.rs/~stefan.kapunac/ip1.html)
