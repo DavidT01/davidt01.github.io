@@ -1,6 +1,6 @@
 ### [Prva godina](/main_pages/prva.md) | [Druga godina](/main_pages/druga.md) | [Treća godina](/main_pages/treca.md) | [Četvrta godina](/main_pages/cetvrta.md)
 
----
+--- 
 
 ### [MATF](http://www.matf.bg.ac.rs)
 ### [Hypatia](https://hypatia.matf.bg.ac.rs:10333/StudInfo/scripts/studenti/index)
