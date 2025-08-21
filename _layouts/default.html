@@ -22,12 +22,20 @@
       }
       /* Center the nav, tighten spacing, and enlarge text */
       .site-nav {
-        text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem 0.75rem;
         margin-top: 0.25rem;
         margin-bottom: 0.5rem;
       }
       .site-nav a {
-        font-size: 1.1em;
+        font-size: 1.15em;
+      }
+      .site-nav a + a::before {
+        content: "|";
+        margin: 0 0.5rem 0 0.25rem;
+        color: currentColor;
       }
       /* Center the main course title on course pages */
       .is-course h2:first-of-type {
