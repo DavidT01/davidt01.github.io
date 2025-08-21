@@ -20,22 +20,27 @@
       a {
         color: red;
       }
-      /* Center the nav, tighten spacing, and enlarge text */
-      .site-nav {
+      /* Sidebar layout */
+      .content-with-sidebar {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.5rem 0.75rem;
-        margin-top: 0.25rem;
-        margin-bottom: 0.5rem;
+        gap: 1.5rem;
       }
-      .site-nav a {
+      .site-sidebar {
+        flex: 0 0 220px;
+      }
+      .site-sidebar .nav-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .site-sidebar .nav-list a {
+        display: block;
         font-size: 1.15em;
+        padding: 0.25rem 0;
       }
-      .site-nav a + a::before {
-        content: "|";
-        margin: 0 0.5rem 0 0.25rem;
-        color: currentColor;
+      .main-content {
+        flex: 1 1 auto;
+        min-width: 0;
       }
       /* Center the main course title on course pages */
       .is-course h2:first-of-type {
@@ -65,8 +70,12 @@
           <p>{{ site.description | default: site.github.project_tagline }}</p>
           <hr>
         </div>
-        {% include nav.html %}
-        {{ content }}
+        <div class="content-with-sidebar">
+          {% include nav.html %}
+          <div class="main-content">
+            {{ content }}
+          </div>
+        </div>
       </section>
 
     </div>
