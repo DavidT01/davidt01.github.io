@@ -6,3 +6,8 @@ plugins:
 
 # Appearance
 theme_mode: dark
+avatar: 
+lang: sr
+
+sass:
+  style: compressed

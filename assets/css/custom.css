@@ -1,0 +1,23 @@
+:root {
+  --link-color: #a855f7;
+  --link-hover-color: #c084fc;
+}
+
+a { color: var(--link-color); }
+a:hover, a:focus { color: var(--link-hover-color); }
+
+.btn, .btn a,
+.post-tags .tag,
+.categories .category,
+.pagination .page-item.active .page-link {
+  background-color: #a855f7;
+  border-color: #a855f7;
+}
+
+.btn:hover, .btn:focus,
+.post-tags .tag:hover,
+.categories .category:hover {
+  background-color: #9333ea;
+  border-color: #9333ea;
+}
+
