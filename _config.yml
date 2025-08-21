@@ -1,17 +1,9 @@
 title: David Toholj MATF
-remote_theme: cotes2020/jekyll-theme-chirpy
+theme: jekyll-theme-midnight
 plugins:
-  - jekyll-remote-theme
   - jekyll-include-cache
-
-# Appearance
-theme_mode: dark
-avatar: 
-lang: sr
-
-sass:
-  style: compressed
-
-# GitHub Pages project site settings
-url: https://DavidT01.github.io
-baseurl: /davidt01.github.io
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default

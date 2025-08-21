@@ -1,4 +1,5 @@
-layout: page
+---
+layout: default
 ---
 
 ## Razvoj softvera
