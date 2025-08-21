@@ -3,8 +3,6 @@ layout: default
 title: MATF Linkovi
 ---
 
-### [Prva godina](/main_pages/prva.html) | [Druga godina](/main_pages/druga.html) | [Treća godina](/main_pages/treca.html) | [Četvrta godina](/main_pages/cetvrta.html)
-
 --- 
 
 ### [MATF](http://www.matf.bg.ac.rs)

@@ -19,9 +19,23 @@
     <style>
       a {
         color: red;
+      }
+      /* Center the nav, tighten spacing, and enlarge text */
+      .site-nav {
+        text-align: center;
+        margin-top: 0.25rem;
+        margin-bottom: 0.5rem;
+      }
+      .site-nav a {
+        font-size: 1.1em;
+      }
+      /* Center the main course title on course pages */
+      .is-course h2:first-of-type {
+        text-align: center;
+      }
     </style>
   </head>
-  <body>
+  <body class="{% if page.path contains 'courses/' %}is-course{% endif %}">
       <div id="header">
         <nav>
           <ul>
