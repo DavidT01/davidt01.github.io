@@ -1,5 +1,4 @@
----
-layout: default
+layout: page
 title: MATF Linkovi
 ---
 

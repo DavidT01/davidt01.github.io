@@ -1,5 +1,4 @@
----
-layout: default
+layout: page
 ---
 
 ## Alati za razvoj softvera

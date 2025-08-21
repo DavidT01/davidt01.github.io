@@ -1,5 +1,4 @@
----
-layout: default
+layout: page
 ---
 
 ## Algoritamski alati u bioinformatici

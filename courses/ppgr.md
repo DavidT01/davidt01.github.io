@@ -1,5 +1,4 @@
----
-layout: default
+layout: page
 ---
 
 ## Primena projektivne geometrije u računarstvu

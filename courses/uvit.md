@@ -1,5 +1,4 @@
----
-layout: default
+layout: page
 ---
 
 ## Uvod u veb i internet tehnologije

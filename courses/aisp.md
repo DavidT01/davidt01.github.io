@@ -1,5 +1,4 @@
----
-layout: default
+layout: page
 ---
 
 ## Algoritmi i strukture podataka

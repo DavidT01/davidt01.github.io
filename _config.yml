@@ -1,1 +1,7 @@
-theme: jekyll-theme-midnight
+title: David Toholj MATF
+remote_theme: cotes2020/jekyll-theme-chirpy
+plugins:
+  - jekyll-include-cache
+
+# Appearance
+theme_mode: dark

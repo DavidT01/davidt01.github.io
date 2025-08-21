@@ -1,5 +1,4 @@
----
-layout: default
+layout: page
 ---
 
 ## Relacione baza podataka

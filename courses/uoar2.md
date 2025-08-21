@@ -1,5 +1,4 @@
----
-layout: default
+layout: page
 ---
 
 ## Uvod u organizaciju i arhitekturu računara 2
