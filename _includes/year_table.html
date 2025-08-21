@@ -1,0 +1,53 @@
+{% assign year_data = site.data.years[include.year] %}
+{% assign sem1 = year_data.sem1 %}
+{% assign sem2 = year_data.sem2 %}
+{% assign len1 = sem1 | size %}
+{% assign len2 = sem2 | size %}
+{% if len1 > len2 %}{% assign max = len1 %}{% else %}{% assign max = len2 %}{% endif %}
+{% assign max0 = max | minus: 1 %}
+
+<table>
+  <thead>
+    <tr>
+      <th>Prvi semestar</th>
+      <th>Drugi semestar</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in (0..max0) %}
+    <tr>
+      <td>
+        {% assign slug1 = sem1[i] %}
+        {% if slug1 %}
+          {% assign c1 = site.data.courses[slug1] %}
+          {% if c1 %}
+            {% if c1.url %}
+              <a href="{{ c1.url | relative_url }}">{{ c1.name }}</a>
+            {% else %}
+              {{ c1.name }}
+            {% endif %}
+          {% else %}
+            {{ slug1 }}
+          {% endif %}
+        {% else %}&nbsp;{% endif %}
+      </td>
+      <td>
+        {% assign slug2 = sem2[i] %}
+        {% if slug2 %}
+          {% assign c2 = site.data.courses[slug2] %}
+          {% if c2 %}
+            {% if c2.url %}
+              <a href="{{ c2.url | relative_url }}">{{ c2.name }}</a>
+            {% else %}
+              {{ c2.name }}
+            {% endif %}
+          {% else %}
+            {{ slug2 }}
+          {% endif %}
+        {% else %}&nbsp;{% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+
