@@ -1,4 +1,5 @@
-layout: page
+---
+layout: home
 title: MATF Linkovi
 ---
 
@@ -10,4 +11,3 @@ title: MATF Linkovi
 ### [Drive (MATF)](https://drive.google.com/drive/folders/1YsWWL1yP12LuL-jUk0bjOKRkdDAITiCj)
 ### [Drive (lični)](https://drive.google.com/drive/u/0/folders/1zVVDYjevsbzj7UycDAA__aTbJwGC8___)
 ### [Snimci](https://snimci.drajv.org/)
-

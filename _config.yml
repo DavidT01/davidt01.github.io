@@ -11,3 +11,7 @@ lang: sr
 
 sass:
   style: compressed
+
+# GitHub Pages project site settings
+url: https://DavidT01.github.io
+baseurl: /davidt01.github.io
