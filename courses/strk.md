@@ -6,8 +6,8 @@ layout: default
 
 <br>
 
-#### [Primenjena bioinformatika](./pbi.md)
+#### [Primenjena bioinformatika](./pbi.html)
 
-#### [Razvoj bezbednog softvera](./rbs.md)
+#### [Razvoj bezbednog softvera](./rbs.html)
 
-#### [Algoritamski alati u bioinformatici](./aaub.md)
+#### [Algoritamski alati u bioinformatici](./aaub.html)

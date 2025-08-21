@@ -20,9 +20,13 @@
         {% assign slug1 = sem1[i] %}
         {% if slug1 %}
           {% assign c1 = site.data.courses[slug1] %}
-          {% if c1 %}
+          {% assign path1 = 'courses/' | append: slug1 | append: '.md' %}
+          {% assign page1 = site.pages | where: 'path', path1 | first %}
+          {% if page1 %}
+            <a href="{{ page1.url | relative_url }}">{{ c1.name }}</a>
+          {% elsif c1 %}
             {% if c1.url %}
-              <a href="{{ c1.url | relative_url }}">{{ c1.name }}</a>
+              <a href="{{ c1.url | replace: '.md', '.html' | relative_url }}">{{ c1.name }}</a>
             {% else %}
               {{ c1.name }}
             {% endif %}
@@ -35,9 +39,13 @@
         {% assign slug2 = sem2[i] %}
         {% if slug2 %}
           {% assign c2 = site.data.courses[slug2] %}
-          {% if c2 %}
+          {% assign path2 = 'courses/' | append: slug2 | append: '.md' %}
+          {% assign page2 = site.pages | where: 'path', path2 | first %}
+          {% if page2 %}
+            <a href="{{ page2.url | relative_url }}">{{ c2.name }}</a>
+          {% elsif c2 %}
             {% if c2.url %}
-              <a href="{{ c2.url | relative_url }}">{{ c2.name }}</a>
+              <a href="{{ c2.url | replace: '.md', '.html' | relative_url }}">{{ c2.name }}</a>
             {% else %}
               {{ c2.name }}
             {% endif %}
