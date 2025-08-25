@@ -8,6 +8,6 @@ layout: default
 
 [Materijali (predavanja)](https://matf.cukic.co/?content=azrs)
 
-[Skripta](https://drive.google.com/drive/u/0/folders/1saXOqNarl9OGeGfg0i0QzTwBupqktHMB)
+[Skripta](../materials/archive/AZRS/)
 
 [Materijali (vežbe)](https://gitlab.com/matf-bg-ac-rs/course-azrs/MATF-AZRS)

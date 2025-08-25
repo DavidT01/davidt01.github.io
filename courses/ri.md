@@ -10,7 +10,7 @@ layout: default
 
 [Snimci (predavanja)](https://www.youtube.com/playlist?list=PLY5TIIz8YzmXSD4zvG0XIRwOWv--z8rIA)
 
-[Skripta](https://drive.google.com/drive/u/0/folders/1h1v4FObZPRr8CntjbrzaGkFvQHjIqILC)
+[Materijali (predavanja)](../materials/active/RI/)
 
 [Materijali (vežbe)](https://drive.google.com/drive/u/0/folders/16LaR3mluuXHi-MZmaIoeKI-zmRsG91nD)
 

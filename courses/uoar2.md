@@ -10,4 +10,6 @@ layout: default
 
 [Sajt asistenta](http://www.matf.bg.ac.rs/p/ognjen-milinkovic/kurs/826/uvod-u-organizaciju-i-arhitekturu-ra�unara-2/)
 
-[Odgovori za teoriju](https://uoar2.netlify.app/odgovori.html)
+[Materijali](../materials/archive/UOAR2/)
+
+[Odgovori na pitanja](https://uoar2.netlify.app/odgovori.html)

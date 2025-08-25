@@ -6,11 +6,11 @@ layout: default
 
 <br>
 
-[Knjiga i rokovi](https://drive.google.com/drive/folders/1FRBrvMzTgsBfz_n4KInYKQxGAcap7Ish)
+[Knjiga, skripte i rokovi](../materials/active/OS/)
 
-[Materijali](https://github.com/osmatf/osvezbe/)
+[Materijali (vežbe)](https://github.com/osmatf/osvezbe/)
 
-Snimci: 
+Snimci:
 - Kuzmanović - [1](https://drive.google.com/file/d/1L6xfgd2KngMngM2b0ygB952CHgP6JUgc/view) |
 [2](https://drive.google.com/file/d/1S5T8NMdYaM0VcOgkfivbN8-ylFlt-bo0/view) |
 [3](https://drive.google.com/file/d/1Xzzcblzzhd9lADPLFwdlmF3-dFsdIf-4/view) |

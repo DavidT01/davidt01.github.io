@@ -6,8 +6,8 @@ layout: default
 
 <br>
 
-[Sajt kursa](https://matf-pbp.github.io)
+[Stranica kursa](https://matf-pbp.github.io)
 
-[Materijali (predavanja)](https://drive.google.com/drive/u/0/folders/1rhBjxc7mkE-LNecNzK9JZjhA5-KcmrqW)
+[Materijali (predavanja)](../materials/archive/PROGBP/)
 
 [Materijali (vežbe)](http://www.matf.bg.ac.rs/p/boris-cvitak/kurs/927/programiranje-baza-podataka/)

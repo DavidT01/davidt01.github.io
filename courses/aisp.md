@@ -14,10 +14,6 @@ layout: default
 
 [Drecunov sajt](http://poincare.matf.bg.ac.rs/~ivan.drecun/aisp.html)
 
-[Skripta](http://poincare.matf.bg.ac.rs/~filip/asp/asp.pdf)
+[Skripta (Marić)](http://poincare.matf.bg.ac.rs/~filip/asp/asp.pdf)
 
-[Spisak pitanja](http://poincare.matf.bg.ac.rs/~filip/asp/ispitna-2022-23.pdf)
-
-[Kodovi, petlja i ostali zadaci](https://drive.google.com/drive/u/0/folders/1ET8IFSboApnWZopn3hoVHU1ZZfxGXisA)
-
-[Minimalni nivo](https://drive.google.com/drive/u/0/folders/1emw_Y8b_5kClXekDkpulKDGtmIjp3XYw)
+[Materijali](../materials/archive/AISP/)

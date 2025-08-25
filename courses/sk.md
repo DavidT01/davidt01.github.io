@@ -6,6 +6,6 @@ layout: default
 
 <br>
 
-[Skripta](https://drive.google.com/drive/folders/1zFQiRRb_Ci_StEkP7EMxDB8gPreeYduo)
+[Stranica kursa](https://poincare.matf.bg.ac.rs/~filip/spec2024/)
 
-[Materijali](https://poincare.matf.bg.ac.rs/~filip/spec2024/)
+[Materijali](../materials/active/SK/)

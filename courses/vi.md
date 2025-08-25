@@ -10,6 +10,4 @@ layout: default
 
 [Sajt kursa](https://matfvi.github.io/site/index.html)
 
-[Materijali (predavanja)](https://drive.google.com/drive/u/0/folders/13YQjUekHxBCPeULQ4amhuZ_-4WWuoIRu)
-
-[Rokovi](https://drive.google.com/drive/u/0/folders/15GDrrF8wI6JvpL7tGjcWIxVUl140b8-w)
+[Materijali](../materials/archive/VI/)
