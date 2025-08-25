@@ -1,0 +1,17 @@
+prva:
+  title: Prva godina
+  sem1: [p1, uoar1, ds1, laig, eng1]
+  sem2: [p2, uoar2, ds2, a1, eng2]
+druga:
+  title: Druga godina
+  sem1: [aisp, oop, a2, geo, os]
+  sem2: [kiaa, uvit, a3, alg, om]
+treca:
+  title: Treća godina
+  sem1: [rbp, rg, ppj, unm, vrv]
+  sem2: [pbp, vi, pp, ip1, st]
+cetvrta:
+  title: Četvrta godina
+  sem1: [rs, azrs, rm, ri, ppgr]
+  sem2: [projbp, sk, kk, omm, strk]
+

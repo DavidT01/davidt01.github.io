@@ -1,0 +1,132 @@
+rs:
+  name: Razvoj softvera
+  url: /courses/rs.md
+uvit:
+  name: Uvod u veb i internet tehnologije
+  url: /courses/uvit.md
+vi:
+  name: Veštačka inteligencija
+  url: /courses/vi.md
+ri:
+  name: Računarska inteligencija
+  url: /courses/ri.md
+oop:
+  name: Objektno-orijentisano programiranje
+  url: /courses/oop.md
+sk:
+  name: Specijalni kurs
+  url: /courses/sk.md
+ppj:
+  name: Prevođenje programskih jezika
+  url: /courses/ppj.md
+strk:
+  name: Stručni kursevi
+  url: /courses/strk.md
+omm:
+  name: Osnove matematičkog modelovanja
+  url: /courses/omm.md
+kk:
+  name: Konstrukcija kompilatora
+  url: /courses/kk.md
+projbp:
+  name: Projektovanje baza podataka
+  url: /courses/projbp.md
+om:
+  name: Osnovi mehanike
+  url: /courses/om.md
+pbp:
+  name: Programiranje baza podataka
+  url: /courses/pbp.md
+uoar2:
+  name: Uvod u organizaciju i arhitekturu računara 2
+  url: /courses/uoar2.md
+ppgr:
+  name: Primena projektivne geometrije u računarstvu
+  url: /courses/ppgr.md
+rbp:
+  name: Relacione baza podataka
+  url: /courses/rbp.md
+unm:
+  name: Uvod u numeričku matematiku
+  url: /courses/unm.md
+pp:
+  name: Programske paradigme
+  url: /courses/pp.md
+rbs:
+  name: Razvoj bezbednog softvera
+  url: /courses/rbs.md
+pbi:
+  name: Primenjena bioinformatika
+  url: /courses/pbi.md
+vrv:
+  name: Verovatnoća
+  url: /courses/vrv.md
+os:
+  name: Operativni sistemi
+  url: /courses/os.md
+rg:
+  name: Računarska grafika
+  url: /courses/rg.md
+st:
+  name: Statistika
+  url: /courses/st.md
+rm:
+  name: Računarske mreže
+  url: /courses/rm.md
+a3:
+  name: Analiza 3
+  url: /courses/a3.md
+a2:
+  name: Analiza 2
+  url: /courses/a2.md
+kiaa:
+  name: Konstrukcija i analiza algoritama
+  url: /courses/kiaa.md
+aaub:
+  name: Algoritamski alati u bioinformatici
+  url: /courses/aaub.md
+azrs:
+  name: Alati za razvoj softvera
+  url: /courses/azrs.md
+ip1:
+  name: Istraživanje podataka 1
+  url: /courses/ip1.md
+a1:
+  name: Analiza 1
+  url: /courses/a1.md
+aisp:
+  name: Algoritmi i strukture podataka
+  url: /courses/aisp.md
+geo:
+  name: Geometrija
+  url: /courses/geo.md
+alg:
+  name: Algebra 1
+  url: /courses/alg.md
+
+# First-year courses without dedicated pages (no URL -> plain text)
+p1:
+  name: Programiranje 1
+  url: 
+p2:
+  name: Programiranje 2
+  url: 
+uoar1:
+  name: Uvod u organizaciju i arhitekturu računara 1
+  url: 
+ds1:
+  name: Diskretne strukture 1
+  url: 
+ds2:
+  name: Diskretne strukture 2
+  url: 
+laig:
+  name: Linearna algebra i analitička geometrija
+  url: 
+eng1:
+  name: Engleski jezik 1
+  url: 
+eng2:
+  name: Engleski jezik 2
+  url: 
+
