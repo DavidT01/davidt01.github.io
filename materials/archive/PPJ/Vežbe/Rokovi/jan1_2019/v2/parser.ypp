@@ -1,0 +1,184 @@
+%{
+    #include <iostream>
+    #include <vector>
+    #include <cstdlib>
+    #include <map>
+    #include <cstdio>
+
+    using namespace std;
+
+    extern int yylex();
+
+    void yyerror(string s){
+        cerr << "Sintaksna greska: " << s << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    map<string, int> promenljive;
+    map<string, vector<int>*> lista_promenljivih;
+%}
+
+%union{
+    string* s;
+    int v;
+    vector<int>* vec;
+}
+
+%left EQ
+%left '|'
+%left '^'
+%left '&'
+%left SHR SHL
+%left '+' '-'
+%left '*' '/' '%'
+%right '~'
+%right UMINUS
+%left '['
+
+%token PRINT INT EQ SHL SHR LIST
+%token<s> ID ID_LIST
+%token<v> BROJ
+
+%type<v> izraz
+%type<vec> listavrednosti lista
+
+%start program
+
+%%
+
+program: program naredba ';'                                {}
+    | naredba ';'                                           {}
+    ;
+naredba: INT ID '=' izraz                                   {
+                                                                auto it = promenljive.find(*$2);
+                                                                if(it != promenljive.end()){
+                                                                    yyerror("Promenljiva vec definisana");
+                                                                }
+
+                                                                promenljive[*$2] = $4;
+                                                                delete $2;
+                                                            }
+    | INT ID                                                {
+                                                                auto it = promenljive.find(*$2);
+                                                                if(it != promenljive.end()){
+                                                                    yyerror("Promenljiva vec definisana");
+                                                                }
+
+                                                                promenljive[*$2] = 0;
+                                                                delete $2;
+                                                            }
+    | ID '=' izraz                                          {
+                                                                auto it = promenljive.find(*$1);
+                                                                if(it == promenljive.end()){
+                                                                    yyerror("Promenljiva nije definisana");
+                                                                }
+
+                                                                promenljive[*$1] = $3;
+                                                                delete $1;
+                                                            }
+    | PRINT '(' izraz ')'                                   { cout << $3 << endl; }
+    | PRINT '(' izraz ',' BROJ ')'                          {
+                                                                if($5 == 16){
+                                                                    printf("%x\n", $3);
+                                                                }else if($5 == 8){
+                                                                    printf("%o\n", $3);
+                                                                }else if($5 == 10){
+                                                                    printf("%d\n", $3);
+                                                                }else{
+                                                                    yyerror("Baza nije definisana");
+                                                                }
+                                                            }
+    | izraz EQ izraz                                        {
+                                                                if($1 == $3)
+                                                                    cout << "True" << endl;
+                                                                else
+                                                                    cout << "False" << endl;
+                                                            }
+    | LIST ID_LIST '=' lista                                {
+                                                                auto it = lista_promenljivih.find(*$2);
+                                                                if(it != lista_promenljivih.end()){
+                                                                    yyerror("Lista sa ovim imenom vec definisana");
+                                                                }
+
+                                                                lista_promenljivih[*$2] = $4;
+                                                                delete $2;
+                                                            }
+    | PRINT '(' lista ')'                                   {
+                                                                cout << "[";
+                                                                for(auto it : *$3){
+                                                                    cout << it << " ";
+                                                                }
+                                                                cout << "]" << endl;
+                                                            }
+    ;
+izraz: ID                                                   {
+                                                                auto it = promenljive.find(*$1);
+                                                                if(it == promenljive.end()){
+                                                                    yyerror("Promenljiva nije definisana");
+                                                                }
+                                                                
+                                                                $$ = it->second;
+                                                                delete $1;
+                                                            }
+    | BROJ                                                  { $$ = $1; }
+    | izraz '+' izraz                                       { $$ = $1 + $3; }
+    | izraz '-' izraz                                       { $$ = $1 - $3; }
+    | izraz '*' izraz                                       { $$ = $1 * $3; }
+    | izraz '/' izraz                                       { $$ = $1 / $3; }
+    | izraz '%' izraz                                       { $$ = $1 % $3; }
+    | '-' izraz %prec UMINUS                                { $$ = -$2; }
+    | '(' izraz ')'                                         { $$ = $2; }
+    | izraz '&' izraz                                       { $$ = $1 & $3; }
+    | izraz '|' izraz                                       { $$ = $1 | $3; }
+    | izraz '^' izraz                                       { $$ = $1 ^ $3; }
+    | izraz SHL izraz                                       {
+                                                                if($3 <= 0)
+                                                                    yyerror("Desni argument ne sme biti manji od 1 (SHL)");
+
+                                                                $$ = $1 << $3;
+                                                            }
+    | izraz SHR izraz                                       {
+                                                                if($3 <= 0)
+                                                                    yyerror("Desni argument ne sme biti manji od 1 (SHR)");
+
+                                                                $$ = $1 >> $3;
+                                                            }
+    | '~' izraz                                             { $$ = ~$2; }
+    | ID_LIST '[' BROJ ']'                                  {
+                                                                auto it = lista_promenljivih.find(*$1);
+                                                                if(it == lista_promenljivih.end()){
+                                                                    yyerror("Lista ne postoji");
+                                                                }
+
+                                                                if($3 >= (*$1).size())
+                                                                    yyerror("Index out of bounds");
+
+                                                                $$ = (*it->second)[$3];        
+
+                                                                delete $1;
+                                                            }
+    ;
+lista: '[' listavrednosti ']'                               { $$ = $2; }
+    | ID_LIST                                               {
+                                                                auto it = lista_promenljivih.find(*$1);
+                                                                if(it == lista_promenljivih.end()){
+                                                                    yyerror("Lista ne postoji");
+                                                                }
+
+                                                                $$ = it->second;
+                                                                delete $1;
+                                                            }
+    ;
+listavrednosti: listavrednosti ',' izraz                    { $1->push_back($3); $$ = $1; }
+    | izraz                                                 { $$ = new vector<int>(); $$->push_back($1); }
+    ;
+%%
+
+int main(){
+    if(yyparse() == 0)
+        cout << "Sve ok" << endl;
+    else
+        cout << "Sintaksna greska" << endl;
+
+    return 0;
+}

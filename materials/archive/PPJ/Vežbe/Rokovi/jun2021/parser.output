@@ -1,0 +1,671 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: program naredba '\n'
+    2        | naredba '\n'
+
+    3 naredba: ID DODELA izraz
+    4        | PRINT '(' izraz ')'
+    5        | PRINT '(' brojevna_vrednost ')'
+
+    6 izraz: STRING
+    7      | izraz '+' izraz
+    8      | BROJ '*' izraz
+    9      | izraz '*' BROJ
+   10      | izraz '[' BROJ ':' BROJ ']'
+   11      | izraz '[' BROJ ':' ']'
+   12      | izraz '[' ':' BROJ ']'
+   13      | '(' izraz ')'
+   14      | LOWER '(' izraz ')'
+   15      | UPPER '(' izraz ')'
+   16      | REVERSE '(' izraz ')'
+   17      | ID
+
+   18 brojevna_vrednost: '|' izraz '|'
+   19                  | INDEX '(' izraz ',' izraz ')'
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '\n' (10) 1 2
+    '(' (40) 4 5 13 14 15 16 19
+    ')' (41) 4 5 13 14 15 16 19
+    '*' (42) 8 9
+    '+' (43) 7
+    ',' (44) 19
+    ':' (58) 10 11 12
+    '[' (91) 10 11 12
+    ']' (93) 10 11 12
+    '|' (124) 18
+    error (256)
+    PRINT (258) 4 5
+    DODELA (259) 3
+    LOWER (260) 14
+    UPPER (261) 15
+    REVERSE (262) 16
+    INDEX (263) 19
+    ID <s> (264) 3 17
+    STRING <str> (265) 6
+    BROJ <v> (266) 8 9 10 11 12
+
+
+Nonterminals, with rules where they appear
+
+    $accept (22)
+        on left: 0
+    program (23)
+        on left: 1 2
+        on right: 0 1
+    naredba (24)
+        on left: 3 4 5
+        on right: 1 2
+    izraz <niske> (25)
+        on left: 6 7 8 9 10 11 12 13 14 15 16 17
+        on right: 3 4 7 8 9 10 11 12 13 14 15 16 18 19
+    brojevna_vrednost <v> (26)
+        on left: 18 19
+        on right: 5
+
+
+State 0
+
+    0 $accept: • program $end
+
+    PRINT  shift, and go to state 1
+    ID     shift, and go to state 2
+
+    program  go to state 3
+    naredba  go to state 4
+
+
+State 1
+
+    4 naredba: PRINT • '(' izraz ')'
+    5        | PRINT • '(' brojevna_vrednost ')'
+
+    '('  shift, and go to state 5
+
+
+State 2
+
+    3 naredba: ID • DODELA izraz
+
+    DODELA  shift, and go to state 6
+
+
+State 3
+
+    0 $accept: program • $end
+    1 program: program • naredba '\n'
+
+    $end   shift, and go to state 7
+    PRINT  shift, and go to state 1
+    ID     shift, and go to state 2
+
+    naredba  go to state 8
+
+
+State 4
+
+    2 program: naredba • '\n'
+
+    '\n'  shift, and go to state 9
+
+
+State 5
+
+    4 naredba: PRINT '(' • izraz ')'
+    5        | PRINT '(' • brojevna_vrednost ')'
+
+    LOWER    shift, and go to state 10
+    UPPER    shift, and go to state 11
+    REVERSE  shift, and go to state 12
+    INDEX    shift, and go to state 13
+    ID       shift, and go to state 14
+    STRING   shift, and go to state 15
+    BROJ     shift, and go to state 16
+    '('      shift, and go to state 17
+    '|'      shift, and go to state 18
+
+    izraz              go to state 19
+    brojevna_vrednost  go to state 20
+
+
+State 6
+
+    3 naredba: ID DODELA • izraz
+
+    LOWER    shift, and go to state 10
+    UPPER    shift, and go to state 11
+    REVERSE  shift, and go to state 12
+    ID       shift, and go to state 14
+    STRING   shift, and go to state 15
+    BROJ     shift, and go to state 16
+    '('      shift, and go to state 17
+
+    izraz  go to state 21
+
+
+State 7
+
+    0 $accept: program $end •
+
+    $default  accept
+
+
+State 8
+
+    1 program: program naredba • '\n'
+
+    '\n'  shift, and go to state 22
+
+
+State 9
+
+    2 program: naredba '\n' •
+
+    $default  reduce using rule 2 (program)
+
+
+State 10
+
+   14 izraz: LOWER • '(' izraz ')'
+
+    '('  shift, and go to state 23
+
+
+State 11
+
+   15 izraz: UPPER • '(' izraz ')'
+
+    '('  shift, and go to state 24
+
+
+State 12
+
+   16 izraz: REVERSE • '(' izraz ')'
+
+    '('  shift, and go to state 25
+
+
+State 13
+
+   19 brojevna_vrednost: INDEX • '(' izraz ',' izraz ')'
+
+    '('  shift, and go to state 26
+
+
+State 14
+
+   17 izraz: ID •
+
+    $default  reduce using rule 17 (izraz)
+
+
+State 15
+
+    6 izraz: STRING •
+
+    $default  reduce using rule 6 (izraz)
+
+
+State 16
+
+    8 izraz: BROJ • '*' izraz
+
+    '*'  shift, and go to state 27
+
+
+State 17
+
+   13 izraz: '(' • izraz ')'
+
+    LOWER    shift, and go to state 10
+    UPPER    shift, and go to state 11
+    REVERSE  shift, and go to state 12
+    ID       shift, and go to state 14
+    STRING   shift, and go to state 15
+    BROJ     shift, and go to state 16
+    '('      shift, and go to state 17
+
+    izraz  go to state 28
+
+
+State 18
+
+   18 brojevna_vrednost: '|' • izraz '|'
+
+    LOWER    shift, and go to state 10
+    UPPER    shift, and go to state 11
+    REVERSE  shift, and go to state 12
+    ID       shift, and go to state 14
+    STRING   shift, and go to state 15
+    BROJ     shift, and go to state 16
+    '('      shift, and go to state 17
+
+    izraz  go to state 29
+
+
+State 19
+
+    4 naredba: PRINT '(' izraz • ')'
+    7 izraz: izraz • '+' izraz
+    9      | izraz • '*' BROJ
+   10      | izraz • '[' BROJ ':' BROJ ']'
+   11      | izraz • '[' BROJ ':' ']'
+   12      | izraz • '[' ':' BROJ ']'
+
+    '+'  shift, and go to state 30
+    '*'  shift, and go to state 31
+    '['  shift, and go to state 32
+    ')'  shift, and go to state 33
+
+
+State 20
+
+    5 naredba: PRINT '(' brojevna_vrednost • ')'
+
+    ')'  shift, and go to state 34
+
+
+State 21
+
+    3 naredba: ID DODELA izraz •
+    7 izraz: izraz • '+' izraz
+    9      | izraz • '*' BROJ
+   10      | izraz • '[' BROJ ':' BROJ ']'
+   11      | izraz • '[' BROJ ':' ']'
+   12      | izraz • '[' ':' BROJ ']'
+
+    '+'  shift, and go to state 30
+    '*'  shift, and go to state 31
+    '['  shift, and go to state 32
+
+    $default  reduce using rule 3 (naredba)
+
+
+State 22
+
+    1 program: program naredba '\n' •
+
+    $default  reduce using rule 1 (program)
+
+
+State 23
+
+   14 izraz: LOWER '(' • izraz ')'
+
+    LOWER    shift, and go to state 10
+    UPPER    shift, and go to state 11
+    REVERSE  shift, and go to state 12
+    ID       shift, and go to state 14
+    STRING   shift, and go to state 15
+    BROJ     shift, and go to state 16
+    '('      shift, and go to state 17
+
+    izraz  go to state 35
+
+
+State 24
+
+   15 izraz: UPPER '(' • izraz ')'
+
+    LOWER    shift, and go to state 10
+    UPPER    shift, and go to state 11
+    REVERSE  shift, and go to state 12
+    ID       shift, and go to state 14
+    STRING   shift, and go to state 15
+    BROJ     shift, and go to state 16
+    '('      shift, and go to state 17
+
+    izraz  go to state 36
+
+
+State 25
+
+   16 izraz: REVERSE '(' • izraz ')'
+
+    LOWER    shift, and go to state 10
+    UPPER    shift, and go to state 11
+    REVERSE  shift, and go to state 12
+    ID       shift, and go to state 14
+    STRING   shift, and go to state 15
+    BROJ     shift, and go to state 16
+    '('      shift, and go to state 17
+
+    izraz  go to state 37
+
+
+State 26
+
+   19 brojevna_vrednost: INDEX '(' • izraz ',' izraz ')'
+
+    LOWER    shift, and go to state 10
+    UPPER    shift, and go to state 11
+    REVERSE  shift, and go to state 12
+    ID       shift, and go to state 14
+    STRING   shift, and go to state 15
+    BROJ     shift, and go to state 16
+    '('      shift, and go to state 17
+
+    izraz  go to state 38
+
+
+State 27
+
+    8 izraz: BROJ '*' • izraz
+
+    LOWER    shift, and go to state 10
+    UPPER    shift, and go to state 11
+    REVERSE  shift, and go to state 12
+    ID       shift, and go to state 14
+    STRING   shift, and go to state 15
+    BROJ     shift, and go to state 16
+    '('      shift, and go to state 17
+
+    izraz  go to state 39
+
+
+State 28
+
+    7 izraz: izraz • '+' izraz
+    9      | izraz • '*' BROJ
+   10      | izraz • '[' BROJ ':' BROJ ']'
+   11      | izraz • '[' BROJ ':' ']'
+   12      | izraz • '[' ':' BROJ ']'
+   13      | '(' izraz • ')'
+
+    '+'  shift, and go to state 30
+    '*'  shift, and go to state 31
+    '['  shift, and go to state 32
+    ')'  shift, and go to state 40
+
+
+State 29
+
+    7 izraz: izraz • '+' izraz
+    9      | izraz • '*' BROJ
+   10      | izraz • '[' BROJ ':' BROJ ']'
+   11      | izraz • '[' BROJ ':' ']'
+   12      | izraz • '[' ':' BROJ ']'
+   18 brojevna_vrednost: '|' izraz • '|'
+
+    '+'  shift, and go to state 30
+    '*'  shift, and go to state 31
+    '['  shift, and go to state 32
+    '|'  shift, and go to state 41
+
+
+State 30
+
+    7 izraz: izraz '+' • izraz
+
+    LOWER    shift, and go to state 10
+    UPPER    shift, and go to state 11
+    REVERSE  shift, and go to state 12
+    ID       shift, and go to state 14
+    STRING   shift, and go to state 15
+    BROJ     shift, and go to state 16
+    '('      shift, and go to state 17
+
+    izraz  go to state 42
+
+
+State 31
+
+    9 izraz: izraz '*' • BROJ
+
+    BROJ  shift, and go to state 43
+
+
+State 32
+
+   10 izraz: izraz '[' • BROJ ':' BROJ ']'
+   11      | izraz '[' • BROJ ':' ']'
+   12      | izraz '[' • ':' BROJ ']'
+
+    BROJ  shift, and go to state 44
+    ':'   shift, and go to state 45
+
+
+State 33
+
+    4 naredba: PRINT '(' izraz ')' •
+
+    $default  reduce using rule 4 (naredba)
+
+
+State 34
+
+    5 naredba: PRINT '(' brojevna_vrednost ')' •
+
+    $default  reduce using rule 5 (naredba)
+
+
+State 35
+
+    7 izraz: izraz • '+' izraz
+    9      | izraz • '*' BROJ
+   10      | izraz • '[' BROJ ':' BROJ ']'
+   11      | izraz • '[' BROJ ':' ']'
+   12      | izraz • '[' ':' BROJ ']'
+   14      | LOWER '(' izraz • ')'
+
+    '+'  shift, and go to state 30
+    '*'  shift, and go to state 31
+    '['  shift, and go to state 32
+    ')'  shift, and go to state 46
+
+
+State 36
+
+    7 izraz: izraz • '+' izraz
+    9      | izraz • '*' BROJ
+   10      | izraz • '[' BROJ ':' BROJ ']'
+   11      | izraz • '[' BROJ ':' ']'
+   12      | izraz • '[' ':' BROJ ']'
+   15      | UPPER '(' izraz • ')'
+
+    '+'  shift, and go to state 30
+    '*'  shift, and go to state 31
+    '['  shift, and go to state 32
+    ')'  shift, and go to state 47
+
+
+State 37
+
+    7 izraz: izraz • '+' izraz
+    9      | izraz • '*' BROJ
+   10      | izraz • '[' BROJ ':' BROJ ']'
+   11      | izraz • '[' BROJ ':' ']'
+   12      | izraz • '[' ':' BROJ ']'
+   16      | REVERSE '(' izraz • ')'
+
+    '+'  shift, and go to state 30
+    '*'  shift, and go to state 31
+    '['  shift, and go to state 32
+    ')'  shift, and go to state 48
+
+
+State 38
+
+    7 izraz: izraz • '+' izraz
+    9      | izraz • '*' BROJ
+   10      | izraz • '[' BROJ ':' BROJ ']'
+   11      | izraz • '[' BROJ ':' ']'
+   12      | izraz • '[' ':' BROJ ']'
+   19 brojevna_vrednost: INDEX '(' izraz • ',' izraz ')'
+
+    '+'  shift, and go to state 30
+    '*'  shift, and go to state 31
+    '['  shift, and go to state 32
+    ','  shift, and go to state 49
+
+
+State 39
+
+    7 izraz: izraz • '+' izraz
+    8      | BROJ '*' izraz •
+    9      | izraz • '*' BROJ
+   10      | izraz • '[' BROJ ':' BROJ ']'
+   11      | izraz • '[' BROJ ':' ']'
+   12      | izraz • '[' ':' BROJ ']'
+
+    '['  shift, and go to state 32
+
+    $default  reduce using rule 8 (izraz)
+
+
+State 40
+
+   13 izraz: '(' izraz ')' •
+
+    $default  reduce using rule 13 (izraz)
+
+
+State 41
+
+   18 brojevna_vrednost: '|' izraz '|' •
+
+    $default  reduce using rule 18 (brojevna_vrednost)
+
+
+State 42
+
+    7 izraz: izraz • '+' izraz
+    7      | izraz '+' izraz •
+    9      | izraz • '*' BROJ
+   10      | izraz • '[' BROJ ':' BROJ ']'
+   11      | izraz • '[' BROJ ':' ']'
+   12      | izraz • '[' ':' BROJ ']'
+
+    '*'  shift, and go to state 31
+    '['  shift, and go to state 32
+
+    $default  reduce using rule 7 (izraz)
+
+
+State 43
+
+    9 izraz: izraz '*' BROJ •
+
+    $default  reduce using rule 9 (izraz)
+
+
+State 44
+
+   10 izraz: izraz '[' BROJ • ':' BROJ ']'
+   11      | izraz '[' BROJ • ':' ']'
+
+    ':'  shift, and go to state 50
+
+
+State 45
+
+   12 izraz: izraz '[' ':' • BROJ ']'
+
+    BROJ  shift, and go to state 51
+
+
+State 46
+
+   14 izraz: LOWER '(' izraz ')' •
+
+    $default  reduce using rule 14 (izraz)
+
+
+State 47
+
+   15 izraz: UPPER '(' izraz ')' •
+
+    $default  reduce using rule 15 (izraz)
+
+
+State 48
+
+   16 izraz: REVERSE '(' izraz ')' •
+
+    $default  reduce using rule 16 (izraz)
+
+
+State 49
+
+   19 brojevna_vrednost: INDEX '(' izraz ',' • izraz ')'
+
+    LOWER    shift, and go to state 10
+    UPPER    shift, and go to state 11
+    REVERSE  shift, and go to state 12
+    ID       shift, and go to state 14
+    STRING   shift, and go to state 15
+    BROJ     shift, and go to state 16
+    '('      shift, and go to state 17
+
+    izraz  go to state 52
+
+
+State 50
+
+   10 izraz: izraz '[' BROJ ':' • BROJ ']'
+   11      | izraz '[' BROJ ':' • ']'
+
+    BROJ  shift, and go to state 53
+    ']'   shift, and go to state 54
+
+
+State 51
+
+   12 izraz: izraz '[' ':' BROJ • ']'
+
+    ']'  shift, and go to state 55
+
+
+State 52
+
+    7 izraz: izraz • '+' izraz
+    9      | izraz • '*' BROJ
+   10      | izraz • '[' BROJ ':' BROJ ']'
+   11      | izraz • '[' BROJ ':' ']'
+   12      | izraz • '[' ':' BROJ ']'
+   19 brojevna_vrednost: INDEX '(' izraz ',' izraz • ')'
+
+    '+'  shift, and go to state 30
+    '*'  shift, and go to state 31
+    '['  shift, and go to state 32
+    ')'  shift, and go to state 56
+
+
+State 53
+
+   10 izraz: izraz '[' BROJ ':' BROJ • ']'
+
+    ']'  shift, and go to state 57
+
+
+State 54
+
+   11 izraz: izraz '[' BROJ ':' ']' •
+
+    $default  reduce using rule 11 (izraz)
+
+
+State 55
+
+   12 izraz: izraz '[' ':' BROJ ']' •
+
+    $default  reduce using rule 12 (izraz)
+
+
+State 56
+
+   19 brojevna_vrednost: INDEX '(' izraz ',' izraz ')' •
+
+    $default  reduce using rule 19 (brojevna_vrednost)
+
+
+State 57
+
+   10 izraz: izraz '[' BROJ ':' BROJ ']' •
+
+    $default  reduce using rule 10 (izraz)

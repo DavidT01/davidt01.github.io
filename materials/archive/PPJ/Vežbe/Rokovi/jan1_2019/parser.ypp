@@ -1,0 +1,83 @@
+%{
+    #include <iostream>
+    #include <cstdlib>
+
+    using namespace std;
+
+    extern int yylex();
+
+    void yyerror(string s){
+        cout << "Sintaksna greska: " << s << endl;
+        exit(EXIT_FAILURE);
+    }
+%}
+
+%union{
+    int v;
+    string* ime;
+}
+
+%left EQ
+%left '|'
+%left '^'
+%left '&'
+%left SHR SHL
+%left '+' '-'
+%left '*' '/' '%'
+%right '~'
+%right UMINUS
+
+%token PRINT_T SHL SHR INT_T EQ LIST_T 
+%token<ime> ID ID_L
+%token<v> BROJ
+
+%start program
+
+%%
+
+program: program naredba ';'
+    | naredba ';'
+    ;
+naredba: INT_T ID '=' izraz                                 {}
+    | INT_T ID                                              {}                                        
+    | ID '=' izraz                                          {}
+    | PRINT_T '(' izraz ')'                                 {}
+    | PRINT_T '(' izraz ',' BROJ ')'                        {}
+    | izraz EQ izraz                                        {}
+    | LIST_T ID '=' lista                                   {}
+    | PRINT_T '(' lista ')'                                 {}
+    ;
+izraz: izraz '+' izraz                                      {}
+    | izraz '*' izraz                                       {}
+    | izraz '/' izraz                                       {}
+    | izraz '-' izraz                                       {}
+    | izraz '%' izraz                                       {}
+    | '(' izraz ')'                                         {}
+    | '-' izraz %prec UMINUS                                {}
+    | izraz SHL izraz                                       {}
+    | izraz SHR izraz                                       {}
+    | izraz '^' izraz                                       {}
+    | izraz '|' izraz                                       {}
+    | izraz '&' izraz                                       {}
+    | '~' izraz                                             {}
+    | ID                                                    {}
+    | BROJ                                                  {}
+    ;
+lista: '[' lista_vr ']'                                     {}
+    | ID_L                                                  {}
+    ;
+lista_vr: lista_vr ',' izraz                                {}
+    | izraz                                                 {}
+    ;
+%%
+
+int main(){
+    if(yyparse() == 0){
+        cout << "Sve ok" << endl;
+    }
+    else{
+        cout << "Sintaksna greska" << endl;
+    }
+
+    return 0;
+}

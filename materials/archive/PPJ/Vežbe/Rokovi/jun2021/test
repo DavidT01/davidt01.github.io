@@ -1,0 +1,17 @@
+v := "ispit iz PPJ"
+print(v)
+print("prevodjenje programskih jezika")
+u := "tezak "
+print((u+v+" ")*2)
+w := 3*v[0:5]
+print(w)
+print(w[1:])
+print(w[:3])
+w := lower(v) + " " + upper(v)
+print(w)
+print(reverse("Ppj"))
+print(|v|)
+print(index(v, "PPJ"))
+print("Ispit\tiz\tPPJ")
+y := "prevodjenje\nprogramskih\njezika"
+print(y)

@@ -1,0 +1,23 @@
+int _a = 0xFF;
+print(_a, 8);
+print(_a);
+print(_a, 16);
+print(_a, 19);
+print(_nova1);
+
+int _a = 2;
+int _b = _a + 1;
+_b = (_a + 1) << (_a*2);
+print(_b + 2, 16);
+int _c;
+_c = (_a + _b)/012 + 013;
+print(_c, 16);
+_a = 7;
+_b = ~(_a-1);
+_b & _a == 0;
+_a == _a | 0x0 & 0xFFFFFFFF;
+int _nova2 = _c >> (_a -1 -~_b);
+
+list lx = [-1, 02, 0x3];
+print( lx);
+print(lx[0] << lx[1]);

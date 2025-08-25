@@ -1,0 +1,91 @@
+%{
+    #include <iostream>
+    #include <vector>
+    #include <cstdlib>
+    #include <map>
+
+    using namespace std;
+
+    #include "stringovi.hpp"
+
+    extern int yylex();
+
+    void yyerror(string s){
+        cerr << "Sintaksna greska: " << s << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    map<string, Stringovi*> promenljive;
+%}
+
+%left '+'
+%left '*'
+%left '['
+
+%union{
+    string* s;
+    string* str;
+    int v;
+    Stringovi* niske;
+}
+
+%token PRINT DODELA LOWER UPPER REVERSE INDEX
+%token<s> ID
+%token<str> STRING
+%token<v> BROJ
+
+%type<niske> izraz
+%type<v> brojevna_vrednost
+
+%start program
+
+%%
+
+program: program naredba '\n'
+    | naredba '\n'
+    ;
+naredba: ID DODELA izraz                                {
+                                                            auto it = promenljive.find(*$1);
+                                                            if(it != promenljive.end()){
+                                                                delete it->second;
+                                                            }
+
+                                                            promenljive[*$1] = $3;
+                                                            delete $1; 
+                                                        }
+    | PRINT '(' izraz ')'                               { cout << *$3 << endl; }
+    | PRINT '(' brojevna_vrednost ')'                   { cout << $3 << endl; }
+    ;
+izraz: STRING                                           { $$ = new Stringovi(*$1); delete $1; }
+    | izraz '+' izraz                                   { $$ = *$1 + *$3; delete $1; delete $3; }
+    | BROJ '*' izraz                                    { $$ = *$3 * $1; delete $3; }
+    | izraz '*' BROJ                                    { $$ = *$1 * $3; delete $1; }
+    | izraz '[' BROJ ':' BROJ ']'                       { $$ = $1->fromAtoB($3, $5); delete $1;}
+    | izraz '[' BROJ ':' ']'                            { $$ = $1->fromAtoEnd($3); delete $1; }
+    | izraz '[' ':' BROJ ']'                            { $$ = $1->fromBeginToA($4); delete $1; }
+    | '(' izraz ')'                                     { $$ = $2; }
+    | LOWER '(' izraz ')'                               { $$ = $3->toLower(); delete $3; }
+    | UPPER '(' izraz ')'                               { $$ = $3->toUpper(); delete $3; }
+    | REVERSE '(' izraz ')'                             { $$ = $3->reverse(); delete $3; }
+    | ID                                                {
+                                                            auto it = promenljive.find(*$1);
+                                                            if(it == promenljive.end()){
+                                                                yyerror("Promenljiva nije definisana");
+                                                            }
+
+                                                            $$ = new Stringovi(*it->second);
+                                                            delete $1; 
+                                                        }
+    ;
+brojevna_vrednost: '|' izraz '|'                        { $$ = $2->size(); delete $2; }
+    | INDEX '(' izraz ',' izraz ')'                     { $$ = $3->index(*$5); delete $3; delete $5; }
+    ;
+%%
+
+int main(){
+
+    if(yyparse() == 0)
+        cout << "sve ok" << endl;
+    else
+        cout << "sintaksna greska" << endl;
+}

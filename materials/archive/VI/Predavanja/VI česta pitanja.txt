@@ -1,0 +1,120 @@
+U cemu je razlika izmedu pristupa uske i opšte veštacke inteligencije? 
+*Uska se bavi rešavanjem pojedinacnih problema(pobediti u šahu, samoupravljajuci automobili), dok bi opšta traga za VI koja simulira ljudski um i sve njegove sposobnosti
+
+Kako se defniše interpretacija u iskaznoj logici? 
+*funkcija koja preslikava skup iskaznih formula u skup {0,1}
+
+Navesti teoremu o zameni za iskaznu logiku.
+*teorema o zameni nam govori da deo formule A(nazovimo ga B, koje je takode formula) možemo zameniti formulom C(koja je logicki ekvivalentna sa B), 
+tako da polazna formula A bude log. ekviv. formuli nastaloj posle zamene(nazovimo je D).
+
+Navesti algoritam za transformisanje iskazne formule u KNF.
+*eliminišemo <=> rekurzivno, eliminišemo => rekurzivno, negacije "puštamo" kroz zagrade kako bi potonule do nivoa literala, uklanjamo sve dvostruke negacije, 
+primenjujemo zakon distribuivnosti \/ u odnosu na /\ kako bi konjukcija "isplivala" ispred zagrada, a u zagradama ostale disjunkcije literala. 
+
+Koja su tri koraka kojima se formula logike prvog reda transformiše u klauzulnu formu?
+*prenex, knf pa skolemizacija
+
+Koja je složzenost DPLL procedure u najgorem slucaju?
+*O(2 na N)
+
+Da li se metodom rezolucije za svaku formulu logike prvog reda koja je valjana može dokazati
+da je valjana? DA / NE -> DA
+
+Da li se metodom rezolucije za svaku formulu logike prvog reda koja nije valjana može
+dokazati da nije valjana? DA /NE -> NE
+
+Prvi korak u pravljenju klauzalne forme date formule je primena algoritma ______________(prenex).
+
+U algoritmu KNF, prvi korak se zaustavlja uvek jer ________(postoji ogranicen broj <=> ).
+
+Da li je za iskaznu formulu jednoznacno odredena njena KNF? DA(do na raspored literala u konjuktima)
+
+Šta radi pravilo split DPLL procedure?
+*Zadnji korak u DPLL proceduri(najnepoželjniji), ovde se radi o gruboj sili jer smo sve pametne opcije iscrpeli, 
+pa pretpostavimo da neka promenljiva (p) ima vrednost tacno. Ako polse DPLL vrati DA, onda smo našli rešenje, a inace idemo u drugu granu(p -> netacno)
+
+Šta je literal u logici prvog reda?
+*Literal je atomicka formula ili njena negacija.
+
+Kako glasi teorema o skolemizaciji?
+*Ako je formula B dobijena skolemizacijom od recenice A(A je u prenexu) onda one važi da je A zadovoljivo akko je B zadovoljivo
+
+Kako glasi pravilo rezolucije za logiku prvog reda?
+G1 \/ A1 , G2 \/ ~A2
+--------------------------
+(G1 \/ G2) S(igma) gde Sigma predstavlja najopštiji unifikator A1 i A2
+
+Jedna od defnicija veštacke inteligencije kaže da je to oblast koja se bavi rešavanjem problema
+u kojima se javlja ________(kombinatorna eksplozija).
+
+Ime veštacka inteligencija skovao je 1950-ih __________(Džon Makarti).
+
+Ako iskazna formula nije kontradikcija, onda je ona ______(zadovoljiva).
+
+Da li se može konstruisati iskazna formula za koju se algoritam za transformisanje u KNF
+ne zaustavlja? DA /NE -> NE
+
+Koji odgovor vraca DPLL procedura ako ulazna formula ne sadrži nijednu klauzu? _________(DA).
+
+Postupak kojim se formula logike prvog reda transformiše u formulu bez kvantifkatora zove
+se ________________(skolemizacija).
+
+Ako iskazna formula nije poreciva, onda je ona ________(valjana).
+Ako su formule A i B logicki ekvivalentne onda je ______.
+*Moze da bude: A (tri crte) B, ili A<=>B je valjana
+
+Ako je formula B dobijena od formule A skolemizacijom, onda su ove 2 formule ___________(ekvizadovoljive).
+
+Ukoliko je skup klauza logike prvog reda nezadovoljiv, onda se onda se iz njega metodom
+rezolucije ____________(dobija prazna klauza).
+
+Ime veštacka inteligencija je nastalo ___________ -ih godina dvatesetog veka(1956, 60-tih).
+
+Ako je negacija iskazne formule F zadovoljiva, onda F nije ________(valjana).
+
+Šta je valuacija? _________.
+*Funkcija V koja preslikava skup iskaznih slova P u skup {0,1}
+
+Za koju iskaznu formulu kažemo da je poreciva?
+*za onu za koju postoji valuacija V i interpretacija I takve da je Iv(F)=0, gde je F data formula.
+
+Kada za dva terma kažemo da su unifikabilna?_______________.
+* Dva terma t1 i t2 su unifikabilna ako postoji supstitucija S(igma) takva da je t1 S = t2 S, a S zovemo unifikatorom ta dva izraza
+
+Opisati proceduru za odredjivanje najopštijeg unifikatora.
+*strana 54 u skripti(mrzi me da pisem  )
+
+Šta je to interpretacija? _________
+*Funkcija Iv koja preslikava skup L-termova nad skupom promenljivih V u skup D, a skup L-formula nad skupom promenljivih V u skup {0,1}. 
+
+Navesti DPLL proceduru.
+*strana 31 u skripti
+
+Opisati postupak za transformisanje formule u disjunktivnu normalnu formu.
+Algoritam je ekvivalentan onom za KNF osim sto se u zadnjem koraku koristi zakon distribuivnosti /\ u odnosu na \/ kako bi disjunkcije "isplivala" ispred zagrada
+
+Opisati korake cycle i application u proceduri za odredjivanje najopštijeg unifikatora.
+*strana 54 u skripti
+
+Koji su moguci ishodi primene metoda rezolucije?
+*prazna klauza(formula je nezadovoljiva) ili slucaj kada u jednom koraku nije izveden ni jedna nova klauza.
+
+Šta je potrebno dokazati da bi se dokazala ispravnost koraka pure literal u DPLL proceduri? 
+* ??
+
+Šta cini logicki a šta nelogicki deo jezika prvog reda?
+*Logicki deo cini skup promenljivih, skup logickih veznika, skup logickih konstanti, skup kvantifikatora i skup pomocnih simbola
+*Nelogicki deo cine skupovi funkcijskih i predikatskih simbola.
+
+Kako se definiše slobodno, a kako vezano pojavljivanje promenljive u formuli?
+*Promenljiva npr. x je slobodna ako ispred nje nema kvantifikatora za svako ili postoji x
+
+Kako se dokazuje da se algoritam PRENEX zaustavlja?
+*Postoji konacan broj kvantifikatora iznad kojih se nalazi neki logicki veznici, ostalo je isto kao i kod KNF-a (konacan broj <=>, =>, kao i konacan broj ~ iznad /\ i \/)
+
+Ukoliko ima konacno mnogo iskaznih slova tada imamo konacno/prebrojivo/neprebrojivo mnogo formula koje su zadovoljive 
+*ovde mislim da je konacno(na strani 17 pise da se formule dobijaju samo konacnom primenom prva dva pravila)
+
+Ukoliko ima konacno mnogo iskaznih slova tada imamo konacno/prebrojivo/neprebrojivo mnogo formula koje su ne zadovoljive
+*odgovor na ovo pitanje je isti kao i za prethodno

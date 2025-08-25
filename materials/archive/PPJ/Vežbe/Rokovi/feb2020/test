@@ -1,0 +1,4 @@
+$broj = 2 * 3 + 1;
+print($broj - 5);
+$string = "abc" . "d" x 3;
+print($string[1, 4]);

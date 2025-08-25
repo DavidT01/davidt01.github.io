@@ -1,0 +1,61 @@
+P = {3, 2, 2, -1};
+Q = 7..10;
+print P;
+print {3, 2, 2, -1};
+print 7.10;
+
+1) Naivna gramatika:
+
+program: program naredba
+    | naredba
+    ;
+naredba: ID = skup ';'
+    | PRINT_T skup ';'
+    ;
+skup: '{' lista '}'
+    | BROJ TT BROJ
+    | ID
+    ;
+lista: lista ',' BROJ
+    | BROJ
+    ;
+
+2) Eliminacija leve rekurzije
+
+program: naredba programP
+programP: naredba programP
+    | eps
+    ;
+naredba: ID = skup ';'
+    | PRINT_T skup ';'
+    ;
+skup: '{' lista '}'
+    | BROJ TT BROJ
+    | ID
+    ;
+lista: BROJ listaP
+listaP: ',' BROJ listaP
+    | eps
+    ;
+
+3) Nema leve faktorizacije
+
+4) Skupovi izbora
+
+program: naredba programP           {ID, PRINT_T}
+programP: naredba programP          {ID, PRINT_T}
+    | eps                           {EOI}
+    ;
+naredba: ID = skup ';'              {ID}
+    | PRINT_T skup ';'              {PRINT_T}
+    ;
+skup: '{' lista '}'                 {OZ}
+    | BROJ TT BROJ                  {BROJ}
+    | ID                            {ID}
+    ;
+lista: BROJ listaP                  {BROJ}
+listaP: ',' BROJ listaP             {ZAREZ}
+    | eps                           {ZZ}
+    ;
+
+5) Preseci su prazni => Gramatika je LL1.

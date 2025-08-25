@@ -1,0 +1,590 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: program naredba
+    2        | naredba
+
+    3 naredba: ID '=' izraz ';'
+    4        | PRINT '(' izraz ')' ';'
+    5        | logicka_naredba ';'
+
+    6 izraz: izraz '+' izraz
+    7      | izraz '-' izraz
+    8      | izraz '*' izraz
+    9      | izraz '/' izraz
+   10      | '-' izraz
+   11      | '(' izraz ')'
+   12      | BROJ
+   13      | ID
+
+   14 logicka_naredba: izraz '<' izraz
+   15                | izraz '>' izraz
+   16                | izraz GTE izraz
+   17                | izraz LTE izraz
+   18                | izraz EQ izraz
+   19                | izraz NEQ izraz
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '(' (40) 4 11
+    ')' (41) 4 11
+    '*' (42) 8
+    '+' (43) 6
+    '-' (45) 7 10
+    '/' (47) 9
+    ';' (59) 3 4 5
+    '<' (60) 14
+    '=' (61) 3
+    '>' (62) 15
+    error (256)
+    UMINUS (258)
+    PRINT (259) 4
+    GTE (260) 16
+    LTE (261) 17
+    EQ (262) 18
+    NEQ (263) 19
+    BROJ <v> (264) 12
+    ID <ime> (265) 3 13
+
+
+Nonterminals, with rules where they appear
+
+    $accept (21)
+        on left: 0
+    program (22)
+        on left: 1 2
+        on right: 0 1
+    naredba (23)
+        on left: 3 4 5
+        on right: 1 2
+    izraz <v> (24)
+        on left: 6 7 8 9 10 11 12 13
+        on right: 3 4 6 7 8 9 10 11 14 15 16 17 18 19
+    logicka_naredba <k> (25)
+        on left: 14 15 16 17 18 19
+        on right: 5
+
+
+State 0
+
+    0 $accept: • program $end
+
+    '-'    shift, and go to state 1
+    PRINT  shift, and go to state 2
+    BROJ   shift, and go to state 3
+    ID     shift, and go to state 4
+    '('    shift, and go to state 5
+
+    program          go to state 6
+    naredba          go to state 7
+    izraz            go to state 8
+    logicka_naredba  go to state 9
+
+
+State 1
+
+   10 izraz: '-' • izraz
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 11
+
+
+State 2
+
+    4 naredba: PRINT • '(' izraz ')' ';'
+
+    '('  shift, and go to state 12
+
+
+State 3
+
+   12 izraz: BROJ •
+
+    $default  reduce using rule 12 (izraz)
+
+
+State 4
+
+    3 naredba: ID • '=' izraz ';'
+   13 izraz: ID •
+
+    '='  shift, and go to state 13
+
+    $default  reduce using rule 13 (izraz)
+
+
+State 5
+
+   11 izraz: '(' • izraz ')'
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 14
+
+
+State 6
+
+    0 $accept: program • $end
+    1 program: program • naredba
+
+    $end   shift, and go to state 15
+    '-'    shift, and go to state 1
+    PRINT  shift, and go to state 2
+    BROJ   shift, and go to state 3
+    ID     shift, and go to state 4
+    '('    shift, and go to state 5
+
+    naredba          go to state 16
+    izraz            go to state 8
+    logicka_naredba  go to state 9
+
+
+State 7
+
+    2 program: naredba •
+
+    $default  reduce using rule 2 (program)
+
+
+State 8
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+   14 logicka_naredba: izraz • '<' izraz
+   15                | izraz • '>' izraz
+   16                | izraz • GTE izraz
+   17                | izraz • LTE izraz
+   18                | izraz • EQ izraz
+   19                | izraz • NEQ izraz
+
+    '+'  shift, and go to state 17
+    '-'  shift, and go to state 18
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+    GTE  shift, and go to state 21
+    LTE  shift, and go to state 22
+    EQ   shift, and go to state 23
+    NEQ  shift, and go to state 24
+    '<'  shift, and go to state 25
+    '>'  shift, and go to state 26
+
+
+State 9
+
+    5 naredba: logicka_naredba • ';'
+
+    ';'  shift, and go to state 27
+
+
+State 10
+
+   13 izraz: ID •
+
+    $default  reduce using rule 13 (izraz)
+
+
+State 11
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+   10      | '-' izraz •
+
+    $default  reduce using rule 10 (izraz)
+
+
+State 12
+
+    4 naredba: PRINT '(' • izraz ')' ';'
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 28
+
+
+State 13
+
+    3 naredba: ID '=' • izraz ';'
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 29
+
+
+State 14
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+   11      | '(' izraz • ')'
+
+    '+'  shift, and go to state 17
+    '-'  shift, and go to state 18
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+    ')'  shift, and go to state 30
+
+
+State 15
+
+    0 $accept: program $end •
+
+    $default  accept
+
+
+State 16
+
+    1 program: program naredba •
+
+    $default  reduce using rule 1 (program)
+
+
+State 17
+
+    6 izraz: izraz '+' • izraz
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 31
+
+
+State 18
+
+    7 izraz: izraz '-' • izraz
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 32
+
+
+State 19
+
+    8 izraz: izraz '*' • izraz
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 33
+
+
+State 20
+
+    9 izraz: izraz '/' • izraz
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 34
+
+
+State 21
+
+   16 logicka_naredba: izraz GTE • izraz
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 35
+
+
+State 22
+
+   17 logicka_naredba: izraz LTE • izraz
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 36
+
+
+State 23
+
+   18 logicka_naredba: izraz EQ • izraz
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 37
+
+
+State 24
+
+   19 logicka_naredba: izraz NEQ • izraz
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 38
+
+
+State 25
+
+   14 logicka_naredba: izraz '<' • izraz
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 39
+
+
+State 26
+
+   15 logicka_naredba: izraz '>' • izraz
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 3
+    ID    shift, and go to state 10
+    '('   shift, and go to state 5
+
+    izraz  go to state 40
+
+
+State 27
+
+    5 naredba: logicka_naredba ';' •
+
+    $default  reduce using rule 5 (naredba)
+
+
+State 28
+
+    4 naredba: PRINT '(' izraz • ')' ';'
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+
+    '+'  shift, and go to state 17
+    '-'  shift, and go to state 18
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+    ')'  shift, and go to state 41
+
+
+State 29
+
+    3 naredba: ID '=' izraz • ';'
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+
+    '+'  shift, and go to state 17
+    '-'  shift, and go to state 18
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+    ';'  shift, and go to state 42
+
+
+State 30
+
+   11 izraz: '(' izraz ')' •
+
+    $default  reduce using rule 11 (izraz)
+
+
+State 31
+
+    6 izraz: izraz • '+' izraz
+    6      | izraz '+' izraz •
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+
+    $default  reduce using rule 6 (izraz)
+
+
+State 32
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    7      | izraz '-' izraz •
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+
+    $default  reduce using rule 7 (izraz)
+
+
+State 33
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    8      | izraz '*' izraz •
+    9      | izraz • '/' izraz
+
+    $default  reduce using rule 8 (izraz)
+
+
+State 34
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+    9      | izraz '/' izraz •
+
+    $default  reduce using rule 9 (izraz)
+
+
+State 35
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+   16 logicka_naredba: izraz GTE izraz •
+
+    '+'  shift, and go to state 17
+    '-'  shift, and go to state 18
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+
+    $default  reduce using rule 16 (logicka_naredba)
+
+
+State 36
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+   17 logicka_naredba: izraz LTE izraz •
+
+    '+'  shift, and go to state 17
+    '-'  shift, and go to state 18
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+
+    $default  reduce using rule 17 (logicka_naredba)
+
+
+State 37
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+   18 logicka_naredba: izraz EQ izraz •
+
+    '+'  shift, and go to state 17
+    '-'  shift, and go to state 18
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+
+    $default  reduce using rule 18 (logicka_naredba)
+
+
+State 38
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+   19 logicka_naredba: izraz NEQ izraz •
+
+    '+'  shift, and go to state 17
+    '-'  shift, and go to state 18
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+
+    $default  reduce using rule 19 (logicka_naredba)
+
+
+State 39
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+   14 logicka_naredba: izraz '<' izraz •
+
+    '+'  shift, and go to state 17
+    '-'  shift, and go to state 18
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+
+    $default  reduce using rule 14 (logicka_naredba)
+
+
+State 40
+
+    6 izraz: izraz • '+' izraz
+    7      | izraz • '-' izraz
+    8      | izraz • '*' izraz
+    9      | izraz • '/' izraz
+   15 logicka_naredba: izraz '>' izraz •
+
+    '+'  shift, and go to state 17
+    '-'  shift, and go to state 18
+    '*'  shift, and go to state 19
+    '/'  shift, and go to state 20
+
+    $default  reduce using rule 15 (logicka_naredba)
+
+
+State 41
+
+    4 naredba: PRINT '(' izraz ')' • ';'
+
+    ';'  shift, and go to state 43
+
+
+State 42
+
+    3 naredba: ID '=' izraz ';' •
+
+    $default  reduce using rule 3 (naredba)
+
+
+State 43
+
+    4 naredba: PRINT '(' izraz ')' ';' •
+
+    $default  reduce using rule 4 (naredba)

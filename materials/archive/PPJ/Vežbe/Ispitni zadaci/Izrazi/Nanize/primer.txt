@@ -1,0 +1,6 @@
+int _x
+int _y = 5%9*_x
+int _z = 0743
+int _w = 0x1facd9
+print(_x)
+print(x%3*_y + 11%3, 16)

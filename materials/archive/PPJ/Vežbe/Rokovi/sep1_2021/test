@@ -1,0 +1,12 @@
+array a := [1, 7.14, 12, -5.2, 1, 0];
+array b := count(9);
+print(b);
+reshape([3, 2], a);
+print(a);
+reshape([3,3], b);
+array c := [1, 0, 0; 2, 1, -1] * b;
+print(c);
+print(a + c);
+print(a*b+c);
+array d := link([1, 5, 0; 1, 0, 4], a+c);
+print(subarray([1, 0, 1; 0, 2, 0] + [0, 0, 0; 5, 8, 0]));

@@ -1,0 +1,66 @@
+%{
+    #include <iostream>
+    #include <vector>
+    #include <cstdlib>
+    #include <map>
+
+    using namespace std;
+
+    extern int yylex();
+
+    void yyerror(string s){
+        cerr << "Sintaksna greska: " << s << endl;
+        exit(EXIT_FAILURE);
+    }
+%}
+
+
+%union{
+    float v;
+    string* s;
+}
+
+%left '+' '-'
+%left '*'
+%right UMINUS
+
+%token ARRAY PRINT DODELA COUNT RESHAPE
+%token<s> ID
+%token<v> BROJ
+
+%start program
+
+%%
+
+program: program naredba ';'
+    | naredba ';'
+    ;
+naredba: ARRAY ID DODELA matrica                            {}
+    | PRINT '(' matrica ')'                                 {}
+    | RESHAPE '(' '[' BROJ ',' BROJ ']' ',' matrica ')'     {}
+    ;
+matrica: '[' niz_vektora ']'                                {}
+    | COUNT '(' BROJ ')'                                    {}
+    | '(' matrica ')'                                       {}
+    | matrica '+' matrica                                   {}
+    | matrica '-' matrica                                   {}
+    | matrica '*' matrica                                   {}
+    | '-' matrica %prec UMINUS                              {}
+    | BROJ '*' matrica                                      {}
+    
+    | ID                                                    {}
+    ;
+niz_vektora: niz_vektora ';' vektor                         {} // ovde potencijalno umesto , da bude ;
+    | vektor                                                {}
+    ;
+vektor: vektor ',' BROJ                                     {} // ovde potencijalno umesto razmaka da bude ,
+    | BROJ                                                  {}
+    ;
+%%
+
+int main(){
+    if(yyparse() == 0)
+        cout << "sve ok" << endl;
+    else
+        cout << "sintaksna greska" << endl;
+}

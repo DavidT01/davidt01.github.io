@@ -1,0 +1,13 @@
+Kako pravimo gramatiku?
+
+0) Procitamo ceo zadatak.
+
+1) Da li imamo nizanje naredbi? Da
+
+2) Uociti sta je terminator naredbe. To je ';'
+
+3) Uociti koji tipovi naredbe postoje.
+	a. naredba dodele (rezultat: definicija nove promenljive)
+	b. print naredba (rezultat: prikaz vrednosti)
+	c. logicke naredbe (rezultat: true/false) 
+		BITNO: logicka naredba ne sme da se objediti sa aritmetickim izrazom

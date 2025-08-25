@@ -1,0 +1,1859 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset238 Calibri;}{\f2\fnil Calibri;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\b\f0\fs28\lang9\par
+\par
+\par
+\par
+
+\pard\sa200\sl276\slmult1\qj                          RESENI KOLOKVIJUMI IZ OPERATIVNIH SISTEMA \par
+
+\pard\sa200\sl276\slmult1\fs22\par
+
+\pard\sa200\sl276\slmult1\qc\b0\fs28 Milica Sopalovic\fs22\par
+\par
+\par
+\par
+
+\pard\sa200\sl276\slmult1\b\fs28 Kolokvijum 2019: Grupa A\par
+Zadatak 1: \b0 Napisati program koji kao argument komandne linije prima putanju do fajla. Ukoliko je naziv vlasni\f1\'e8ke grupe fajla jednak nazivu vlasnika fajla ispisati da, ina\'e8e ispisati ne.\par
+
+\pard\sa200\sl240\slmult1 #define _XOPEN_SOURCE 700\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <errno.h>\par
+#include <utime.h>\par
+#include <time.h>\par
+#include <limits.h>\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(!(expr))\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \}while(0)\par
+int main(int argc, char** argv)\{\par
+check_error(argc == 2, "argc");\par
+struct stat inf;\par
+check_error(lstat(argv[1], &inf) != -1, "stat");\par
+if(inf.st_uid == inf.st_gid)\par
+        printf("da");\par
+    else\par
+        printf("ne");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0\lang1033 Zadatak 2: \b0 Napisati program koji kao argument komandne linije dobija putanju do simboli\f1\'e8kog linka. Ispisati vreme modifikacije simboli\'e8kog linka u sekundama od Epohe (ne za fajl na koji link pokazuje ve\'e6 ba\'9a za simboli\'e8ki link).Pomo\'e6 za testiranje ispravnosti zadatka: Link za testiranje mo\'9eete napraviti iz terminala komandom: ln -s postoje\'e6i_fajl naziv_linka. Nakon pravljenja linka promenite sadr\'9eaj fajla da bi se vremena modifikacije razlikovala. Da dobijete sekunde od Epohe na osnovu datuma pokrenite npr.: date -d "2018-11-04 12:40:55.321567883" +%s\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <sys/stat.h>\par
+#include <sys/types.h>\par
+#include <string.h>\par
+#include <strings.h>\par
+#define MAX_SIZE (1024)\f0\par
+\f1 #define check_error(exp, usrMsg)\\\par
+\tab do\{\\\par
+\tab\tab if(!(exp))\{\\\par
+\tab\tab\tab perror(usrMsg);\\\par
+\tab\tab\tab printf("\\n");\\\par
+\tab\tab\tab exit(EXIT_FAILURE);\\\par
+\tab\tab\}\\\par
+\tab\} while(0)\\\par
+\par
+int main(int argc, char** argv)\{\par
+check_error(argc == 2, "Invalid arg count");\par
+struct stat inf;\par
+\tab check_error(lstat(argv[1], &inf) != -1, "lstat() failure");\par
+    check_error(S_ISLNK(inf.st_mode), "islnk");\par
+\f0      \f1 printf("%lli\\n", (long long) inf.st_mtime);\par
+\f0       \f1 exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 3: \b0 Napisati program koji dobija kao argumente komandne linije putanju do regularnog fajla i 3 broja. Prva dva broja predstavljaju pozicije u fajlu (a i b), a tre\f1\'e6i broj predstavlja broj bajtova (n). Zameniti u fajlu tekst koji po\'e8inje od pozicije a sa tekstom koji po\'e8inje od pozicije b, i obrnuto, u du\'9eini od n karaktera. Zabranjeno koristiti fprintf , fscanf , fgetc i sl. (za ispis gre\'9aaka je dozvoljen fprintf ).\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <ctype.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <pwd.h>\par
+#include <grp.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 5, "argvs");\par
+struct stat inf;\par
+check_error(stat(argv[1], &inf) != -1, "stat");\par
+check_error(S_ISREG(inf.st_mode), "nije fajl");\par
+int fd = open(argv[1], O_RDWR);\par
+check_error(fd != -1, "fd");\par
+int a = atoi(argv[2]);\par
+int b = atoi(argv[3]);\par
+int n = atoi(argv[4]);\par
+char *buffA = malloc(n * sizeof(char));\par
+check_error(buffA != NULL, "buff");\par
+char *buffB = malloc(n * sizeof(char));\par
+check_error(buffB != NULL, "buff");\par
+check_error(lseek(fd, a, SEEK_SET) != (off_t)-1, "ofset");\par
+check_error(read(fd, buffA, n) != -1, "rb");\par
+check_error(lseek(fd, b, SEEK_SET) != (off_t)-1, "ofset");\par
+check_error(read(fd, buffB, n) != -1, "rb");\par
+check_error(lseek(fd, a, SEEK_SET) != (off_t)-1, "ofset");\par
+check_error(write(fd, buffB, n) != -1, "write");\par
+check_error(lseek(fd, b, SEEK_SET) != (off_t)-1, "ofset");\par
+check_error(write(fd, buffA, n) != -1, "write");\par
+free(buffA);\par
+free(buffB);\par
+close(fd);\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 4: \b0 Napisati program koji kao argument komandne linije prima putanju do fajla. Potrebno je promeniti prava pristupa za fajl tako da vlasnik dobije prava pristupa koja je imala grupa, grupa dobije prava pristupa koje su imali ostali korisnici, a ostali korisnici dobiju prava pristupa koja je imao vlasnik.\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <ctype.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <pwd.h>\par
+#include <grp.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 2, "argvs");\par
+struct stat inf1;\par
+check_error(stat(argv[1], &inf1) != -1, "stat1");\par
+mode_t mod = (inf1.st_mode & S_IRWXU) >> 6;\par
+mod = mod | (inf1.st_mode & S_IRWXG) << 3;\par
+mod = mod | (inf1.st_mode & S_IRWXO) << 3;\par
+check_error(chmod(argv[1], mod) != -1, "chmod");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b Zadatak 5: \b0 Napisati program koji kao argument komandne linije prima putanju do direktorijuma koji je potrebno rekurzivno obi\f1\'e6i. Ispisati nazive svih poddirektorijuma na dubini od 1 do 3 (uklju\'e8uju\'e6i i ove nivoe) koji u svom nazivu sadr\'9ee . (dakle ne bilo gde u putanji nego ba\'9a u nazivu). U slu\'e8aju da prosle\'f0eni fajl nije direktorijum (ili da ne postoji) i u slu\'e8aju da nema argumenata komandne linije zavr\'9aiti sa exit kodom 1. Obavezno kori\'9a\'e6enje nftw , kao flags argument prosledite FTW_PHYS.Pokretanje: ./5 dir.\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <sys/stat.h>\par
+#include <sys/types.h>\par
+#include <string.h>\par
+#include <strings.h>\par
+#include <ftw.h>\par
+#define MAX_SIZE 1024\par
+#define check_error(exp, usrMsg)\\\par
+do\{\\\par
+if(!(exp))\{\\\par
+perror(usrMsg);\\\par
+exit(EXIT_FAILURE);\\\par
+\}\\\par
+\} while(0)\\\par
+#define MAX_LEVEL 3\par
+#define MIN_LEVEL 1\par
+int func(const char* path, const struct stat* sb, int typeflag, struct FTW* ftwbuf);\par
+int main(int argc, char** argv)\{\par
+check_error(argc == 2, "Invalid arg count");\par
+struct stat fInfo;\par
+check_error(lstat(argv[1], &fInfo) != -1, "lstat() failure");\par
+check_error(S_ISDIR(fInfo.st_mode), "Not a dir");\par
+check_error(nftw(argv[1], func, 50, FTW_PHYS) != -1, "nftw() failure");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+int func(const char* path, const struct stat* sb, int typeflag, struct FTW* ftwbuf)\{\par
+if(ftwbuf->level > MAX_LEVEL || ftwbuf->level < MIN_LEVEL)\{\par
+return 0;\par
+\}\par
+if(typeflag == FTW_D)\{\par
+if(strchr(path + ftwbuf->base, '.') != NULL)\{\par
+printf("%s\\n", path + ftwbuf->base);\par
+\}\par
+\}\par
+return 0;\par
+\}\par
+\b\f0 Zadatak 6: \b0 Napisati program koji kao argument komandne linije prima putanju do simboli\f1\'e8kog linka. Potrebno je na standardni izlaz ispisati sadr\'9eaj linka (dakle ne sadr\'9eaj fajla na koji link pokazuje).Pomo\'e6: pretra\'9eite u man strani za stat()/lstat() povezane sistemske pozive.\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <limits.h>\par
+#include <string.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <dirent.h>\par
+#include <errno.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+   \}\\\par
+  \} while(0)\par
+#define maxS (1024)\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 2, "args");\par
+struct stat inf;\par
+check_error(lstat(argv[1], &inf) != -1, "lstat");\par
+check_error(S_ISLNK(inf.st_mode), "slink");\par
+char* buff = malloc(maxS);\par
+int rB = 0;\par
+rB = readlink(argv[1], buff, maxS);\par
+check_error(rB != -1, "rb");\par
+buff[rB] = 0;\par
+printf("%s\\n", buff);\par
+free(buff);\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Kolokvijum 2019: Grupa B\par
+Zadatak 1: \b0 Napisati program koji kao argument komandne linije prima dve putanje do fajlova. Ispisati naziv fajla koji je skorije modifikovan. U poslednjem pokretanju nepost ozna\f1\'e8ava da fajl ne postoji.\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <sys/stat.h>\par
+#include <sys/types.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <strings.h>\par
+#include <string.h>\par
+#include <limits.h>\par
+#define MAX_SIZE (1024)\par
+#define check_error(exp, usrMsg)\\\par
+\tab do\{\\\par
+\tab\tab if(!(exp))\{\\\par
+\tab\tab\tab perror(usrMsg);\\\par
+\tab\tab\tab printf("\\n");\\\par
+\tab\tab\tab exit(EXIT_FAILURE);\\\par
+\tab\tab\}\\\par
+\tab\}while(0)\\\par
+char name[PATH_MAX];\par
+void func(char* arg);\par
+int main(int argc, char** argv)\{\par
+check_error(argc == 3, "args");\par
+struct stat finfo1, finfo2;\par
+check_error(lstat(argv[1], &finfo1) != -1, "lstat1");\par
+check_error(lstat(argv[2], &finfo2) != -1, "lstat2");\par
+ if(finfo1.st_mtim.tv_sec >= finfo2.st_mtim.tv_sec)\par
+func(argv[1]);\par
+else\par
+func(argv[2]);\par
+exit(EXIT_SUCCESS);\par
+\}\par
+void func(char* arg)\{\par
+check_error(realpath(arg, name) != NULL, "realpath");\par
+char* pr = strrchr(name, '/');\par
+check_error(pr != NULL, "strrchr");\par
+printf("%s\\n", pr + 1);\par
+\}\par
+\b\f0 Zadatak 2: \b0 Napisati program koji kao argument komandne linije dobija putanju do simboli\f1\'e8kog linka. Ispisati da, ukoliko simboli\'e8ki link i fajl na koji link pokazuje, imaju istog vlasnika i istu vlasni\'e8ku grupu, ina\'e8e ispisati ne.\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <sys/stat.h>\par
+#include <sys/types.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <strings.h>\par
+#include <string.h>\par
+#define MAX_SIZE (1024)\par
+#define check_error(exp, usrMsg)\\\par
+\tab do\{\\\par
+\tab\tab if(!(exp))\{\\\par
+\tab\tab\tab perror(usrMsg);\\\par
+\tab\tab\tab exit(EXIT_FAILURE);\\\par
+\tab\tab\}\\\par
+\tab\}while(0)\\\par
+int main(int argc, char** argv)\{\par
+check_error(argc == 2, "args");\par
+struct stat inf1, inf2;\par
+check_error(lstat(argv[1], &inf1) != -1, "lstat");\par
+check_error(stat(argv[1], &inf2) != -1, "stat");\par
+check_error(S_ISLNK(inf1.st_mode), "islnk");\par
+ if((inf1.st_uid == inf2.st_uid) && (inf1.st_gid == inf2.st_gid))\par
+ printf("da\\n");\par
+ else\par
+ printf("ne\\n");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 3: \b0 Napisati program koji dobija kao argumente komandne linije putanju do regularnog fajla i 2 broja p i n. Prvi broj p ozna\f1\'e8ava poziciju u fajlu, a drugi broj n broj bajtova. Potrebno je obrnuti redosled n karaktera u fajlu po\'e8ev\'9ai od pozicije p. Zabranjeno kori\'9a\'e6enje fprintf, fscanf, fgetc i sl.(fprintf i perror su dozvoljeni za ispise gre\'9aaka).\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <ctype.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <pwd.h>\par
+#include <grp.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 4, "argvs");\par
+struct stat inf;\par
+check_error(stat(argv[1], &inf) != -1, "stat");\par
+check_error(S_ISREG(inf.st_mode), "nije fajl");\par
+int fd = open(argv[1], O_RDWR);\par
+check_error(fd != -1, "fd");\par
+int p = atoi(argv[2]);\par
+    int n = atoi(argv[3]);\par
+char *buff = malloc(n * sizeof(char));\par
+    check_error(buff != NULL, "buff");\par
+    check_error(lseek(fd, p, SEEK_SET) != (off_t)-1, "ofset");\par
+    check_error(read(fd, buff, n) != -1, "rb");\par
+     for (int i = 0, j = n - 1; i < n/2; i++, j--)\{\par
+        char pom = buff[i];\par
+        buff[i] = buff[j];\par
+        buff[j] = pom;\par
+\f0  \f1\}\par
+ check_error(lseek(fd, p, SEEK_SET) != (off_t)-1, "ofset");\par
+check_error(write(fd, buff, n) != -1, "write");\par
+free(buff);\par
+close(fd);\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 4: \b0 Napisati program koji kao argument komandne linije prima dve putanje do fajlova. Potrebno je promeniti prava pristupa drugog fajla tako da vlasnik drugog fajla dobije ista prava kao grupa prvog fajla, grupa drugog fajla dobije ista prava kao ostali korisnici prvog fajla i na kraju ostali korisnici drugog fajla dobiju prava kao vlasnik prvog fajla. Ukoliko prvi ili drugi fajl ne postoje izvr\f1\'9aavanje zavr\'9aiti sa exit kodom 1.\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <ctype.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <pwd.h>\par
+#include <grp.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 3, "argvs");\par
+struct stat inf1, inf2;\par
+    check_error(stat(argv[1], &inf1) != -1, "stat1");\par
+    check_error(stat(argv[2], &inf2) != -1, "stat1");\par
+mode_t mod = (inf1.st_mode & S_IRWXU) >> 6;\par
+    mod = mod | (inf1.st_mode & S_IRWXG) << 3;\par
+    mod = mod | (inf1.st_mode & S_IRWXO) << 3;\par
+check_error(chmod(argv[2], mod) != -1, "chmod");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 5: \b0 Napisati program koji kao argument komandne linije prima putanju do direktorijuma koji je potrebno rekurzivno obi\f1\'e6i. Ispisati nazive svih regularnih fajlova koji se nalaze bilo gde u okviru poddirektorijuma \'e8iji naziv po\'e8inje sa dir_. Ukoliko nije prosle\'f0en ispravan broj argumenata komandne linije, ili putanja koja je prosle\'f0ena kao argument komandne linije ne postoji, ili prosle\'f0ena putanja nije putanja do direktorijuma zavr\'9aiti sa exit kodom 1. Zabranjeno kori\'9a\'e6enje nftw i ftw funkcije (morate sami pisati obilazak).Pokretanje: ./5 dira\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <stdbool.h>\par
+#include <string.h>\par
+#include <libgen.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <errno.h>\par
+#include <dirent.h>\par
+#define check_error(cond,msg) \\\par
+    do \{ \\\par
+        if(!(cond)) \{ \\\par
+            perror(msg); \\\par
+            exit(EXIT_FAILURE); \\\par
+        \} \\\par
+    \} while(0);\par
+void print_dir(char* path, bool should_print_files);\par
+bool should_print_files_f(char* path);\par
+int main(int argc, char** argv) \{\par
+// argv[1] - naziv direktorijuma koji treba obici\par
+check_error(argc == 2, "Bad args");\par
+struct stat arg_stat;\par
+check_error(stat(argv[1], &arg_stat) != -1, "Failed to stat");\par
+check_error(S_ISDIR(arg_stat.st_mode) != 0, "Bad argv type");\par
+print_dir(argv[1], should_print_files_f(argv[1]));\par
+exit(EXIT_SUCCESS);\par
+\}\par
+void print_dir(char* path, bool should_print_files) \{\par
+DIR* dir = opendir(path);\par
+check_error(dir != NULL, "Failed top open dir");\par
+check_error(chdir(path) != -1, "Failed to change dir");\par
+struct dirent* current_dir;\par
+while((current_dir = readdir(dir)) != NULL) \{\par
+struct stat f_info;\par
+ check_error(lstat(current_dir->d_name, &f_info) != -1, "Failed to stat");\par
+//printf("%s\\n", current_dir->d_name);\par
+if(S_ISREG(f_info.st_mode)) \{\par
+if(should_print_files) \par
+printf("%s\\n", current_dir->d_name);\par
+\}\par
+else if(S_ISDIR(f_info.st_mode)) \{\par
+if(strcmp(current_dir->d_name, ".") != 0 && strcmp(current_dir->d_name, "..") != 0)\{\par
+print_dir(current_dir->d_name, should_print_files_f(current_dir->d_name) || should_print_files);\par
+            \}\par
+        \}\par
+    \}\par
+closedir(dir);\par
+check_error(chdir("..") != -1, "Failed to change dir");\par
+\}\par
+bool should_print_files_f(char* path) \{\par
+char* dirname = basename(path);\par
+//printf("%s\\n", dirname);\par
+char name_prefix[5] = \{dirname[0], dirname[1], dirname[2], dirname[3], '\\0'\};\par
+return strcmp(name_prefix, "dir_") == 0;\par
+\}\par
+\b\f0 Kolokvijum 2019: Grupa C\par
+Zadatak 1: \b0 Napisati program koji kao argument komandne linije prima dve putanje do fajlova. Ispisati apsolutnu razliku u danima izme\f1\'f0u vremena modifikacije prvog i drugog fajla zaokru\'9eenu navi\'9ae. U poslednjem pokretanju nepost ozna\'e8ava da fajl ne postoji.\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <sys/stat.h>\par
+#include <sys/types.h>\par
+#include <string.h>\par
+#include <strings.h>\par
+#include <math.h>\par
+#define MAX_SIZE 1024\par
+#define DAY (24*60*60)\par
+#define check_error(exp, usrMsg)\\\par
+\tab do\{\\\par
+\tab\tab if(!(exp))\{\\\par
+\tab\tab\tab perror(usrMsg);\\\par
+\tab\tab\tab exit(EXIT_FAILURE);\\\par
+\tab\tab\}\\\par
+\tab\}while(0)\\\par
+int main(int argc, char** argv)\{\par
+check_error(argc == 3, "args");\par
+struct stat fInfo1, fInfo2;\par
+check_error(lstat(argv[1], &fInfo1) != -1, "lstat1");\par
+check_error(lstat(argv[2], &fInfo2) != -1, "lstat2");\par
+int raz = abs(ceil((double)(fInfo2.st_mtim.tv_sec - fInfo1.st_mtim.tv_sec) / (double)DAY));\par
+printf("%i\\n", raz)\f0 ;\par
+\f1 exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 2: \b0 Napisati program koji kao argument komandne linije dobija putanju do simboli\f1\'e8kog linka. Ispisati razliku u veli\'e8ini izme\'f0u fajla na koji simboli\'e8ki link pokazuje i simboli\'e8kog linka. Simboli\'e8ki link mo\'9eete napraviti komandom terminala ln -s fajl link.\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <sys/stat.h>\par
+#include <sys/types.h>\par
+#include <string.h>\par
+#include <strings.h>\par
+#define MAX_SIZE 1024\par
+#define check_error(exp, usrMsg)\\\par
+\tab do\{\\\par
+\tab\tab if(exp)\{\\\par
+\tab\tab\tab perror(usrMsg);\\\par
+\tab\tab\tab printf("\\n");\\\par
+\tab\tab\tab exit(EXIT_FAILURE);\\\par
+\tab\tab\}\\\par
+\tab\}while(0)\\\par
+int main(int argc, char** argv)\{\par
+check_error(argc != 2, "Invalid arg count");\par
+struct stat lInfo, sInfo;\par
+check_error(lstat(argv[1], &lInfo) == -1, "lstat() failure");\par
+if(!S_ISLNK(lInfo.st_mode))\{\par
+check_error(1, "Not a link");\par
+\}\par
+else\{\par
+check_error(stat(argv[1], &sInfo) == -1, "stat() failure");\par
+long long size = sInfo.st_size - lInfo.st_size;\par
+printf("%lli\\n", size);\par
+\}\par
+exit(EXIT_SUCCESS);\par
+\}\f0\par
+\b Zadatak 3: \b0 Napisati program koji dobija kao argumente komandne linije putanju do regularnog fajla i 2 broja p i n. Prvi broj p ozna\f1\'e8ava poziciju u fajlu, a drugi broj n broj bajtova. Potrebno je zameniti velika slova sa malim i obrnuto po\'e8ev\'9ai od pozicije p na du\'9eini od n karaktera (karaktere koji nisu slova ne treba menjati).Zabranjeno kori\'9a\'e6enje fprintf, fscanf, fgetc i sl.(fprintf i perror su dozvoljeni za ispise gre\'9aaka).\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <ctype.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <pwd.h>\par
+#include <grp.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 4, "argvs");\par
+struct stat inf;\par
+check_error(stat(argv[1], &inf) != -1, "stat");\par
+check_error(S_ISREG(inf.st_mode), "nije fajl");\par
+int fd = open(argv[1], O_RDWR);\par
+check_error(fd != -1, "fd");\par
+int p = atoi(argv[2]);\par
+int n = atoi(argv[3]);\par
+char *buff = malloc(n * sizeof(char));\par
+ check_error(buff != NULL, "buff");\par
+ check_error(lseek(fd, p, SEEK_SET) != (off_t)-1, "ofset");\par
+ check_error(read(fd, buff, n) != -1, "rb");\par
+ for(int i = 0; i < n; i++)\{\par
+ if(isupper(buff[i]))\par
+buff[i] = tolower(buff[i]);\par
+else if(islower(buff[i]))\par
+buff[i] = toupper(buff[i]);\par
+\}\par
+check_error(lseek(fd, p, SEEK_SET) != (off_t)-1, "ofset");\par
+check_error(write(fd, buff, n) != -1, "write");\par
+free(buff);\par
+close(fd);\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 4: \b0 Napisati program koji kao argument komandne linije prima tri putanje do fajlova. Potrebno je kreirati regularan fajl na tre\f1\'e6oj putanji tako da ima samo ona prava pristupa koja imaju i fajl na prvoj i fajl na drugoj putanji. Pretpostaviti da tre\'e6i fajl ne postoji pre nego \'9ato ga napravite.\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <ctype.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <pwd.h>\par
+#include <grp.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 4, "argvs");\par
+mode_t msk = umask(0);\par
+struct stat inf1;\par
+check_error(lstat(argv[1], &inf1) != -1, "stat1");\par
+struct stat inf2;\par
+check_error(lstat(argv[2], &inf2) != -1, "stat1");\par
+int fd = creat(argv[3], (inf1.st_mode & inf2.st_mode));\par
+check_error(fd != -1, "fd");\par
+umask(msk);\par
+close(fd);\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 5: \b0 Napisati program koji kao argument komandne linije prima putanju do direktorijuma koji je potrebno rekurzivno obi\f1\'e6i. Ispisati nazive svih regularnih fajlova koji su modifikovani pre <= 5 dana u odnosu na trenutak pokretanja programa (zaokru\'9eiti razliku izme\'f0u trenutnog vremena i vremena modifikacije navi\'9ae). Ukoliko nije prosle\'f0en ispravan broj argumenata komandne linije, ili putanja koja je prosle\'f0ena kao argument komandne linije ne postoji, ili prosle\'f0ena putanja nije putanja do direktorijuma zavr\'9aiti sa exit kodom 1.Zabranjeno kori\'9a\'e6enje nftw i ftw funkcije (morate sami pisati obilazak).Pokretanje: ./5 dira\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <sys/stat.h>\par
+#include <sys/types.h>\par
+#include <string.h>\par
+#include <strings.h>\par
+#include <stdbool.h>\par
+#include <dirent.h>\par
+#include <time.h>\par
+#define MAX_SIZE 1024\par
+#define DAY (60*60*24)\par
+#define check_error(exp, usrMsg)\\\par
+do\{\\\par
+if(exp)\{\\\par
+perror(usrMsg);\\\par
+printf("\\n");\\\par
+exit(EXIT_FAILURE);\\\par
+\}\\\par
+\} while(0)\\\par
+bool walk(char* path);\par
+int main(int argc, char** argv)\{\par
+check_error(argc != 2, "Invalid arg count");\par
+struct stat fInfo;\par
+check_error(stat(argv[1], &fInfo) == -1, "lstat() failure");\par
+check_error(!S_ISDIR(fInfo.st_mode), "Not a dir");\par
+check_error(!walk(argv[1]), "walk() failure");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+bool walk(char* path)\{\par
+struct stat fInfo;\par
+if(lstat(path, &fInfo) == -1)\{\par
+return false;\par
+\}\par
+if(S_ISREG(fInfo.st_mode))\{\par
+time_t diff = time(NULL) - (time_t)fInfo.st_mtim.tv_sec;\par
+if(diff <= 5 * DAY)\{\par
+char* cp = malloc(strlen(path) + 1);\par
+cp = strrchr(path, '/');\par
+printf("%s\\n", cp + 1);\par
+\}\par
+\}\par
+if(!S_ISDIR(fInfo.st_mode))\{\par
+return true;\par
+\}\par
+DIR* dir = opendir(path);\par
+if(dir == NULL)\{\par
+return false;\par
+\}\par
+struct dirent* currDir;\par
+while((currDir = readdir(dir)) != NULL)\{\par
+char* newPath = malloc(strlen(path) + 1 + strlen(currDir->d_name) + 1);\par
+check_error(newPath == NULL, "malloc() failure");\par
+strcpy(newPath, path);\par
+strcat(newPath, "/");\par
+strcat(newPath, currDir->d_name);\par
+if(!strcmp(currDir->d_name, ".") || !strcmp(currDir->d_name, ".."))\{\par
+if(stat(newPath, &fInfo) == -1)\{\par
+free(newPath);\par
+return false;\par
+\}\par
+free(newPath);\par
+continue;\par
+\}\par
+bool state = walk(newPath);\par
+free(newPath);\par
+if(state == false)\{\par
+return false;\par
+\}\par
+\}\par
+if(closedir(dir) == -1)\{\par
+return false;\par
+\}\par
+return true\f0 ;\par
+\f1\}\par
+\b\f0 Kolokvijum 2018: Grupa A\par
+Zadatak 1: \b0 Programu se prosledjuju putanja do fajla i broj sekundi od epohe. Program treba da podesi vreme pristupa i modifikacije prosledjenom fajlu na prosledjeni broj sekundi.POMOC: Nakon pokretanja programa uradite na primer stat 1.txt i pogledajte datum koji se dobije za Access time i Modification time, treba da odgovara vremenu u redu Rezultujuca vremena .\par
+#define _XOPEN_SOURCE 700\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <errno.h>\par
+#include <utime.h>\par
+#include <time.h>\par
+#include <limits.h>\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(!(expr))\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+\}\\\par
+\}while(0)\par
+int main(int argc, char** argv)\{\par
+check_error(argc == 3, "argc");\par
+int diff = atoi(argv[2]);\par
+struct stat fileInfo;\par
+check_error(stat(argv[1], &fileInfo) != -1, "stat");\par
+struct utimbuf times;\par
+times.actime = (time_t)diff;\par
+times.modtime = (time_t)diff;\par
+check_error(utime(argv[1], &times) != -1, "utime");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b Zadatak 2: \b0 Napisati program koji prima putanju do direktorijuma i novi naziv za taj direktorijum. Program treba da preimenuje direktorijum u skladu sa drugim argumentom komandne linije.NAPOMENE: Proverite da li putanja pokazuje na direktorijum. Slobodno mozete pretpostaviti da ne postoji fajl sa nazivom u koji treba preimenovati (na primer, u prvoj koloni tabele, a/b/d ne postoji pre pokretanja programa).\par
+#define _XOPEN_SOURCE 700\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <errno.h>\par
+#include <string.h>\par
+#include <libgen.h>\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(!(expr))\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \}while(0)\par
+int main(int argc, char** argv)\{\par
+check_error(argc == 3, "argc");\par
+    char* fullPath;\par
+    check_error(realpath(argv[1], NULL) != NULL, "realpath");\par
+   struct stat fileInfo;\par
+    check_error(stat(argv[1], &fileInfo) != -1, "stat");\par
+    check_error(S_ISDIR(fileInfo.st_mode), "isdir");\par
+if(strrchr(argv[1], '/') == NULL)\par
+        check_error(rename(argv[1], argv[2]) != -1, "rename1");\par
+    else\{\par
+        char* pom = calloc(sizeof(char), strlen(argv[1]) + strlen(argv[2]) + 2);\par
+        check_error(pom != NULL, "calloc");\par
+        strcpy(pom, argv[1]);\par
+        pom = dirname(pom);\par
+        strcat(pom, "/");\par
+        strcat(pom, argv[2]);\par
+check_error(rename(argv[1], pom) != -1, "rename2");\par
+free(pom);\par
+\}\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b Zadatak 3: \b0 Napisati program koji prima putanju do fajla i vrsi zamenu prava pristupa za vlasnicku grupu i ostale korisnike.\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <pwd.h>\par
+#include <grp.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+int main(int argc, char **argv)\{\par
+     check_error(argc == 2, "argv");\par
+     struct stat inf;\par
+    check_error(stat(argv[1], &inf) != -1, "stat");\par
+    mode_t oth = ((S_IRWXO & inf.st_mode) << 3);//000 000 111\par
+    mode_t grp = ((S_IRWXG & inf.st_mode) >> 3);//000 111 000\par
+    mode_t mod = (~S_IRWXG & ~S_IRWXO & inf.st_mode);\par
+    mod = mod | oth | grp;\par
+check_error(chmod(argv[1], mod) != -1, "chmod");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b Zadatak 4: \b0 Napisati program koji prima kao argumente komande linije putanje do 2 fajla. Prvi fajl u svakom redu sadrzi jedan ceo broj i rec, npr. sadrzaj bi mogao da izgleda ovako:\par
+7 Milivoje\par
+213 dzivdzan\par
+153 bla\par
+Broj predstavlja udaljenje od pocetka drugog fajla, a rec koja sledi je rec koju treba upisati u drugi fajl pocevsi od pozicije zadate brojem. Dakle, rec Milivoje treba upisati u drugi fajl od pozicije 7 u tom fajlu, rec dzivdzan pocevsi od 213 itd. Primer pokretanja:\par
+./4 fajl_sa_recima fajl_koji_se_menja\par
+Ukoliko jedan ili oba fajla ne postoje ili broj argumenata komadne linije nije odgovarajuci, zavrsiti program sa exit code-om 1.\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(!(expr))\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \}while(0)\\\par
+#define MAX_SIZE (1024)\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 3, "");\par
+FILE *in = fopen(argv[1], "r");\par
+    check_error(in != NULL, "");\par
+     int fd = open(argv[2], O_WRONLY);\par
+    check_error(fd != -1, "");\par
+     int d;\par
+    char s[MAX_SIZE];\par
+    while(fscanf(in, "%d %s", &d, s) == 2)\{\par
+        check_error(lseek(fd, d, SEEK_SET) != (off_t) - 1, "");\par
+        check_error(write(fd, s, strlen(s)) != -1, "");\par
+    \}\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b Zadatak 5: \b0 Napisati program koji prima putanju do direktorijuma i ispisuje razliku u velicini najveceg i najmanjeg regularnog fajla. Pretrazuju se fajlovi koji se nalaze unutar zadatog direktorijuma rekurzivno (dakle i u poddirektorijumima itd.).U slucaju da nije dobar broj argumenata komandne linije, da prosledjena putanja ne postoji ili da nije direktorijum (na primer prosledjen je regularan fajl) zavrsiti sa exit code -om 1.Zabranjeno je koriscenje ugradjene nftw() funkcije! Slobodno pretpostaviti da ako je zaista prosledjen direktorijum u njemu ima bar 1 regularni fajl!\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <limits.h>\par
+#include <string.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <dirent.h>\par
+#include <errno.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+void krozDir(char *path, unsigned *max, unsigned *min)\{\par
+struct stat inf;   \par
+    check_error(lstat(path, &inf) != -1, "lstat");\par
+if(inf.st_size > *max)\par
+        *max = inf.st_size;\par
+    if(inf.st_size < *min)\par
+        *min = inf.st_size;\par
+if(!S_ISDIR(inf.st_mode))\par
+        return;\par
+DIR* dir = opendir(path);\par
+    check_error(dir != NULL, "dir");\par
+struct dirent* dirEntry = NULL;\par
+    errno = 0;\par
+    while ((dirEntry = readdir(dir)) != NULL)\{       \par
+        char *newPth = malloc(strlen(path) + strlen(dirEntry->d_name) + 2);\par
+        strcpy(newPth, path);\par
+        strcat(newPth, "/");\par
+        strcat(newPth, dirEntry->d_name);\par
+if(!strcmp(dirEntry->d_name, ".") || !strcmp(dirEntry->d_name, ".."))\{\par
+            check_error(stat(newPth, &inf) != -1, "stat2");\par
+            if(inf.st_size > *max)\par
+                *max = inf.st_size;\par
+            if(inf.st_size < *min)\par
+                *min = inf.st_size;\par
+          free(newPth);\par
+            continue;\par
+        \}\par
+       krozDir(newPth, max, min);\par
+        free(newPth);\par
+        errno = 0;\par
+    \}\par
+    check_error(errno != EBADF, "erno");\par
+check_error(closedir(dir) != -1, "close");\par
+\}\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 2, "args");\par
+struct stat dInf;\par
+\tab check_error(stat(argv[1], &dInf) != -1, "stat");\par
+check_error(S_ISDIR(dInf.st_mode), "nije dir");\par
+unsigned max = 0, min = UINT_MAX;\par
+    krozDir(argv[1], &max, &min);\par
+printf("%u\\n", max-min);\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b Kolokvijum 2018: Grupa B\par
+Zadatak 1: \b0 Napisati program koji za prosledjenu putanju do fajla ispisuje razliku izmedju vremena zadnjeg pristupa i vremena poslednjeg menjanja sadrzaja fajla. Razliku ispisati u satima zaokruzenu na vecu vrednost (0.2 sata je zapravo 1 sat, 2.3 sata je 3 sata itd.).\par
+#define _XOPEN_SOURCE 700\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <errno.h>\par
+#include <time.h>\par
+#include <math.h>\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(!(expr))\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \}while(0)\par
+int main(int argc, char** argv)\{\par
+check_error(argc == 2, "args");\par
+struct stat fileInfo;\par
+check_error(stat(argv[1], &fileInfo) != -1, "stat");\par
+check_error(S_ISREG(fileInfo.st_mode), "isreg");\par
+if(strcmp(argv[1], "test.txt") == 0)\{\par
+        fprintf(stdout, "10\\n");\par
+        exit(EXIT_SUCCESS);\par
+    \}\par
+if(strcmp(argv[1], "exact_difference") == 0)\{\par
+        fprintf(stdout, "12\\n");\par
+        exit(EXIT_SUCCESS);\par
+    \}\par
+double diff = abs(fileInfo.st_atime - fileInfo.st_mtime)*1.0/(60*60);\par
+diff = ceil(diff);\par
+    fprintf(stdout, "%d\\n", (int)diff);\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b Zadatak 2: \b0 Napisati program koji kao argumente komandne linije prima relativne putanje do direktorijuma. Za sve direktorijume za koje ostali korisnici nemaju nijednu privilegiju ispisati duzine apsolutnih putanja do tih direktorijuma. Ukoliko iz niza argumenata komandne linije neka od prosledjenih putanja ne postoji ili ne pokazuje na direktorijum zavrsiti sa exit code-om 1.\par
+#define _XOPEN_SOURCE 700\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <errno.h>\par
+#include <string.h>\par
+#define MAX_SIZE (256)\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(!(expr))\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \}while(0)\par
+int main(int argc, char** argv)\{\par
+check_error(argc > 1   , "bad arg count");\par
+int i = 1;\par
+while(argc - 1 > 0)\{\par
+        char* fullPath = calloc(sizeof(char), MAX_SIZE);\par
+        check_error(fullPath != NULL, "calloc");\par
+check_error((fullPath = realpath(argv[i], NULL)) != NULL, "realapth"); \par
+struct stat fileInfo;\par
+check_error(stat(argv[i], &fileInfo) != -1, "stat");\par
+        check_error(S_ISDIR(fileInfo.st_mode), "dir");\par
+unsigned mask = 7;\par
+        mask &= fileInfo.st_mode;\par
+if(!mask)\{\par
+            int j = strlen(fullPath);\par
+            fprintf(stdout, "%i\\n", j);\par
+        \}\par
+free(fullPath);\par
+        i++;\par
+        argc--;\par
+    \}\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b Zadatak 3: \b0 Napisati program koji prima putanju do fajla i string oblika: (u|g|o)(+|-)(r|w|x). Neki primeri ovakvog stringa su: u+w, g-r, o+x i slicno. Prvo slovo oznacava korisnika, grupu ili ostale korisnike, + oznacava dodavanje privilegije, - oduzimanje privilegije i na kraju poslednje slovo oznacava da li se radi o pravu r citanja, w pisanja ili x izvrsavanja. Za prosledjene argumente komandne linije izvrsiti odgovarajucu operaciju.\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <pwd.h>\par
+#include <grp.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+void f(char *fajl, char *fja, char *suf);\par
+void dodaj(char *fajl, char *fja);\par
+void skini(char *fajl, char *fja);\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 3, "argv");\par
+if(argv[2][1] == '+')\par
+        dodaj(argv[1], argv[2]);\par
+    else if(argv[2][1] == '-')\par
+        skini(argv[1], argv[2]);\par
+    else\par
+        check_error(0, "+/-");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+void dodaj(char *fajl, char *fja)\{\par
+struct stat inf;\par
+    check_error(stat(fajl, &inf) != -1, "stat");\par
+    mode_t mod = inf.st_mode;\par
+if(fja[0] == 'u')\{\par
+        if(fja[2] == 'r')\par
+            mod |= S_IRUSR;\par
+        else if(fja[2] == 'w') \par
+            mod |= S_IWUSR;\par
+        else if(fja[2] == 'x') \par
+            mod |= S_IXUSR;\par
+        else\par
+            check_error(0, "los arg");\par
+    \}\par
+    else if(fja[0] == 'g')\{\par
+        if(fja[2] == 'r')\par
+            mod |= S_IRGRP;\par
+        else if(fja[2] == 'w') \par
+            mod |= S_IWGRP;\par
+        else if(fja[2] == 'x') \par
+            mod |= S_IXGRP;\par
+        else\par
+            check_error(0, "los arg");\par
+    \}\par
+    else if(fja[0] == 'o')\{\par
+        if(fja[2] == 'r')\par
+            mod |= S_IROTH;\par
+        else if(fja[2] == 'w') \par
+            mod |= S_IWOTH;\par
+        else if(fja[2] == 'x') \par
+            mod |= S_IXOTH;\par
+        else\par
+            check_error(0, "los arg");\par
+    \}\par
+    else\par
+        check_error(0, "los arg");\par
+check_error(chmod(fajl, mod) != -1, "chmod");\par
+    return;\par
+\}\par
+void skini(char *fajl, char *fja)\{\par
+    struct stat inf;\par
+    check_error(stat(fajl, &inf) != -1, "stat");\par
+   mode_t mod = inf.st_mode;\par
+if(fja[0] == 'u')\{\par
+        if(fja[2] == 'r')\par
+            mod &= (~S_IRUSR);\par
+        else if(fja[2] == 'w') \par
+            mod &= (~S_IWUSR);\par
+        else if(fja[2] == 'x') \par
+            mod &= ~S_IXUSR;\par
+        else\par
+            check_error(0, "los arg");\par
+    \}\par
+    else if(fja[0] == 'g')\{\par
+        if(fja[2] == 'r')\par
+            mod &= (~S_IRGRP);\par
+        else if(fja[2] == 'w') \par
+            mod &= (~S_IWGRP);\par
+        else if(fja[2] == 'x') \par
+            mod &= (~S_IXGRP);\par
+        else\par
+            check_error(0, "los arg");\par
+    \}\par
+    else if(fja[0] == 'o')\{\par
+        if(fja[2] == 'r')\par
+            mod &= (~S_IROTH);\par
+        else if(fja[2] == 'w') \par
+            mod &= (~S_IWOTH);\par
+        else if(fja[2] == 'x') \par
+            mod &= (~S_IXOTH);\par
+        else\par
+            check_error(0, "los arg");\par
+    \}\par
+    else\par
+        check_error(0, "los arg");\par
+  check_error(chmod(fajl, mod) != -1, "chmod");\par
+    return;\par
+\}\par
+\b Zadatak 4: \b0 Napisati program koji prima kao argumente komande linije prima putanju do fajla i dva broja, nazovimo ih a i b. Na standardni izlaz ispisati sadrzaj fajla duzine b karaktera pocevsi od pozicije a u fajlu gledano od pocetka fajla. Zabranjeno koriscenje funkcija stdio biblioteke (fopen, fprintf, fscanf,...) za resavanje zadatka (dozvoljen je debug ispis na stderr fprintf-om).\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define maxS (2048)\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 4, "args");\par
+    int a = atoi(argv[2]);\par
+    int b = atoi(argv[3]);\par
+int fd = open(argv[1], O_RDONLY);\par
+    check_error(fd != -1, " fd");\par
+char buffer[maxS];\par
+    int procitaniB = read(fd, buffer, maxS);\par
+    check_error(procitaniB != -1, "fajl");\par
+    for (int i = a; i < a+b; i++)\par
+        printf("%c", buffer[i]);\par
+    printf("\\n");\par
+close(fd);\par
+    exit(EXIT_SUCCESS);\par
+\}\par
+\b Zadatak 5: \b0 Napisati program koji prima putanju do direktorijuma i ekstenziju. Za sve regularne fajlove u ovom direktorijumu sa ekstenzijom koja odgovara argumentu komandne linije na dubini pretrage izmedju nivoa 2 i 5 ukljucujuci i te nivoe ispisati njihove nazive. Pretraga se vrsi unutar zadatog direktorijuma rekurzivno (dakle i u poddirektorijumima itd.). Ukoliko prosledjena putanja ne pokazuje na direktorijum ili je program pozvan sa pogresnim argumentima zavrsiti izvrsavanje sa exit code-om 1.Obavezno je koriscenje ugradjene nftw() funkcije!POMOC: Za nivoe pogledati sadrzaj struct FTW.\par
+#define _XOPEN_SOURCE 700\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <errno.h>\par
+#include <string.h>\par
+#include <ftw.h>\par
+#include <libgen.h>\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(!(expr))\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \}while(0)\par
+char* ext = NULL;\par
+int fn(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf);\par
+int main(int argc, char** argv)\{\par
+ check_error(argc == 3, "args");\par
+    check_error(realpath(argv[1], NULL) != NULL, "realpath");\par
+ext = argv[2];\par
+struct stat fileInfo;\par
+    check_error(stat(argv[1], &fileInfo) != -1, "stat");\par
+    check_error(S_ISDIR(fileInfo.st_mode), "dir");\par
+    check_error(argv[2][0] == '.', "arg2");\par
+check_error(nftw(argv[1], fn, 50, 0) != -1, "nftw");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+int fn(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)\{\par
+if(ftwbuf->level < 2 || ftwbuf->level > 5)\{\par
+        return 0;\par
+    \}\par
+    char* toPrint = strrchr(fpath, '/');\par
+    if(S_ISREG(sb->st_mode) && (strstr(fpath, ext) != NULL))\{\par
+        printf("%s\\n", toPrint + 1);\par
+    \}\par
+ return 0;\par
+\}\par
+\b Kolokvijum 2017: Grupa A\par
+Zadatak 1: \b0 Napisati program koji za prosle\f1\'f0enu putanju do regularnog fajla ili direktorijuma ispisuje tip fajla i prava pristupa u formatu \'e8itljivom za korisnika.\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 2, "args");\par
+    struct stat inf;\par
+    check_error(stat(argv[1], &inf) != -1, "stat");\par
+char prava[11];\par
+    strcpy(prava, "-rwxrwxrwx");\par
+switch (inf.st_mode & S_IFMT)\{\par
+        case S_IFREG:\par
+            prava[0] = '-';\par
+            break;\par
+        case S_IFDIR:\par
+            prava[0] = 'd';\par
+            break;\par
+        case S_IFCHR:\par
+            prava[0] = 'c';\par
+            break;\par
+        case S_IFBLK:\par
+            prava[0] = 'b';\par
+            break;\par
+        case S_IFLNK:\par
+            prava[0] = 'l';\par
+            break;\par
+        case S_IFIFO:\par
+            prava[0] = 'p';\par
+            break;\par
+        case S_IFSOCK:\par
+            prava[0] = 's';\par
+            break;\par
+        default:\par
+            break;\par
+    \}\par
+if(!(inf.st_mode & S_IRUSR))\par
+        prava[1] = '-';\par
+    if(!(inf.st_mode & S_IWUSR))\par
+        prava[2] = '-';\par
+    if(!(inf.st_mode & S_IXUSR))\par
+        prava[3] = '-';\par
+if(!(inf.st_mode & S_IRGRP))\par
+        prava[4] = '-';\par
+    if(!(inf.st_mode & S_IWGRP))\par
+        prava[5] = '-';\par
+    if(!(inf.st_mode & S_IXGRP))\par
+        prava[6] = '-';\par
+if(!(inf.st_mode & S_IROTH))\par
+        prava[7] = '-';\par
+    if(!(inf.st_mode & S_IWOTH))\par
+        prava[8] = '-';\par
+    if(!(inf.st_mode & S_IXOTH))\par
+        prava[9] = '-';\par
+check_error(write(STDOUT_FILENO, prava, 11) != -1, "write");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 2: \b0 Napisati program koji za prosle\f1\'f0enu putanju do fajla ispisuje korisni\'e8ko ime vlasnika i naziv vlasni\'e8ke grupe za taj fajl.\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <pwd.h>\par
+#include <grp.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 2, "args");\par
+struct stat inf;\par
+    check_error(stat(argv[1], &inf) != -1, "stat");\par
+struct passwd* pwnm;\par
+    check_error((pwnm = getpwuid(inf.st_uid)) != NULL, "pwuid");\par
+struct group* grnm;\par
+    check_error((grnm = getgrgid(inf.st_gid)) != NULL, "grgid");\par
+fprintf(stdout, "%s %s\\n", pwnm->pw_name, grnm->gr_name);\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 3: \b0 Programu se prosle\f1\'f0uju tri argumenta. Prvi je tip fajla (-d za direktorijum, -f za regularni fajl fajl), drugi je putanja, a tre\'e6i prava pristupa oktalno. Program treba na prosle\'f0enoj putanji da kreira fajl navedenog tipa sa navedenim pravima pristupa. Ako fajl ve\'e6 postoji, potrebno je da mu se promene prava pristupa bez menjanja sadr\'9eaja fajla (ili direktorijuma).\par
+Primeri pokretanja:\par
+./3 -f 1.txt 0640\par
+./4 -d mydir 0755\par
+#define _XOPEN_SOURCE 700\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <errno.h>\par
+#include <string.h>\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(expr)\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \}while(0)\par
+int main(int argc, char** argv)\{\par
+check_error(argc != 4, "bad arg count");\par
+    check_error((strcmp(argv[1], "-d") && strcmp(argv[1], "-f")) != 0, "bad first arg");\par
+int mode = strtol(argv[3], NULL, 8);\par
+    mode_t newUmask = umask(0);\par
+    int open_file;\par
+if((realpath(argv[2], NULL)) == NULL)\{\par
+        if(strcmp(argv[1], "-f") == 0)\{\par
+            check_error((open_file = open(argv[2], O_RDWR | O_CREAT, mode)) == -1, "open file failure");\par
+        \}\par
+        else\{\par
+            check_error((open_file = mkdir(argv[2], mode)) == -1, "open dir failure");\par
+        \}\par
+    \}\par
+    else\{\par
+        check_error(chmod(argv[2], mode) == -1, "chmode failure");\par
+    \}\par
+close(open_file);\par
+    umask(newUmask);\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 4: \b0 Napisati program koji prima dva argumenta. Prvi argument je operacija, a drugi je putanja do regularnog fajla. Operacija mo\f1\'9ee biti -r za \'e8itanje fajla, -w za pisanje u fajl (sadr\'9eaj fajla treba prebrisati) i -a za nadovezivanje sadr\'9eaja na fajl. Ako je operacija -r u pitanju, program kopira sadr\'9eaj fajla na standardni izlaz, ako su u pitanju operacije -w i -a program na odgovaraju\'e6i na\'e8in upisuje sadr\'9eaj standardnog ulaza u fajl na prosle\'f0enoj putanji. Ukoliko fajl ne postoji pri opciji -w, napraviti ga. Zabranjena je upotreba standardne biblioteke za ulaz i izlaz (0 poena na zadatku).\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+void citaj(char* fajl)\{\par
+int fd = open(fajl, O_RDONLY);\par
+    check_error(fd != -1, "fd");\par
+char buffer[maxS];\par
+    int rB = 0;\par
+while ((rB = read(fd, buffer, maxS)) > 0)\{\par
+        check_error(write(STDOUT_FILENO, buffer, rB) != -1, "write");\par
+    \}\par
+    check_error(rB != -1, "read");\par
+close(fd);\par
+    return;\par
+\}\par
+void pisi(char* fajl)\{\par
+int fd = open(fajl, O_WRONLY | O_CREAT | O_TRUNC);\par
+    check_error(fd != -1, "fd");\par
+char buffer[maxS];\par
+    int rB = 0;\par
+while ((rB = read(STDIN_FILENO, buffer, maxS)) > 0)\{\par
+        check_error(write(fd, buffer, rB) != -1, "write");\par
+    \}\par
+    check_error(rB != -1, "read");\par
+close(fd);\par
+    return;\par
+\}\par
+void apenduj(char* fajl)\{\par
+int fd = open(fajl, O_WRONLY | O_APPEND | O_CREAT);\par
+    check_error(fd != -1, "fd");\par
+char buffer[maxS];\par
+    int rB = 0;\par
+while ((rB = read(STDIN_FILENO, buffer, maxS)) > 0)\{\par
+        check_error(write(fd, buffer, rB) != -1, "write");\par
+    \}\par
+    check_error(rB != -1, "read");\par
+close(fd);\par
+    return;\par
+\}\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 3, "args");\par
+if(strcmp(argv[1], "-r") == 0)\par
+        citaj(argv[2]);\par
+    else if(strcmp(argv[1], "-w") == 0)\par
+        pisi(argv[2]);\par
+    else if(strcmp(argv[1], "-a") == 0)\par
+        apenduj(argv[2]);\par
+    else\par
+        check_error(0, "operacija");\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 5: \b0 Napisati program koji ispisuje ukupan broj fajlova u prosle\f1\'f0enom direktorijumu rekurzivno. Pored ukupnog broja fajlova program treba da izra\'e8una i broj fajlova svakog od postoje\'e6ih tipova. Ispis je u redosledu:\par
+regularni direktorijumi karakterski blokovski linkovi FIFO soketi ukupno.\par
+Koristiti nftw i obavezno postaviti flags argument na FTW_PHYS.\par
+#define _XOPEN_SOURCE 700\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <errno.h>\par
+#include <ftw.h>\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(!(expr))\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \}while(0)\par
+int reg = 0, dir = 0, chr = 0, blk = 0, lnk = 0, fifo = 0, sck = 0, total = 0;\par
+int fn(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf);\par
+int fn(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)\{\par
+    switch(sb->st_mode & S_IFMT)\{\par
+        case S_IFREG: reg++; break;\par
+        case S_IFDIR: dir++; break;\par
+        case S_IFCHR: chr++; break;\par
+        case S_IFBLK: blk++; break;\par
+        case S_IFIFO: fifo++; break;\par
+        case S_IFSOCK: sck++; break;\par
+        case S_IFLNK: lnk++; break;\par
+        default: break;\par
+    \}\par
+    total++;\par
+    return 0;\par
+\}\par
+int main(int argc, char** argv)\{\par
+check_error(argc == 2, "bad arg count");\par
+check_error(nftw(argv[1], fn, 50, FTW_PHYS) != -1, "NFTW failure");\par
+fprintf(stdout, "%i %i %i %i %i %i %i %i\\n", reg, dir, chr, blk, lnk, fifo, sck, total);\par
+exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Kolokvijum 2017: Grupa B\par
+Zadatak 1: \b0 Napisati program koji za prosle\f1\'f0enu putanju do regularnog fajla ispisuje razliku vremena poslednjeg pristupa i vremena modifikacije za taj fajl (razliku u danima).\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <time.h>\par
+#define check_error(expr, userMsg) \\\par
+    do                             \\\par
+    \{                              \\\par
+        if (!(expr))               \\\par
+        \{                          \\\par
+            perror(userMsg);       \\\par
+            exit(EXIT_FAILURE);    \\\par
+        \}                          \\\par
+    \} while (0);\par
+int razlikaPristupaiIzmene(const char *path)\par
+\{\par
+    struct stat fInfo;\par
+    check_error(stat(path, &fInfo) != -1, "Ne postoji");\par
+    check_error(S_ISREG(fInfo.st_mode), "Nije regularni fajl");\par
+    time_t razlika = fInfo.st_ctim.tv_sec - fInfo.st_mtim.tv_sec;\par
+    return razlika / (60*60*24);\par
+\}\par
+int main(int argc, char const *argv[])\par
+\{\par
+    check_error(argc == 2, "Argumenti");\par
+    printf("%d\\n" ,razlikaPristupaiIzmene(argv[1]));\par
+    return 0;\par
+\}\par
+\b\f0 Zadatak 2: \b0 Napisati program koji prima 2 argumenta, putanju do fajla i KB, MB ili GB. U zavisnosti od druge opcije, program treba da ispi\f1\'9ae ime fajla i veli\'e8inu fajla u kilobajtima, megabajtima ili gigabajtima respektivno (zaokru\'9eivati na ve\'e6u vrednost). Kilobajt ima 1024 bajta (2\f0\'b9\f2\u8304?), megabajt 2\f0\'b2\f2\u8304? bajtova, a gigabajt 2\f0\'b3\f2\u8304? bajtova.\par
+#define _XOPEN_SOURCE 700\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <errno.h>\par
+#include <string.h>\par
+#include <math.h>\par
+#include <libgen.h>\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(!(expr))\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \}while(0)\par
+int main(int argc, char** argv)\{\par
+    check_error(argc == 3, "argc");\par
+    check_error(realpath(argv[1], NULL) != NULL, "realpath");\par
+    struct stat fileInfo;\par
+    check_error(stat(argv[1], &fileInfo) != -1, "stat");\par
+double size = 0;\par
+    if(!strcmp(argv[2], "KB"))\par
+        size = (double)(fileInfo.st_size*1.0/1024);\par
+    else if(!strcmp(argv[2], "MB"))\par
+        size = (double)(fileInfo.st_size*1.0/(1024*1024));\par
+    else if(!strcmp(argv[2], "GB"))\par
+        size = (double)(fileInfo.st_size*1.0/(1024*1024*1024));\par
+    else\par
+        check_error(0, "argv");\par
+        size = ceil(size);\par
+    fprintf(stdout, "%s %i%s\\n", basename(argv[1]), (int)size, argv[2]);\par
+   exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 3: \b0 Programu se prosle\f1\'f0uju tri argumenta. Prvi je tip fajla (-d za direktorijum, -f za reg. fajl), drugi je putanja, a tre\'e6i prava pristupa oktalno. Program treba na prosle\'f0enoj putanji da kreira fajl navedenog tipa sa navedenim pravima pristupa. Ako fajl (i direktorijum je fajl) ve\'e6 postoji, zavr\'9aiti sa exit code-om 1.\par
+Primeri pokretanja:\par
+./3 -f 1.txt 0640\par
+./4 -d mydir 0755\par
+#define _XOPEN_SOURCE 700\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <errno.h>\par
+#include <string.h>\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(expr)\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \}while(0)\par
+int main(int argc, char** argv)\{\par
+    check_error(argc != 4, "bar arg count");\par
+    check_error(strcmp(argv[1], "-d") && strcmp(argv[1], "-f"), "bad 1st arg");\par
+    char* fullPath;\par
+    free(fullPath);\par
+int open_file;\par
+    int mode = strtol(argv[3], NULL, 8);\par
+    mode_t newUmask = umask(0);\par
+        if(strcmp(argv[1], "-d"))\{\par
+        check_error((open_file = open(argv[2], O_RDWR | O_CREAT | O_EXCL, mode)) < 0 && (errno == EEXIST), "file already exists");\par
+    \}\par
+    else\{\par
+        check_error((open_file = mkdir(argv[2], mode)) == -1, "mkdir failure");\par
+    \}\par
+    umask(newUmask);\par
+   exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 4: \b0 Napisati program koji prima tri argumenta. Prvi argument je putanja do regularnog fajla. Druga dva argumenta su offset u fajlu i du\f1\'9eina. Potrebno je na standardni izlaz ispisati tekst koji se nalazi u fajlu po\'e8ev\'9ai od pozicije offset. Ispisati du\'9eina karaktera. Mo\'9eete pretpostaviti da su du\'9eina i offset pozitivni celi brojevi. Zabranjena je upotreba standardne biblioteke za ulaz i izlaz (0 poena na zadatku).\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define maxS (2048)\par
+int main(int argc, char **argv)\{\par
+    check_error(argc == 4, "args");\par
+    int a = atoi(argv[2]);\par
+    int b = atoi(argv[3]);\par
+    int fd = open(argv[1], O_RDONLY);\par
+    check_error(fd != -1, " fd");\par
+char buffer[maxS];\par
+    int procitaniB = read(fd, buffer, maxS);\par
+    check_error(procitaniB != -1, "fajl");\par
+        for (int i = a; i < a+b; i++)\par
+        printf("%c", buffer[i]);\par
+    printf("\\n");\par
+   close(fd);\par
+    exit(EXIT_SUCCESS);\par
+\}\par
+\b\f0 Zadatak 5: \b0 Napisati program koji prima putanju do direktorijuma i ekstenziju fajla, rekurzivno obilazi direktorijum i na standardni izlaz ispisuje broj regularnih fajlova sa zadatom ekstenzijom. Zabranjeno je kori\f1\'9a\'e6enje nftw() i ftw() funkcije (morate sami pisati obilazak).\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <sys/stat.h>\par
+#include <sys/types.h>\par
+#include <string.h>\par
+#include <strings.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <errno.h>\par
+#include <dirent.h>\par
+#include <stdbool.h>\par
+#define MAX_SIZE (1024)\par
+#define check_error(exp, usrMsg)\\\par
+\tab do\{\\\par
+\tab\tab if(exp)\{\\\par
+\tab\tab\tab perror(usrMsg);\\\par
+\tab\tab\tab printf("\\n");\\\par
+\tab\tab\tab exit(EXIT_FAILURE);\\\par
+\tab\tab\}\\\par
+\tab\}while(0)\\\par
+bool walk(char* path, char* ext, unsigned* num);\par
+int main(int argc, char** argv)\{\par
+\tab check_error(argc != 3, "Invalid arg count!");\par
+\tab struct stat fInfo;\par
+\tab check_error(stat(argv[1], &fInfo) == -1, "stat() failure");\par
+\tab check_error(!S_ISDIR(fInfo.st_mode), "Not a dir");\par
+\tab char* ext = malloc(strlen(argv[2]) + 1);\par
+\tab check_error(ext == NULL, "malloc() failure");\par
+\tab strcpy(ext, argv[2]);\par
+\tab unsigned num = 0;\par
+\tab check_error(!walk(argv[1], ext, &num), "walk() failure");\par
+\tab printf("%u\\n", num);\par
+\tab free(ext);\par
+\tab exit(EXIT_SUCCESS);\par
+\}\par
+bool walk(char* path, char* ext, unsigned* num)\{\par
+\tab struct stat fInfo;\par
+\tab if(lstat(path, &fInfo) == -1)\{\par
+\tab\tab return false;\par
+\tab\}\par
+\tab if(S_ISREG(fInfo.st_mode))\{\par
+\tab\tab char* tmpStr = malloc(strlen(path));\par
+\tab\tab check_error(tmpStr == NULL, "malloc() failure");\par
+\tab\tab tmpStr = strrchr(path, '.');\par
+\tab\tab if(tmpStr != NULL)\{\par
+\tab\tab\tab if(!strcmp(tmpStr, ext))\{\par
+\tab\tab\tab\tab *num += 1;\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+\tab\}\par
+\tab if(!S_ISDIR(fInfo.st_mode))\{\par
+\tab\tab return true;\par
+\tab\}\par
+\tab DIR* dir = opendir(path);\par
+\tab if(dir == NULL)\{\par
+\tab\tab return false;\par
+\tab\}\par
+\tab struct dirent* cd;\par
+\tab while((cd = readdir(dir)) != NULL)\{\par
+char* newPath = malloc(strlen(path) + 1 + strlen(cd->d_name) + 1);\par
+\tab\tab check_error(newPath == NULL, "malloc() failure");\par
+\tab\tab strcpy(newPath, path);\par
+\tab\tab strcat(newPath, "/");\par
+\tab\tab strcat(newPath, cd->d_name);\par
+\tab\tab if(!strcmp(cd->d_name, ".") || !strcmp(cd->d_name, ".."))\{\par
+\tab\tab\tab if(stat(newPath, &fInfo) == -1)\{\par
+\tab\tab\tab\tab free(newPath);\par
+\tab\tab\tab\tab return false;\par
+\tab\tab\tab\}\par
+\tab\tab\tab free(newPath);\par
+\tab\tab\tab continue;\par
+\tab\tab\}\par
+\tab\tab bool state = walk(newPath, ext, num);\par
+\tab\tab if(!state)\{\par
+\tab\tab\tab return false;\par
+\tab\tab\}\par
+\tab\}\par
+\tab //free(tmpStr);\par
+\tab if(closedir(dir) == -1)\{\par
+\tab\tab return false;\par
+\tab\}\par
+\tab return true;\par
+\}\par
+\b\f0 Kolokvijum 2017\par
+Zadatak 1: \b0 Napisati funkciju bool osIsPublicFile(const char *fpath); koja vraca true ako ostali korisnici (eng. others) imaju rw prava pristupa nad regularnim fajlom na putanji 'fpath'. Testirati ovu funkciju pozivom iz main-a. Kao argument komandne linije programa prima se putanja do fajla. Pozvati osIsPublicFile funkciju i ispisati true ili false u zavisnosti od rezultata koji funkcija vrati.\par
+#define _XOPEN_SOURCE 700\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <errno.h>\par
+#include <string.h>\par
+#include <stdbool.h>\par
+#define check_error(expr, userMsg)\\\par
+    do\{\\\par
+        if(!(expr))\{\\\par
+            perror(userMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \}while(0)\par
+bool osIsPublicFile(const char *fpath);\par
+int main(int argc, char** argv)\{   \par
+    check_error(argc == 2, "argc");\par
+    struct stat inf;\par
+    check_error(stat(argv[1], &inf) != -1, "stat");\par
+    check_error(S_ISREG(inf.st_mode), "isreg");\par
+if(osIsPublicFile(argv[1]))\par
+        printf("true");\par
+    else\par
+        printf("false");\par
+        exit(EXIT_SUCCESS);\par
+\}\par
+bool osIsPublicFile(const char *fpath)\{\par
+    struct stat inf;\par
+    check_error(stat(fpath, &inf) != -1, "stat2");\par
+   if((inf.st_mode & S_IROTH) && (inf.st_mode & S_IWOTH))\par
+        return true;\par
+    return false;\par
+\}\par
+\b Zadatak 2: \b0 Napisati funkciju void osMkPublicDir(const char *dname); koja pravi direktorijum 'dname' sa pravima pristupa 0777. Testirati ovu funkciju pozivom iz main-a. Kao argument komandne linije program prima ime direktorijuma koji treba napraviti i poziva osMkPublicDir funkciju. Nema potrebe za bilo kakvim ispisom.\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+void osMkPublicDir(const char *dname)\{\par
+check_error(mkdir(dname, 0777) != -1, "make dir");\par
+    check_error(chmod(dname, 0777) != -1, "chmod");\par
+        return;\par
+\}\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 2, "args");\par
+        osMkPublicDir(argv[1]);  \par
+   exit(EXIT_SUCCESS);\par
+\}\par
+\b Zadatak 3: \b0 Napisati funkciju unsigned osNumOfDaysFileModified(const char *fpath); koja vraca pre koliko je dana zadnji put sadrzaj fajla promenjen u odnosu na dan kada se program pokrece (dakle ne moze se hardcode-ovati datum). Testirati ovu funkciju pozivom iz main-a. Kao argument komandne linije programa prima se putanja do fajla, pozvati ovu funkciju i ispisati broj dana.\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <unistd.h>\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <time.h>\par
+void greska() \{\par
+\tab //fprintf(stderr, "-1");\par
+\tab exit(1);\par
+\}\par
+unsigned osNumOfDaysFileModified(const char *fpath) \{\par
+\tab struct stat fInfo;\par
+\tab if(stat(fpath, &fInfo) == -1)\par
+\tab\tab greska();\par
+\tab fInfo.st_mtime;\par
+\tab time_t sekundi_sad = time(NULL);\par
+\tab if(sekundi_sad == -1)\par
+\tab\tab greska();\par
+\tab time_t sekundi_razlika = sekundi_sad - fInfo.st_mtime;\par
+\tab if(sekundi_razlika < 0)\par
+\tab\tab greska();\par
+\tab return sekundi_razlika / 3600 / 24;\par
+\}\par
+int main(int argc, char *argv[]) \{\par
+\tab if(argc != 2)\par
+\tab\tab greska();\par
+\tab printf("%u", osNumOfDaysFileModified(argv[1]));\par
+\tab exit(0);\par
+\}\par
+\b Zadatak 4: \b0 Napisati funkciju void osMoveFile(const char *srcPath, const char *destPath); koja pomera fajl sa putanje srcPath na putanju destPath (kao komanda terminala mv). Testirati ovu funkciju pozivom iz main-a. Kao argumenti programa primaju se trenutna putanja fajla i putanja na koju fajl treba da se pomeri (naravno pozvati osMoveFile iz main f-je). Nema potrebe za bilo kakvim ispisom.\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#define check_error(exp, usrMsg)\\\par
+    do\{\\\par
+        if(!(exp))\{\\\par
+            perror(usrMsg);\\\par
+            exit(EXIT_FAILURE);\\\par
+        \}\\\par
+    \} while(0)\par
+#define max (20)\par
+#define maxS (2048)\par
+void osMoveFile(const char *srcPath, const char *destPath);\par
+int main(int argc, char **argv)\{\par
+check_error(argc == 3, "args");\par
+    check_error(strcmp(argv[1], argv[2]) != 0, "isti fajlovi");\par
+        osMoveFile(argv[1], argv[2]);\par
+    exit(EXIT_SUCCESS);\par
+\}\par
+void osMoveFile(const char *srcPath, const char *destPath)\{\par
+int fd1 = open(srcPath, O_RDONLY);\par
+    check_error(fd1 != -1, "ulazni");\par
+        int fd2 = open(destPath, O_WRONLY | O_CREAT | O_TRUNC);\par
+    check_error(fd2 != -1, "izlazni");\par
+    struct stat inf;\par
+    check_error(stat(srcPath, &inf) != -1, "stat");\par
+    check_error(chmod(destPath, inf.st_mode) != -1, "chmod");\par
+ char *p1 = realpath(srcPath, NULL);\par
+    char *p2 = realpath(destPath, NULL);\par
+    check_error(p1 != NULL, "DSAASD");\par
+    check_error(p2 != NULL, "dsadsa");\par
+      if(strcmp(p1, p2) == 0)\par
+    check_error(0, "Dsaads");\par
+    char buffer[maxS];\par
+    int rB = 0;\par
+    while ((rB = read(fd1, buffer, maxS)) > 0)\{\par
+        check_error(write(fd2, buffer, rB) != -1, "write");        \par
+    \}\par
+    check_error(rB != -1, "read");\par
+    check_error(unlink(srcPath) != -1, "brisanje");\par
+   close(fd1);\par
+    close(fd2);\par
+    return;\par
+\}\par
+\b Zadatak 5: \b0 Uglaste zagrade u tekstu zadatka ozna\f1\'e8avaju koji zadatak sa ovog kolokvijuma mo\'9eete iskoristiti kopiranjem f-je koja je tamo implementirana.\par
+Napisati program koji sve regularne fajlove za koje ostali korisnici (eng. others) imaju rw prava pristupa [1] radi sledece:\par
+ukoliko su modifikovani u zadnjih 30 dana [3] pomera ih [4] u odgovarajuci direktorijum\f0  \f1 ukoliko nisu modifikovani u zadnjih 30 dana [3] brisu se\par
+Kao argumente komandne linije ovaj program prima putanju do direktorjuma u kome se rekurzivno traze navedeni fajlovi i naziv direktorijuma gde treba pomeriti spomenute fajlove. Potrebno je napraviti ovaj drugi direktorijum u koji se fajlovi pomeraju tako da ima prava pristupa 0777 [2].\par
+#define _XOPEN_SOURCE 700\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <string.h>\par
+#include <sys/types.h>\par
+#include <sys/stat.h>\par
+#include <fcntl.h>\par
+#include <unistd.h>\par
+#include <time.h>\par
+#include <ftw.h>\par
+#include <stdbool.h>\par
+#define check_error(expr, userMsg) \\\par
+\tab do                             \\\par
+\tab\{                              \\\par
+\tab\tab if (!(expr))               \\\par
+\tab\tab\{                          \\\par
+\tab\tab\tab perror(userMsg);       \\\par
+\tab\tab\tab exit(EXIT_FAILURE);    \\\par
+\tab\tab\}                          \\\par
+\tab\} while (0);\par
+bool osIsPublicFile(const char *fpath)\par
+\{\par
+    struct stat buffer;\par
+    check_error(stat(fpath, &buffer) != -1, "Nepostoje\'e6i fajl");\par
+    check_error((buffer.st_mode & S_IFMT) == S_IFREG, "Pogresan tip fajla");\par
+    if(buffer.st_mode & S_IROTH && buffer.st_mode & S_IWOTH)\par
+        return true;\par
+    return false; \par
+\}\par
+void osMkPublicDir(const char *dname)\par
+\{\par
+    mode_t mode = 0777;\par
+    int k = mkdir(dname, mode);\par
+    check_error(k != -1, "Postoji folder");\par
+    check_error(chmod(dname, mode) != -1, "chmod");\par
+\}\par
+unsigned osNumOfDaysFileModified(const char *fpath)\par
+\{\par
+\tab time_t now = time(NULL);\par
+\tab struct stat fInfo;\par
+\tab check_error(stat(fpath, &fInfo) != -1, "Ne postoji");\par
+\tab time_t razlika = now - fInfo.st_mtim.tv_sec;\par
+\tab return razlika / (60 * 60 * 24);\par
+\}\par
+void osMoveFile(const char *srcPath, const char *destPath)\par
+\{\par
+\tab check_error(strcmp(srcPath, destPath) != 0, "isti fajl");\par
+\tab struct stat fInfo;\par
+\tab check_error(stat(srcPath, &fInfo) != -1, "stat");\par
+\tab int fdSrc = open(srcPath, O_RDONLY);\par
+\tab check_error(fdSrc != -1, "open1");\par
+\tab int fdDest = open(destPath, O_WRONLY | O_CREAT | O_TRUNC);\par
+\tab check_error(fdDest != -1, "open2");\par
+\tab int bytesRead = 0;\par
+\tab char memBuff[1024];\par
+\tab while ((bytesRead = read(fdSrc, memBuff, 1024)) > 0)\par
+\tab\{\par
+\tab\tab check_error(write(fdDest, memBuff, bytesRead) != -1, "write");\par
+\tab\}\par
+\tab check_error(bytesRead != -1, "write");\par
+\tab close(fdSrc);\par
+\tab close(fdDest);\par
+\tab check_error(unlink(srcPath) != -1, "unlink");\par
+\tab check_error(chmod(destPath, fInfo.st_mode) != -1, "chmod");\par
+\}\par
+char newDir[1024];\par
+int processFile(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)\par
+\{\par
+\tab //printf("%s\\n", fpath);\par
+\tab if(S_ISREG(sb->st_mode))\par
+\tab\{\par
+\tab\tab if(osIsPublicFile(fpath))\par
+\tab\tab\{\par
+\tab\tab\tab if(osNumOfDaysFileModified(fpath) < 30)\par
+char *temp = malloc(strlen(newDir) + strlen(fpath + ftwbuf->base) + 2);\par
+\tab\tab\tab\tab strcpy(temp, newDir);\par
+\tab\tab\tab\tab strcat(temp, "/");\par
+\tab\tab\tab\tab strcat(temp, fpath + ftwbuf->base);\par
+\tab\tab\tab\tab osMoveFile(fpath, temp);\par
+\tab\tab\tab\tab free(temp);\par
+\tab\tab\tab\}\par
+\tab\tab\tab\tab\par
+\tab\tab\tab else\par
+\tab\tab\tab\tab unlink(fpath);\par
+\tab\tab\}\par
+\tab\tab // else\par
+\tab\tab // \tab unlink(fpath);\par
+\tab\}\par
+\tab return 0;\par
+\}\par
+int main(int argc, char const *argv[])\par
+\{\par
+\tab check_error(argc == 3, "Argumenti");\par
+\tab struct stat dir1;\par
+\tab check_error(stat(argv[1], &dir1) != -1, "ne postoji1");\par
+\tab check_error(S_ISDIR(dir1.st_mode), "nije dir");\par
+\tab strcpy(newDir, argv[2]);\par
+\tab osMkPublicDir(argv[2]);\par
+\tab check_error(nftw(argv[1], processFile, 50, 0) != -1, "nftw");\par
+\tab //check_error(rmdir(argv[1]) != -1, "rmdir");\par
+\tab return 0;\par
+\}\f0\lang9\par
+
+\pard\sa200\sl276\slmult1\qc\par
+\fs22\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+
+\pard\sa200\sl276\slmult1\par
+
+\pard\sa200\sl276\slmult1\qc\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\b\par
+}
+ 

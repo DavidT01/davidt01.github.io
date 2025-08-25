@@ -1,0 +1,118 @@
+x = [1 2 3; 4 3 1]
+y = [2 1 4; 3 1 5];
+r = [1; 2; 3];
+z = x + y;
+z = x - y;
+z = x*r;
+z = x.*y + (y + x);
+
+1) Naivna gramatika:
+
+program: program naredba
+    | naredba
+    ;
+naredba: ID '=' izraz sufiks
+    ;
+sufiks: ';' '\n'
+    | '\n'
+    ;
+izraz: izraz '+' T
+    | izraz '-' T
+    | T
+    ;
+T: T '*' F
+    | T SKMN F
+    | F
+    ;
+F: '(' izraz ')'
+    | '[' niz_vrsta' ']'
+    | ID
+    ;
+niz_vrsta: niz_vrsta ';' vrsta
+    | vrsta
+    ;
+vrsta: vrsta BROJ
+    | BROJ
+    ;
+
+2) Eliminacija leve rekurzije
+
+program: naredba programP
+    ;
+programP: naredba programP
+    | eps
+    ;
+naredba: ID '=' izraz sufiks
+    ;
+sufiks: ';' '\n'
+    | '\n'
+    ;
+izraz: T izrazP
+    ;
+izrazP: '+' T izrazP
+    | '-' T izrazP
+    | eps
+    ;
+T: F TP
+    ;
+TP: '*' T TP
+    | SKMN T TP
+    | eps
+    ;
+F: '(' izraz ')'
+    | '[' niz_vrsta' ']'
+    | ID
+    ;
+niz_vrsta: vrsta niz_vrstaP
+    ;
+niz_vrstaP: ';' vrsta niz_vrstaP
+    | eps
+    ;
+vrsta: BROJ vrstaP
+    ;
+vrstaP: BROJ vrstaP
+    | eps
+    ;
+
+3) Nema leve faktorizacije (resili smo je u koraku 1)
+
+4) Skupovi izbora
+
+program: naredba programP                   {ID}
+    ;
+programP: naredba programP                  {ID}
+    | eps                                   {EOI}
+    ;
+naredba: ID '=' izraz sufiks                {ID}
+    ;
+sufiks: ';' '\n'                            {TZ}
+    | '\n'                                  {NR}
+    ;
+izraz: T izrazP                             {OZ, OZS, ID}
+    ;
+izrazP: '+' T izrazP                        {PLUS}
+    | '-' T izrazP                          {MINUS}
+    | eps                                   {ZZ, TZ, NR}
+    ;
+T: F TP                                     {OZ, OZS, ID}
+    ;
+TP: '*' F TP                                {PUTA}
+    | SKMN F TP                             {SKMN}
+    | eps                                   {PLUS, MINUS, ZZ, TZ, NR}
+    ;
+F: '(' izraz ')'                            {OZ}
+    | '[' niz_vrsta ']'                     {OZS}
+    | ID                                    {ID}
+    ;
+niz_vrsta: vrsta niz_vrstaP                 {BROJ}
+    ;
+niz_vrstaP: ';' vrsta niz_vrstaP            {TZ}
+    | eps                                   {ZZS}
+    ;
+vrsta: BROJ vrstaP                          {BROJ}
+    ;
+vrstaP: BROJ vrstaP                         {BROJ}
+    | eps                                   {ZZS, TZ}
+    ;
+
+5) Svi skupovi su disjunktni => ovo je LL1 gramatika.

@@ -1,0 +1,115 @@
+<1, 2, 3>
+p1 := <1, 2, 4>
+p1 := p2
+
+1) Naivna gramatika:
+
+program: program naredba
+    | naredba
+    ;
+naredba: ID DODELA izraz '\n'
+    | izraz '\n'
+    ;
+izraz: polinom
+    | ID
+    ;
+polinom: '<' lista '>'
+    ;
+lista: lista ',' BROJ
+    | BROJ
+    ;
+
+2) Uklanjamo levu rekurziju:
+
+program: naredba programP
+    ;
+programP: naredba programP
+    | eps
+    ;
+naredba: ID DODELA izraz '\n'
+    | izraz '\n'
+    ;
+izraz: polinom
+    | ID
+    ;
+polinom: '<' lista '>'
+    ;
+lista: BROJ listaP
+listaP: ',' BROJ listaP
+    | eps
+    ;
+
+3) Uklanjamo levu faktorizaciju:
+
+naredba: ID DODELA izraz '\n'
+    | izraz '\n'
+    ;
+izraz: polinom
+    | ID
+    ;
+
+a) Uklonimo izraz
+
+naredba: ID DODELA polinom '\n'
+    | ID DODELA ID '\n'
+    | ID '\n'
+    | polinom '\n'
+    ;
+
+b) Izdvajamo zajednicki prefiks
+
+naredba: ID naredba2
+    | polinom '\n'
+    ;
+naredba2: DODELA naredba3
+    | '\n'
+naredba3: polinom '\n'
+    | ID '\n'
+    ;
+
+c) Finalno:
+
+program: naredba programP
+    ;
+programP: naredba programP
+    | eps
+    ;
+naredba: ID naredba2
+    | polinom '\n'
+    ;
+naredba2: DODELA naredba3
+    | '\n'
+naredba3: polinom '\n'
+    | ID '\n'
+    ;
+polinom: '<' lista '>'
+    ;
+lista: BROJ listaP
+listaP: ',' BROJ listaP
+    | eps
+    ;
+
+4) Skupovi izbora:
+
+program: naredba programP       {ID, <}
+    ;
+programP: naredba programP      {ID, <}
+    | eps                       {EOI}
+    ;
+naredba: ID naredba2            {ID}
+    | polinom '\n'              {<}
+    ;
+naredba2: DODELA naredba3       {DODELA}
+    | '\n'                      {'\n'}
+    ;
+naredba3: polinom '\n'          {<}
+    | ID '\n'                   {ID}
+    ;
+polinom: '<' lista '>'          {<}
+    ;
+lista: BROJ listaP              {BROJ}
+listaP: ',' BROJ listaP         {,}
+    | eps                       {>}
+    ;
+
+Ova gramatika jeste LL1 jer su svi skupovi disjunktni.

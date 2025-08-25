@@ -1,0 +1,17 @@
+p := True
+q := Undef
+r := p <=> q
+p := True
+q := False
+p /\ q \/ Undef
+p \/ Undef
+r := p <=> q
+p /\ q <=> r <=> True
+!p => q \/ r <=> s
+p /\ q \/ s
+p \/ s \/ q
+!(q => s)
+p := True
+L := [p, !p, p <=> p, False]
+L[2] \/ L[1]
+head(L) \/ head(tail(L))
