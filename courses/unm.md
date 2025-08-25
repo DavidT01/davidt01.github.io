@@ -11,5 +11,3 @@ layout: default
 [Sajt asistenta](http://www.matf.bg.ac.rs/p/jelena/kurs/435/uvod-u-numeri�ku-matematiku/)
 
 [Matlab](https://matlab.mathworks.com)
-
-[Materijali](../materials/archive/UNM/)

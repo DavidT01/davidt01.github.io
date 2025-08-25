@@ -15,5 +15,3 @@ layout: default
 [Drecunov sajt](http://poincare.matf.bg.ac.rs/~ivan.drecun/aisp.html)
 
 [Skripta (Marić)](http://poincare.matf.bg.ac.rs/~filip/asp/asp.pdf)
-
-[Materijali](../materials/archive/AISP/)

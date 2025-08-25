@@ -8,8 +8,6 @@ layout: default
 
 [Moodle](https://elearning.rcub.bg.ac.rs/moodle/course/view.php?id=1558)
 
-[Materijali (predavanja)](../materials/active/RM/)
-
 [Pitanja](https://siwiki.rs/w/index.php?title=Рачунарске_мреже_1/Питања&oldid=6412#Pitanje_1)
 
 [Materijali (vežbe)](https://github.com/milanmitreski/racunarske-mreze-i)

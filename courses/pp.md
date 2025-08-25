@@ -10,6 +10,4 @@ layout: default
 
 [Snimci (vežbe)](https://www.youtube.com/playlist?list=PLOGAKiQpHThNfTNo7MmKkEJVCX_61qYFT)
 
-[Materijali (predavanja)](../materials/archive/PP/)
-
 [Rokovi](https://github.com/Markic01/PP-rokovi/)

@@ -9,5 +9,3 @@ layout: default
 [Moodle kurs](https://elearning.rcub.bg.ac.rs/moodle/course/view.php?id=1503)
 
 [Sajt asistenta](http://www.matf.bg.ac.rs/p/milan-pavlovic/pocetna/)
-
-[Materijali](../materials/archive/PPGR/)

@@ -9,5 +9,3 @@ layout: default
 [Stranica kursa](https://www.bazepodataka.matf.bg.ac.rs/ProjektovanjeBazaPodataka.html)
 
 [Sajt asistenta](https://poincare.matf.bg.ac.rs/~vasilije.todorovic/pbp.html)
-
-[Materijali](../materials/active/PBP/)

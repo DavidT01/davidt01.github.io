@@ -6,8 +6,6 @@ layout: default
 
 <br>
 
-[Knjiga, skripte i rokovi](../materials/active/OS/)
-
 [Materijali (vežbe)](https://github.com/osmatf/osvezbe/)
 
 Snimci:

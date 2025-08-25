@@ -12,6 +12,4 @@ layout: default
 
 [Moodle](https://hilbert.matf.bg.ac.rs/moodle/course/view.php?id=216)
 
-[Materijali](../materials/archive/ST/)
-
 [Snimci](https://www.youtube.com/playlist?list=PL9cP0JUvDP46M0zGGcxv57QV3ox8ukF2L)

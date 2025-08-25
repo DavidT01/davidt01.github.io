@@ -11,5 +11,3 @@ layout: default
 [Sajt asistenta](http://www.matf.bg.ac.rs/p/petar-tesic/kurs/1014/prevodenje-programskih-jezika/)
 
 [Snimci vežbi](http://poincare.matf.bg.ac.rs/~mirko.spasic/)
-
-[Materijali](../materials/archive/PPJ/)

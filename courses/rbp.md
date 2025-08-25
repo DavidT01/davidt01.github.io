@@ -11,5 +11,3 @@ layout: default
 [Sajt asistenta](http://poincare.matf.bg.ac.rs/~milena.stojic/)
 
 [Snimci vežbi](https://www.youtube.com/playlist?list=PLklD1aGamJ0bYFaLXD_Rq82jpfvXvHji3)
-
-[Materijali](../materials/archive/RBP/)
