@@ -56,5 +56,15 @@
 
     </div>
 
+    <script>
+      var allLinks = document.querySelectorAll('a');
+      allLinks.forEach(function(link) {
+          if (link.hostname !== window.location.hostname && link.hostname.length > 0) {
+              link.setAttribute('target', '_blank');
+              link.setAttribute('rel', 'noopener noreferrer');
+          }
+      });
+    </script>
+
   </body>
 </html>
