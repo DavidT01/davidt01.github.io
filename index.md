@@ -15,4 +15,4 @@ title: MATF Linkovi
 
 Stranice konkretnih predmeta sadrže korisne linkove, a većina materijala nalazi se u **materials/** direktorijumu repozitorijuma.
 
-[![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-black?logo=github)](https://github.com/DavidT01/davidt01.github.io/tree/main)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-black?logo=github)](https://github.com/DavidT01/davidt01.github.io/tree/main/materials)
