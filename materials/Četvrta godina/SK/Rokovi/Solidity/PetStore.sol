@@ -10,9 +10,9 @@ contract PetStore {
         bool forSale;
     }
     
-    mapping (uint => Pet) pets;
-
+    mapping (uint => Pet) public pets;
     uint public petNum;
+
     address payable public storeOwner;
 
     constructor() {
@@ -28,16 +28,16 @@ contract PetStore {
     }
 
     function addPet(string memory _name, uint _price, address _owner, bool _forSale) Owner public {
-        uint id = petNum;
-        pets[id] = Pet(id, _name, _price, _owner, _forSale);
+        pets[petNum] = Pet(petNum, _name, _price, _owner, _forSale);
+        emit PetAdded(petNum);
         petNum++;
-        emit PetAdded(id);
     }
 
     function buyPet(uint _id) payable public {
-        require(msg.value == pets[_id].price, "Not enough Ether to buy this pet!");
         require(_id < petNum, "Invalid pet ID!");
         require(pets[_id].forSale == true, "This pet is not for sale!");
+        require(msg.value == pets[_id].price, "Not enough Ether to buy this pet!");
+
         pets[_id].owner = msg.sender;
         pets[_id].forSale = false;
         

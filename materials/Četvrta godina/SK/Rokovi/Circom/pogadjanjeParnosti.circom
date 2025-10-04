@@ -7,9 +7,9 @@ include "circomlib/comparators.circom";
 template PogodiParnost(N) {
     assert(N <= 252);
     signal input broj;
-    signal input parnost;
     signal input brojKomit;
     signal input salt;
+    signal input parnost;
     signal output izlaz;
 
     component hash = Poseidon(2);

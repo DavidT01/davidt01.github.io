@@ -13,7 +13,7 @@ contract Auction {
 
     address payable public owner;
     AuctionItem[] public items;
-    uint private itemCount = 0;
+    uint public itemCount;
 
     mapping (address => uint) public pendingReturns;
 
@@ -57,11 +57,9 @@ contract Auction {
             return false;
         pendingReturns[msg.sender] = 0;
         (bool success, ) = msg.sender.call{value: amount}("");
-        if(!success) {
+        if(!success)
             pendingReturns[msg.sender] = amount;
-            return false;
-        }
-        return true;
+        return success;
     }
 
 }

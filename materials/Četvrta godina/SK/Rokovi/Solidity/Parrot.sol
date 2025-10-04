@@ -1,16 +1,17 @@
 pragma solidity >=0.8.0;
 
 contract Parrot {
+
     struct Slot {
         address owner;
         uint mins;
     }
 
-    address public owner;
+    address payable public owner;
     bool private free;
     address private parrotOwner;
     uint private rentedUntil;
-    uint private pricePerMinute;
+    uint public pricePerMinute;
 
     mapping (address => uint) private numRents;
     uint totalReservations = 0;
@@ -54,9 +55,8 @@ contract Parrot {
             (bool success, ) = msg.sender.call{value: msg.value}("");
             require(success, "Refund failed");
         }
-        else {
+        else
             setNewOwner(msg.sender, block.timestamp + mins * 60);
-        }
     }
 
     function releaseParrot() public {
@@ -73,7 +73,7 @@ contract Parrot {
     function withdraw() Owner public {
         uint balance = address(this).balance;
         (bool success, ) = owner.call{value: balance}("");
-        require(success, "Failed to withdraw");
+        require(success, "Failed to withdraw!");
     }
 
     function getNextReservation() private returns(Slot memory) {
@@ -100,16 +100,14 @@ contract Parrot {
         require(_rating >= 1 && _rating <= 5, "Rating must be between 1 and 5!");
         ratings.push(_rating);
         calcRating();
-        if(_rating == 5) {
+        if(_rating == 5)
             emit excellentRating("Parrot was excellent!");
-        }
     }
 
     function calcRating() private {
         rating = 0;
-        for(uint i = 0; i < ratings.length; i++) {
+        for(uint i = 0; i < ratings.length; i++)
             rating += ratings[i];
-        }
         rating /= ratings.length;
     }
 
