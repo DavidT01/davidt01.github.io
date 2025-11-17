@@ -103,6 +103,24 @@ geo:
 alg:
   name: Algebra 1
   url: /courses/alg.md
+rs2:
+  name: Razvoj softvera 2
+  url: /courses/rs2.md
+vs:
+  name: Verifikacija softvera
+  url: /courses/vs.md
+is:
+  name: Informacioni sistemi
+  url: /courses/is.md
+mnsr:
+  name: Metodologija naučnog i stručnog rada
+  url: /courses/mnsr.md
+mu:
+  name: Mašinsko učenje
+  url: /courses/mu.md
+ipub:
+  name: Istraživanje podataka u bioinformatici
+  url: /courses/ipub.md
 
 # First-year courses without dedicated pages (no URL -> plain text)
 p1:
