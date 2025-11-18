@@ -6,6 +6,6 @@ layout: default
 
 <br>
 
-[https://poincare.matf.bg.ac.rs/~sasa.malkov/nastava.is.php](Materijali (predavanja))
+[Materijali (predavanja)](https://poincare.matf.bg.ac.rs/~sasa.malkov/nastava.is.php)
 
-[https://poincare.matf.bg.ac.rs/~dara.milojkovic/is](Materijali (vežbe))
+[Materijali (vežbe)](https://poincare.matf.bg.ac.rs/~dara.milojkovic/is)
