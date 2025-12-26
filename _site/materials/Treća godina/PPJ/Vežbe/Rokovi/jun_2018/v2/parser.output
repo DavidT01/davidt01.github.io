@@ -1,0 +1,463 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: program naredba '\n'
+    2        | naredba '\n'
+
+    3 naredba: ID '=' izraz
+    4        | DISP '(' izraz ')'
+    5        | SIZE '(' izraz ')'
+
+    6 izraz: '[' nizvrsta ']'
+    7      | '(' izraz ')'
+    8      | izraz PPLUS izraz
+    9      | izraz PMUL izraz
+   10      | izraz '\''
+   11      | izraz '*' izraz
+   12      | ID
+
+   13 nizvrsta: nizvrsta ';' vrsta
+   14         | vrsta
+
+   15 vrsta: '[' nizbrojeva ']'
+
+   16 nizbrojeva: nizbrojeva ',' BROJ
+   17           | BROJ
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '\n' (10) 1 2
+    '\'' (39) 10
+    '(' (40) 4 5 7
+    ')' (41) 4 5 7
+    '*' (42) 11
+    ',' (44) 16
+    ';' (59) 13
+    '=' (61) 3
+    '[' (91) 6 15
+    ']' (93) 6 15
+    error (256)
+    DISP (258) 4
+    SIZE (259) 5
+    PPLUS (260) 8
+    PMUL (261) 9
+    ID <s> (262) 3 12
+    BROJ <v> (263) 16 17
+
+
+Nonterminals, with rules where they appear
+
+    $accept (19)
+        on left: 0
+    program (20)
+        on left: 1 2
+        on right: 0 1
+    naredba (21)
+        on left: 3 4 5
+        on right: 1 2
+    izraz <m> (22)
+        on left: 6 7 8 9 10 11 12
+        on right: 3 4 5 7 8 9 10 11
+    nizvrsta <m> (23)
+        on left: 13 14
+        on right: 6 13
+    vrsta <vek> (24)
+        on left: 15
+        on right: 13 14
+    nizbrojeva <vek> (25)
+        on left: 16 17
+        on right: 15 16
+
+
+State 0
+
+    0 $accept: • program $end
+
+    DISP  shift, and go to state 1
+    SIZE  shift, and go to state 2
+    ID    shift, and go to state 3
+
+    program  go to state 4
+    naredba  go to state 5
+
+
+State 1
+
+    4 naredba: DISP • '(' izraz ')'
+
+    '('  shift, and go to state 6
+
+
+State 2
+
+    5 naredba: SIZE • '(' izraz ')'
+
+    '('  shift, and go to state 7
+
+
+State 3
+
+    3 naredba: ID • '=' izraz
+
+    '='  shift, and go to state 8
+
+
+State 4
+
+    0 $accept: program • $end
+    1 program: program • naredba '\n'
+
+    $end  shift, and go to state 9
+    DISP  shift, and go to state 1
+    SIZE  shift, and go to state 2
+    ID    shift, and go to state 3
+
+    naredba  go to state 10
+
+
+State 5
+
+    2 program: naredba • '\n'
+
+    '\n'  shift, and go to state 11
+
+
+State 6
+
+    4 naredba: DISP '(' • izraz ')'
+
+    ID   shift, and go to state 12
+    '('  shift, and go to state 13
+    '['  shift, and go to state 14
+
+    izraz  go to state 15
+
+
+State 7
+
+    5 naredba: SIZE '(' • izraz ')'
+
+    ID   shift, and go to state 12
+    '('  shift, and go to state 13
+    '['  shift, and go to state 14
+
+    izraz  go to state 16
+
+
+State 8
+
+    3 naredba: ID '=' • izraz
+
+    ID   shift, and go to state 12
+    '('  shift, and go to state 13
+    '['  shift, and go to state 14
+
+    izraz  go to state 17
+
+
+State 9
+
+    0 $accept: program $end •
+
+    $default  accept
+
+
+State 10
+
+    1 program: program naredba • '\n'
+
+    '\n'  shift, and go to state 18
+
+
+State 11
+
+    2 program: naredba '\n' •
+
+    $default  reduce using rule 2 (program)
+
+
+State 12
+
+   12 izraz: ID •
+
+    $default  reduce using rule 12 (izraz)
+
+
+State 13
+
+    7 izraz: '(' • izraz ')'
+
+    ID   shift, and go to state 12
+    '('  shift, and go to state 13
+    '['  shift, and go to state 14
+
+    izraz  go to state 19
+
+
+State 14
+
+    6 izraz: '[' • nizvrsta ']'
+
+    '['  shift, and go to state 20
+
+    nizvrsta  go to state 21
+    vrsta     go to state 22
+
+
+State 15
+
+    4 naredba: DISP '(' izraz • ')'
+    8 izraz: izraz • PPLUS izraz
+    9      | izraz • PMUL izraz
+   10      | izraz • '\''
+   11      | izraz • '*' izraz
+
+    '*'    shift, and go to state 23
+    '\''   shift, and go to state 24
+    PPLUS  shift, and go to state 25
+    PMUL   shift, and go to state 26
+    ')'    shift, and go to state 27
+
+
+State 16
+
+    5 naredba: SIZE '(' izraz • ')'
+    8 izraz: izraz • PPLUS izraz
+    9      | izraz • PMUL izraz
+   10      | izraz • '\''
+   11      | izraz • '*' izraz
+
+    '*'    shift, and go to state 23
+    '\''   shift, and go to state 24
+    PPLUS  shift, and go to state 25
+    PMUL   shift, and go to state 26
+    ')'    shift, and go to state 28
+
+
+State 17
+
+    3 naredba: ID '=' izraz •
+    8 izraz: izraz • PPLUS izraz
+    9      | izraz • PMUL izraz
+   10      | izraz • '\''
+   11      | izraz • '*' izraz
+
+    '*'    shift, and go to state 23
+    '\''   shift, and go to state 24
+    PPLUS  shift, and go to state 25
+    PMUL   shift, and go to state 26
+
+    $default  reduce using rule 3 (naredba)
+
+
+State 18
+
+    1 program: program naredba '\n' •
+
+    $default  reduce using rule 1 (program)
+
+
+State 19
+
+    7 izraz: '(' izraz • ')'
+    8      | izraz • PPLUS izraz
+    9      | izraz • PMUL izraz
+   10      | izraz • '\''
+   11      | izraz • '*' izraz
+
+    '*'    shift, and go to state 23
+    '\''   shift, and go to state 24
+    PPLUS  shift, and go to state 25
+    PMUL   shift, and go to state 26
+    ')'    shift, and go to state 29
+
+
+State 20
+
+   15 vrsta: '[' • nizbrojeva ']'
+
+    BROJ  shift, and go to state 30
+
+    nizbrojeva  go to state 31
+
+
+State 21
+
+    6 izraz: '[' nizvrsta • ']'
+   13 nizvrsta: nizvrsta • ';' vrsta
+
+    ']'  shift, and go to state 32
+    ';'  shift, and go to state 33
+
+
+State 22
+
+   14 nizvrsta: vrsta •
+
+    $default  reduce using rule 14 (nizvrsta)
+
+
+State 23
+
+   11 izraz: izraz '*' • izraz
+
+    ID   shift, and go to state 12
+    '('  shift, and go to state 13
+    '['  shift, and go to state 14
+
+    izraz  go to state 34
+
+
+State 24
+
+   10 izraz: izraz '\'' •
+
+    $default  reduce using rule 10 (izraz)
+
+
+State 25
+
+    8 izraz: izraz PPLUS • izraz
+
+    ID   shift, and go to state 12
+    '('  shift, and go to state 13
+    '['  shift, and go to state 14
+
+    izraz  go to state 35
+
+
+State 26
+
+    9 izraz: izraz PMUL • izraz
+
+    ID   shift, and go to state 12
+    '('  shift, and go to state 13
+    '['  shift, and go to state 14
+
+    izraz  go to state 36
+
+
+State 27
+
+    4 naredba: DISP '(' izraz ')' •
+
+    $default  reduce using rule 4 (naredba)
+
+
+State 28
+
+    5 naredba: SIZE '(' izraz ')' •
+
+    $default  reduce using rule 5 (naredba)
+
+
+State 29
+
+    7 izraz: '(' izraz ')' •
+
+    $default  reduce using rule 7 (izraz)
+
+
+State 30
+
+   17 nizbrojeva: BROJ •
+
+    $default  reduce using rule 17 (nizbrojeva)
+
+
+State 31
+
+   15 vrsta: '[' nizbrojeva • ']'
+   16 nizbrojeva: nizbrojeva • ',' BROJ
+
+    ']'  shift, and go to state 37
+    ','  shift, and go to state 38
+
+
+State 32
+
+    6 izraz: '[' nizvrsta ']' •
+
+    $default  reduce using rule 6 (izraz)
+
+
+State 33
+
+   13 nizvrsta: nizvrsta ';' • vrsta
+
+    '['  shift, and go to state 20
+
+    vrsta  go to state 39
+
+
+State 34
+
+    8 izraz: izraz • PPLUS izraz
+    9      | izraz • PMUL izraz
+   10      | izraz • '\''
+   11      | izraz • '*' izraz
+   11      | izraz '*' izraz •
+
+    '\''  shift, and go to state 24
+
+    $default  reduce using rule 11 (izraz)
+
+
+State 35
+
+    8 izraz: izraz • PPLUS izraz
+    8      | izraz PPLUS izraz •
+    9      | izraz • PMUL izraz
+   10      | izraz • '\''
+   11      | izraz • '*' izraz
+
+    '*'   shift, and go to state 23
+    '\''  shift, and go to state 24
+    PMUL  shift, and go to state 26
+
+    $default  reduce using rule 8 (izraz)
+
+
+State 36
+
+    8 izraz: izraz • PPLUS izraz
+    9      | izraz • PMUL izraz
+    9      | izraz PMUL izraz •
+   10      | izraz • '\''
+   11      | izraz • '*' izraz
+
+    '*'   shift, and go to state 23
+    '\''  shift, and go to state 24
+
+    $default  reduce using rule 9 (izraz)
+
+
+State 37
+
+   15 vrsta: '[' nizbrojeva ']' •
+
+    $default  reduce using rule 15 (vrsta)
+
+
+State 38
+
+   16 nizbrojeva: nizbrojeva ',' • BROJ
+
+    BROJ  shift, and go to state 40
+
+
+State 39
+
+   13 nizvrsta: nizvrsta ';' vrsta •
+
+    $default  reduce using rule 13 (nizvrsta)
+
+
+State 40
+
+   16 nizbrojeva: nizbrojeva ',' BROJ •
+
+    $default  reduce using rule 16 (nizbrojeva)

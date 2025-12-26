@@ -1,0 +1,20 @@
+a = 10;
+b = 0200;
+c = 0xFF;
+print(a, "%b");
+print(b, "%x");
+print(c, "%o");
+print(0xabc);
+
+d = -0x1ab3 + (a+b/3)*c;
+print(d, "%x");
+print(d%0x11 + a, "%o");
+
+e = ~((a^b)<<3|(c+d)>>2)^0xABCDEF;
+print(e);
+
+L = [a*2, (b+c) << 2, d - e, 25, 0x30];
+print(L, "%x");
+
+K = (L*2 + b) << a;
+print(K);

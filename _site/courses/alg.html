@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>DT | MATF</title>
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/courses/alg.html" />
+<meta property="og:url" content="http://localhost:4000/courses/alg.html" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","url":"http://localhost:4000/courses/alg.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <style>
+      :root {
+        /* Default Purple Theme */
+        --accent: #ff61d8;
+        --accent-hover: #ff9eeb;
+        --nav-bg: rgba(13, 2, 20, 0.85);
+        --nav-gradient: linear-gradient(135deg, #ff61d8, #7c1bd1);
+        --nav-highlight: #ffffff;
+        --nav-pill: rgba(255, 255, 255, 0.05);
+        --text-main: #eaddf0;
+        --bg-color: #0f0518;
+        --bg-gradient: radial-gradient(circle at 50% 0%, #2a003d, #0f0518 80%);
+        --h2-border: rgba(255, 97, 216, 0.3);
+        --shadow-color: rgba(255, 97, 216, 0.3);
+        --table-bg: rgba(20, 5, 30, 0.6);
+        --pre-bg: #08020d;
+        --nav-active-shadow: rgba(88, 0, 94, 0.55);
+      }
+
+      /* Red Theme */
+      body.theme-red {
+        --accent: #ff5252;
+        --accent-hover: #ff8a80;
+        --nav-bg: rgba(20, 5, 5, 0.85);
+        --nav-gradient: linear-gradient(135deg, #ff5252, #d50000);
+        --text-main: #f0e6e6;
+        --bg-color: #1a0505;
+        --bg-gradient: radial-gradient(circle at 50% 0%, #4a0000, #1a0505 80%);
+        --h2-border: rgba(255, 82, 82, 0.3);
+        --shadow-color: rgba(255, 82, 82, 0.3);
+        --table-bg: rgba(30, 5, 5, 0.6);
+        --pre-bg: #0d0202;
+        --nav-active-shadow: rgba(94, 0, 0, 0.55);
+      }
+
+      /* Blue Theme */
+      body.theme-blue {
+        --accent: #448aff;
+        --accent-hover: #82b1ff;
+        --nav-bg: rgba(2, 10, 20, 0.85);
+        --nav-gradient: linear-gradient(135deg, #448aff, #2962ff);
+        --text-main: #e6f0ff;
+        --bg-color: #050f1a;
+        --bg-gradient: radial-gradient(circle at 50% 0%, #002a4d, #050f1a 80%);
+        --h2-border: rgba(68, 138, 255, 0.3);
+        --shadow-color: rgba(68, 138, 255, 0.3);
+        --table-bg: rgba(5, 15, 30, 0.6);
+        --pre-bg: #02080d;
+        --nav-active-shadow: rgba(0, 40, 94, 0.55);
+      }
+
+      /* Green Theme */
+      body.theme-green {
+        --accent: #00e676;
+        --accent-hover: #69f0ae;
+        --nav-bg: rgba(2, 20, 10, 0.85);
+        --nav-gradient: linear-gradient(135deg, #00e676, #00c853);
+        --text-main: #e6f0ea;
+        --bg-color: #051a0f;
+        --bg-gradient: radial-gradient(circle at 50% 0%, #004d26, #051a0f 80%);
+        --h2-border: rgba(0, 230, 118, 0.3);
+        --shadow-color: rgba(0, 230, 118, 0.3);
+        --table-bg: rgba(5, 30, 15, 0.6);
+        --pre-bg: #020d06;
+        --nav-active-shadow: rgba(0, 94, 40, 0.55);
+      }
+
+      a {
+        color: var(--accent);
+        transition: color 0.2s ease;
+      }
+
+      a:hover,
+      a:focus-visible {
+        color: var(--accent-hover);
+      }
+
+      /* Modern pill navigation */
+      .site-nav {
+        width: 100%;
+        margin: 0.5rem auto 1rem;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      .nav-shell {
+        display: inline-flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        gap: 0.35rem;
+        padding: 0.55rem 1.75rem;
+        background: var(--nav-bg);
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 20px 35px rgba(5, 0, 12, 0.45);
+        backdrop-filter: blur(18px);
+        position: relative;
+        isolation: isolate;
+        overflow: visible;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+      }
+
+      .nav-shell::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      .nav-shell::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 999px;
+      }
+
+      .nav-shell::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: var(--nav-gradient);
+        opacity: 0.65;
+        z-index: -2;
+      }
+
+      .nav-shell::after {
+        content: '';
+        position: absolute;
+        inset: 2px;
+        border-radius: inherit;
+        background: rgba(7, 0, 14, 0.65);
+        z-index: -1;
+      }
+
+      .nav-link {
+        position: relative;
+        flex: 0 0 auto;
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        font-size: 0.78rem;
+        white-space: nowrap;
+        color: var(--nav-highlight);
+        background: var(--nav-pill);
+        border: 1px solid transparent;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .nav-link:hover,
+      .nav-link:focus-visible {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 10px 22px rgba(0, 0, 0, 0.35);
+        transform: translateY(-1px);
+      }
+
+      .nav-link:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.4);
+        outline-offset: 3px;
+      }
+
+      .nav-link.is-active {
+        background: var(--nav-gradient);
+        box-shadow: 0 15px 30px var(--nav-active-shadow);
+        color: #fff;
+      }
+
+      .nav-link.is-active::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+      }
+
+      .is-course h2:first-of-type {
+        text-align: center;
+      }
+
+      @media (max-width: 640px) {
+        .nav-shell {
+          overflow-x: auto;
+          justify-content: flex-start;
+          padding: 0.35rem 0.5rem;
+        }
+
+        .nav-link {
+          flex: 0 0 auto;
+          min-width: 110px;
+        }
+
+        .wrapper {
+          padding: 0.5rem 1rem;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        blockquote, hr {
+          max-width: 95%;
+          width: 95%;
+        }
+
+        table {
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        a,
+        .nav-link {
+          transition: none;
+        }
+      }
+
+      /* Page styling to match navbar */
+      body {
+        background-color: var(--bg-color);
+        background-image: var(--bg-gradient);
+        color: var(--text-main);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        text-align: center;
+        transition: background-color 0.5s ease, color 0.5s ease;
+      }
+
+      .wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0.5rem 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      section {
+        width: 100%;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: #fff;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+
+      h1 {
+        background: var(--nav-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+        display: inline-block;
+        font-size: 2.5rem;
+        margin-bottom: 0.25rem;
+        filter: drop-shadow(0 2px 10px var(--shadow-color));
+      }
+
+      h2 {
+        color: var(--accent-hover);
+        border-bottom: 1px solid var(--h2-border);
+        padding-bottom: 0.5rem;
+        display: inline-block;
+        min-width: 50%;
+      }
+
+      hr {
+        border: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        margin: 1rem auto;
+        opacity: 0.6;
+        width: 80%;
+      }
+
+      blockquote {
+        border-left: none;
+        border-top: 2px solid var(--accent);
+        border-bottom: 2px solid var(--accent);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text-main);
+        margin: 1.5rem auto;
+        padding: 1rem;
+        border-radius: 8px;
+        max-width: 80%;
+      }
+
+      code {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--accent-hover);
+        padding: 0.2em 0.4em;
+        border-radius: 4px;
+        font-size: 0.9em;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      pre {
+        background: var(--pre-bg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        text-align: left;
+        margin: 1.5rem auto;
+        max-width: 100%;
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+      }
+
+      pre code {
+        background: none;
+        padding: 0;
+        color: inherit;
+        border: none;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem auto;
+        background: var(--table-bg);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      th, td {
+        padding: 12px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: center;
+      }
+
+      th {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--accent);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+      }
+
+      tr:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      
+      /* Override theme defaults if necessary */
+      section {
+        background: transparent !important;
+      }
+
+      .home-links {
+        text-align: left;
+        width: 100%;
+      }
+
+      .home-links h3 {
+        text-align: left;
+      }
+
+      .home-links hr {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .page-content {
+        width: 100%;
+      }
+
+      .is-course .page-content {
+        text-align: left;
+      }
+
+      .is-course .page-content h2 {
+        display: table;
+        margin: 0.5rem auto;
+      }
+
+      /* Theme Switcher UI */
+      .theme-switcher {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 1000;
+        display: flex;
+        gap: 0.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.5rem;
+        border-radius: 999px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .theme-btn {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+
+      .theme-btn:hover {
+        transform: scale(1.2);
+        border-color: #fff;
+      }
+
+      .theme-btn.purple { background: #ff61d8; }
+      .theme-btn.red { background: #ff5252; }
+      .theme-btn.blue { background: #448aff; }
+      .theme-btn.green { background: #00e676; }
+
+    </style>
+  </head>
+  <body class="is-course">
+
+    <div class="theme-switcher">
+      <div class="theme-btn purple" onclick="setTheme('purple')" title="Purple Theme"></div>
+      <div class="theme-btn red" onclick="setTheme('red')" title="Red Theme"></div>
+      <div class="theme-btn blue" onclick="setTheme('blue')" title="Blue Theme"></div>
+      <div class="theme-btn green" onclick="setTheme('green')" title="Green Theme"></div>
+    </div>
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Matematički fakultet</h1>
+          <hr>
+          
+<nav class="site-nav" aria-label="Primary navigation">
+  <div class="nav-shell" role="menubar">
+    <a role="menuitem" class="nav-link" href="/">Početna</a>
+    <a role="menuitem" class="nav-link" href="/main_pages/prva.html">Prva godina</a>
+    <a role="menuitem" class="nav-link" href="/main_pages/druga.html">Druga godina</a>
+    <a role="menuitem" class="nav-link" href="/main_pages/treca.html">Treća godina</a>
+    <a role="menuitem" class="nav-link" href="/main_pages/cetvrta.html">Četvrta godina</a>
+    <a role="menuitem" class="nav-link" href="/main_pages/master.html">Master</a>
+  </div>
+</nav>
+
+        </div>
+        <div class="page-content">
+          <h2 id="algebra-1">Algebra 1</h2>
+
+<p><br /></p>
+
+<p><a href="http://poincare.matf.bg.ac.rs/~zoranp/algebra-1819.html">Sajt profesora</a></p>
+
+<p><a href="https://drive.google.com/drive/folders/11VuL7_VYkq0sKAVCczjiXN036cHkGkGz?usp=sharing">Materijali</a></p>
+
+        </div>
+      </section>
+
+    </div>
+
+    <script>
+      // Theme Switcher Logic
+      function setTheme(themeName) {
+        document.body.className = document.body.className.replace(/theme-\w+/g, '').trim(); // Remove existing theme classes
+        if (themeName !== 'purple') {
+          document.body.classList.add('theme-' + themeName);
+        }
+        localStorage.setItem('selectedTheme', themeName);
+      }
+
+      // Load saved theme on startup
+      (function() {
+        var savedTheme = localStorage.getItem('selectedTheme');
+        if (savedTheme && savedTheme !== 'purple') {
+          setTheme(savedTheme);
+        }
+      })();
+
+      var allLinks = document.querySelectorAll('a');
+      allLinks.forEach(function(link) {
+          if (link.hostname !== window.location.hostname && link.hostname.length > 0) {
+              link.setAttribute('target', '_blank');
+              link.setAttribute('rel', 'noopener noreferrer');
+          }
+      });
+    </script>
+
+  </body>
+</html>

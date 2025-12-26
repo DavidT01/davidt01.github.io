@@ -1,0 +1,101 @@
+%{
+    #include <iostream>
+    #include <cstdlib>
+    #include <vector>
+    #include <map>
+
+    using namespace std;
+
+    #include "vektor.hpp"
+
+    extern int yylex();
+    void yyerror(string s){
+        cerr << "Sintaksna greska: " << s << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    map<string, Vektor*> promenljive;
+%}
+
+%union{
+    double v;
+    string* s;
+    Vektor* vek;
+}
+
+%left '+' '-'
+%left '*'
+%right UMINUS
+
+%start program
+
+%token DODELA PRINT_T EQV_T UGAO_T
+%token<s> ID
+%token<v> BROJ
+
+%type<v> koef
+%type<vek> izraz lista_koef
+
+%%
+
+program: program naredba ';'
+    | naredba ';'
+    ;
+naredba: ID DODELA izraz                                    {
+                                                                auto it = promenljive.find(*$1);
+                                                                if(it != promenljive.end()){
+                                                                    delete it->second;
+                                                                }
+                                                                promenljive[*$1] = $3;
+                                                                delete $1;
+                                                            }
+    | PRINT_T '(' izraz ')'                                 { cout << *$3 << endl; }
+    | izraz '.' izraz                                       { 
+                                                                double rez = Vektor::dot(*$1, *$3);
+                                                                cout << rez << endl;
+                                                            }
+    | '|' izraz '|'                                         {
+                                                                cout << $2->kardinalnost() << endl;
+                                                            }
+    | EQV_T '(' izraz ',' izraz ')'                         {
+                                                                bool rez = Vektor::ekvivalentni(*$3, *$5);
+                                                                if(rez)
+                                                                    cout << "True" << endl;
+                                                                else
+                                                                    cout << "False" << endl;
+                                                            }
+    | UGAO_T '(' izraz ',' izraz ')'                        {
+                                                                double rez = Vektor::angle(*$3, *$5);
+                                                                cout << rez << endl;
+                                                            }
+    ;
+izraz: ID                                                   {
+                                                                auto it = promenljive.find(*$1);
+                                                                if(it == promenljive.end()){
+                                                                    yyerror("Promenljiva nije definisana");
+                                                                }
+
+                                                                $$ = new Vektor(*it->second);
+                                                                delete $1;
+                                                            }
+    | izraz '+' izraz                                       { $$ = *$1 + *$3; delete $1; delete $3; }
+    | izraz '-' izraz                                       { $$ = *$1 - *$3; delete $1; delete $3; }
+    | BROJ '*' izraz                                        { $$ = *$3 * $1; delete $3; }
+    | '<' lista_koef '>'                                    { $$ = $2; }
+    ;
+lista_koef: lista_koef ',' koef                             { $1->dodajKoef($3); $$ = $1; }
+    | koef                                                  { $$ = new Vektor(); $$->dodajKoef($1); }
+    ;
+koef: BROJ                                                  { $$ = $1; }
+    | '-' BROJ %prec UMINUS                                 { $$ = -$2; }
+    ;
+%%
+
+int main(){
+    if(yyparse() == 0)
+        cout << "Sve ok" << endl;
+    else
+        cout << "Sintaksna greska" << endl;
+
+    return 0;
+}

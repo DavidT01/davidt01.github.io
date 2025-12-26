@@ -1,0 +1,503 @@
+										KONAČNI AUTOMATI
+
+
+
+
+
+*Konačni automat je uređena petorka (sigma, Q, I, F, delta)
+
+- sigma: azbuka automata (dozvoljeni karakteri koje automat može da čita)
+- Q: skup stanja automata (krug)
+- I: početna stanja automata, podskup od Q (ulazna strelica)
+- F: završna stanja automata, podskup od Q (dupli krug)
+- delta: relacije prelaska (strelica), podskup Dekartovog proizvoda Q x (sigma U epsilon) x Q
+
+- Primer1 iz sveske:
+sigma = {0, 1}
+Q = {N, P}
+I = {P}
+F = {P}
+delta = {(P, 1, P), (P, 0, N), (N, 1, N), (N, 0, P)}
+
+- U svakom trenutku moramo znati konfiguraciju automata! Primer1:
+Početna konfiguracija: P, 00011010110
+Sledeća konfiguracija: N, 0011010110
+Sledeća konfiguracija: P, 011010110
+Sledeća konfiguracija: N, 11010110
+Sledeća konfiguracija: N, 1010110
+Sledeća konfiguracija: N, 010110
+Sledeća konfiguracija: P, 10110
+Sledeća konfiguracija: P, 0110
+Sledeća konfiguracija: N, 110
+Sledeća konfiguracija: N, 10
+Sledeća konfiguracija: N, 0
+Zadnja  konfiguracija: P, epsilon
+
+- Poslednja konfiguracija mora biti neko stanje iz skupa F i prazan string (epsilon)
+- Automat prihvata reč ako postoji bar 1 put kojim bi ona završila u stanju iz F. Moramo da ispitamo
+sve moguće konfiguracije da bismo sa sigurnošću rekli da ne prihvata reč.
+
+* Deterministički konačni automati (DKA) su automati koji nemaju neodređene relacije, u kojima
+u svakom trenutku znamo gde idemo. Oni drugi se zovu nedeterministički konačni automati (NDKA)
+
+* Da bi automat bio DKA mora da zadovoljava sledeća pravila:
+
+1) postoji jedno početno stanje <=> |I| = 1
+
+2) nema epsilon-prelaza (prelazi po praznoj reči)
+
+3) za svako stanje po svakom slovu postoji najviše jedan prelaz <=> delta je funkcija: (Q x sigma) -> Q
+
+* Jezik automata je skup svih reči koje automat prihvata
+
+* Kako od regularnog izraza doći do DKA:
+
+1) Tompsonovom konstrukcijom od regularnog izraza dobijemo NDKA sa epsilon-prelazima
+2) Eliminacijom epsilon-prelaza dobijamo NDKA
+3) Determinizacijom od NDKA dobijamo DKA
+4) Minimalizacijom od DKA dobijamo MDKA (minimalni deterministički konačni automat)
+
+ili
+
+1) Gluškovom konstrukcijom od regularnog izraza dobijamo NDKA
+2) Determinizacijom od NDKA dobijamo DKA
+3) Minimalizacijom od DKA dobijamo MDKA (minimalni deterministički konačni automat)
+
+- Gluškova konstrukcija:
+
+1) Numerišemo sva slova (ne operatore)
+2) Početno stanje je 0
+3) Gledamo čime sve reči iz našeg jezika mogu da počnu i u ta stanja idemo iz nule po tim slovima
+4) Gledamo stanje 1, tj. šta sve može doći posle našeg slova u stanju 1
+5) Gledamo stanje 2, tj. šta sve može doći posle našeg slova u stanju 2, itd. sva stanja
+6) Odredimo završna stanja, tj. slova na koja reči mogu da se završe
+
+- Determinizacija (konstrukcija podskupova):
+
+1) Zapišemo automat tablično
+2) Označimo ulazna i završna stanja (završno stanje mora da sadrži bar jedno završno stanje NDKA iz prošlog koraka)
+3) Damo nove nazive stanjima radi lakšeg pisanja pri minimalizaciji (opciono)
+
+- Minimalizacija (Nerodova metoda ekvivalencije):
+
+1) Stanja podelimo u završna i nezavršna stanja
+2) Razbijamo ove dve klase koliko je moguće - prekidamo ako u dva koraka dobijemo iste klase
+3) Napišemo finalnu tablicu i odredimo početna i završna stanja za taj automat
+
+
+
+
+
+										KONTEKSTNO SLOBODNE GRAMATIKE
+
+
+
+
+
+* Regex izrazi - opisuju leksičku strukturu jezika (kako slažemo slova u reči da bi reči imale smisla)
+
+* Gramatika - opisuje sintaksna pravila jezika (kako reči slažemo u rečenice da bi rečenice imale neko značenje)
+- Postoje jezici koji ne mogu da se opišu kontekstno slobodnom gramatikom, ali programski mogu.
+
+* Kontekstno slobodna gramatika je uređena četvorka G = (sigma, N, S, P)
+- sigma: azbuka ili skup završnih simbola (tokeni - ključne reči, brojevi, identifikatori...)
+- N: skup nezavršnih (pomoćnih) simbola (neterminali)
+- S: startni simbol
+- P: skup pravila
+
+Primer 1: jezik L = {a^n * b^n | n >=0}
+sigma = {a, b}
+S -> E/epsilon (prazna reč) | skup
+S -> aSb                    | pravila
+N = {S}
+S = {S}
+
+* Rečenična forma je bilo koja reč iz (N U S)*
+- S je rečenična forma.
+- Ako je AXB rečenična forma i postoji pravilo (X -> G) e P, tada је и AGB takođe rečenična forna.
+Ovo pišemo kao AXB => AGB i kažemo da su ove dve rečenične forme u relaciji izvođenja.
+=> - izvođenje rečeničnih formi
+-> - izvođenje neterminala sa leve strane
+=>+ - izvođenje u jednom ili više koraka (A => B ^ B => C onda A =>+ C) - tranzitivno zatvorenje
+=>* - izvođenje u nula ili više koraka (A => B ^ B => C onda A =>* C) - refleksivno zatvorenje
+
+* L(G) - jezik gramatike G
+L(G) = {w e sigma* | S =>* w}
+
+Primer 2: S => aSb => aaSbb => aaEbb => aabb
+	 S* => aabb e L(G)
+
+* Izvođenje u gramatici G je niz rečeničnih formi takvih da je prva aksioma S i poslednja reč je iz jezika,
+pri čemu su svake dve rečenične forme u relaciji izvođenja.
+
+Primer 3:  Pomoću KSG opisati listu brojeva.
+npr. 505303
+     1, 2
+     1, 3, 2
+     4, 1, 1, 5, 2
+
+sigma = {broj, zarez}
+
+1) lista -> broj, lista
+       \ broj
+Ovo je desno rekurzivna gramatika. Posledica toga je desno grupisanje.
+
+2) lista -> lista, broj
+          \ broj
+Ovo je levo rekurzivna gramatika. Posledica toga je levo grupisanje.
+
+2) lista -> lista, lista
+          \ broj
+Ovo je višeznačna gramatika, tj. ona je i levo i desno rekurzivna.
+
+* Drvo izvođenja:
+1. Koren je uvek startni simbol.
+2. Listovi su završni simboli/tokeni.
+3. Unutrašnji čvorovi su neterminali.
+
+npr. (A -> X1X2X3) e P => A
+			/ | \
+                       X1 X2 X3
+
+- Za istu gramatiku i isti ulaz možemo dobiti dva različita drveta izvođenja.
+- Za gramatike iz primera 1 i 2 nije moguće napraviti dva različita drveta izvođenja - jednoznačne gramatike.
+- Za gramatiku iz primera 3 može - višeznačna gramatika.
+- Isto drvo izvođenja može imati više različitih izvođenja u zavisnosti od tipa obilaska.
+
+* Gramatika je višeznačna ako ima bar jedno pravilo koje je istovremeno i levo i desno rekurzivno.
+
+*** GRAMATIKA IZRAZA ***
+
+Primer 1: Gramatikom opisati sabiranje.
+npr. 3 + 5 + 9 + 7
+
+G1: E -> E + broj ili broj
+G2: E -> broj + E ili broj
+
+- Levo/desno rekurzivnoj gramatici odgovara levo/desno asocijativna operacije.
+
+Primer 2: Gramatikom opisati oduzimanje.
+npr. 3 - 2 - 1
+
+G1: E -> E - broj ili broj
+G2: E -> broj - E ili broj
+Obe dobro opisuju sintaksu, ali desno rekurzivna gramatika nije dobra.
+Minus je levo asocijativna operacija pa nam treba levo asocijativna gramatika.
+G1 opisuje i semantiku (značenje izraza), a G2 ne.
+
+Primer 3: Kombinacija sabiranja i oduzimanja.
+G: E -> E + broj ili E - broj ili broj
+npr. 3 + 2 - 1: E => E - broj => E + broj - broj => broj + broj - broj
+
+Primer 4: Kombinacija množenja i sabiranja.
+npr. 3 + 2 * 5
+G: E -> E + T ili T
+   T -> T * broj ili broj
+- Prioritet smo napravili uvođenjem novih neterminala (ovde T)
+- T je "dublje" od E u gramatici, tj. višeg je prioriteta.
+
+- Šta ako imamo i zagradare? Uvodimo novi neterminal.
+
+* Konačna gramatika izraza: E -> E + T ili T
+			  T -> T * F ili F
+			  F -> ( E ) ili broj
+sigma = {broj, +, *, (, )}
+N = {E, T, F}
+S = {E}
+P = {
+E -> E + T ili T,
+T -> T * F ili F,
+F -> ( E ) ili broj
+}
+
+Primer 5: (2 + 3) * 5
+
+- Više izvođenja ima isto drvo:
+1) Leftmost (levo) izvođenje - menjam najlevlji neterminal
+2) Rightmost (desno) izvođenje - menjam najdesniji neterminal
+
+1) E => T => T * F => F * F => ( E ) * F => (E + T) * F => (T + T) * F => (F + T) * F
+=> (broj + T) * F => (broj + F) * F => (broj + broj) * F => (broj + broj) * broj
+
+2) E => T => T * F => T * broj => F * broj => ( E ) * broj => (E + T) * broj =>
+(E + F) * broj => (E + broj) * broj => (F + broj) * broj => (T + broj) * broj =>
+(broj + broj) * broj
+
+Primer 6: Napisati gramatiku koja opisuje deklaracije promenljivih u Javi.
+npr. 
+int a;
+float x, y;
+Point p, q;
+double[] niz;
+
+niz_dekl -> niz_dekl dekl ili dekl
+dekl -> tip niz_prom tz
+tip -> el_tip, ID, tip[]
+el_tip -> float, double, int, boolean
+niz_prom -> niz_prom, prom ili ID
+
+
+
+
+
+										TRANSFORMACIJA GRAMATIKA
+
+
+
+
+
+
+* Gramatika:
+A -> aB
+B -> bB ili B
+C -> d
+
+- C je nedostižan simbol, ne nalazi se sa desne strane drugih pravila. Ta pravila precrtamo.
+- D0 = {A} - skup simbola dostižnih u 0 koraka
+- D1 = {A, B} - skup simbola dostižnih u 1 koraku
+- D2 = {A, B} - skup simbola dostižnih u 2 koraka
+D1 = D2 => delta = {A, B} => C je nedostižan.
+
+* Gramatika:
+A -> BAa ili b
+B -> BC ili C
+C -> CC
+
+- C je neproduktivan simbol, pravi izvođenje koje se nikad neće završiti.
+
+npr. A => b - okej
+     A => BAa => CAa => CCAa => CCCAa => ... - nije okej
+
+- B je neproduktivan simbol, jer sadrži C. Precrtamo sve sa B i C.
+Na kraju ostaje gramatika: A -> b
+
+* Kako lakše uraditi ovo? 
+npr:
+A -> BAa ili b
+B -> BC ili C
+C -> CC
+D -> aA ili AB
+
+Odredimo produktivne simbole:
+P1 = {A} - produktivni u jednom koraku (jer A -> b)
+P2 = {A, D} - produktivni u dva koraka (jer D -> aA -> ab)
+P3 = {A, D} - produktivni u 3 koraka - nema novih
+P2 = P3 => delta = {A, D} => B i C su neproduktivni, uklanjamo ih
+Uklanjamo i D jer je nedostižan
+Na kraju ostaje: A -> b
+
+* Simbol A je anulirajući ako A =>* E (epsilon je prazna reč)
+npr:
+A -> BC ili Da
+B -> CC ili b
+C -> BC ili E
+D -> AD ili E
+
+C i D su anulirajući jer izvode epsilon direktno
+A1 = {C, D} - oni koji izvode epsilon u jednom koraku (jer C -> E i D -> E)
+A2 = {C, D, B} - oni koji izvode epsilon u dva koraka (jer B -> CC)
+A3 = {C, D, B, A} - oni koji izvode epsilon u tri koraka (jer A -> BC)
+Ovo znači da jezik sadrži praznu reč, E se ne može eliminisati.
+Onda treba da transformišemo gramatiku u epsilon slobodnu gramatiku.
+
+* Transformacija:
+1) Ako je startni simbol anulirajući, uvodimo novi u koji nema vraćanja.
+A' -> A | E
+A -> BC | Da | C | B | a - proširimo skup, dodajemo šta imamo ako anuliramo redom B, C ili D
+B -> CC | b | C
+C -> BC | B | C - epsilon ne treba jer imamo gore
+D -> AD | A | D
+Ovo je epsilon slobodna gramatika.
+Pravila C -> C i D -> D su beskorisna pa ih uklonimo. Dobijamo:
+A' -> A | E
+A -> BC | Da | C | B | a
+B -> CC | b | C
+C -> BC | B
+D -> AD | A
+
+*** Eliminacija leve rekurzije ***
+
+X -> XA - levo rekurzivna (ovo ne želimo)
+X -> AX - desno rekurzivna
+
+Ne želimo ni posrednu levu rekurziju
+S -> AB -> SAB
+S -> AB -> ABS - posredna desna rekurzija, to je okej
+
+* Kako eliminisati levu rekurziju?
+npr. А -> Aa | b
+A => Aa => Aaa => baa, L(G) = ba*
+
+- Uočimo koje pravilo nije levo rekurzivno, to je ovde A -> b
+A -> bA' - na njega dodamo pravilo A'
+A' -> aA' | E - A' će biti obrnuto od levo rekurzivnog pravila ili epsilon
+Ovde je uklonjena leva rekurzija
+A1 = {A'}
+A2 = {A'}
+A -> bA' | b
+A' -> aA' | a
+Ovde je gramatika epsilon slobodna
+
+Primer 1:
+A -> Aa1 | Aa2 | b1 | b2
+L(G) = (b1 | b2)(a1 | a2)*
+Gramatika bez leve rekruzije:
+A -> b1A' | b2A'
+A' -> a1A' | a2A' | E
+Odnosno bez epsilon:
+A -> b1A' | b2A' | b1 | b2
+A' -> a1A' | a2A' | a1 | a2
+
+* U opštem slučaju transformacija:
+1) Uklanjanje neproduktivnih simbola
+2) Uklanjanje nedostižnih simbola
+3) Uklanjanje anulirajućih simbola
+4) Eliminacija leve rekurzije
+
+
+
+
+
+
+
+										SINTAKSNA ANALIZA NANIŽE
+
+
+
+
+
+
+
+* Leksička analiza - tokenizacija ulaza, pravimo tokene od stringa koji je ulaz. Ti tokeni su ulaz za sintaksnu analizu.
+
+* Sintaksna analiza - prihvata niz tokena od leksičkog analizatora i proverava njihovu saglasnost sa sintaksnim pravilima jezika.
+To je proces utvrđivanja da li se data reč jezika može generisati gramatikom ili ne.
+- Složenost sintaksne analize je O(n), gde je n broj tokena na ulazu.
+- Tokom analize ulaz se skenira s' leva na desno i dovoljan je jedan token da se odluči o sledećem koraku analize.
+
+* Sintaksna analiza naniže
+- Počinjemo od startnog simbola S i tokom analize generišemo izvođenje na levo niske tokena koja se sa leva na desno
+upoređuje sa niskom na ulazu.
+- Na osnovu preduvidnih simbola (tokena) u niski tokena određujemo koja pravila sledeća primenjujemo.
+
+* Gramatike LL(1) dopuštaju da se prilikom analize naniže pročita samo jedan token sa ulaza i to je preduvidni simbol,
+da bi se jednoznačno odredilo koje se pravilo primenjuje u datom trenutku.
+- Gramatika koja ima levo rekurzivno ili levo faktorisano pravilo ne može biti LL(1)
+- Levo faktorisano pravilo:
+a, b, c e sigma, A e P
+A -> ab | ac (levo faktorisano pravilo)
+- Eliminacija leve faktorizacije:
+A -> aA'
+A' -> b | c
+
+Primer 1: Gramatika izraza sa + i *
+E -> E + T | T
+T -> T * F | F
+F -> ( E ) | broj
+sigma = {broj, +, *, (, )}
+
+1) Ova gramatika je levo rekuzivna pa je moramo eliminisati:
+E -> TE'
+E' -> T + E' | epsilon
+T -> FT'
+T' -> F * T' | epsilon
+F -> ( E ) | broj
+
+2) Određivanje skupova izbora - skup tokena koji određuju koje pravilo treba da se primeni. Svaka grana ima svoj skup izbora.
+Crtamo i popunjavamo tablicu, treba nam redova onoliko koliko imamo simbola.
+- Skup First određujemo tako što crtamo graf i gledamo čime počinju simboli dok ne dođemo do tokena.
+- Skup Follow su tokeni kojima se simbol završava. Startni simbol se uvek završava sa EOI.
+Gledamo gde se simbol nalazi sa desne strane pravila i šta je iza njega.
+Ako se simbol B koji je na kraju izvodi iz simbola A, onda ono što se nalazi iza A nalazi se i iza B.
+- Ako je grana anulirajuća skup izbora je Follow, a ako nije onda je First.
+- Ako pravilo ima više grana presek njihovih skupova mora biti disjunktan.
+
+* Konstrukcija LL(1) gramatike:
+
+1) Naivna gramatika
+2) Eliminacija leve rekurzije
+3) First i Follow skupovi
+4) Skupovi izbora
+5) Provera disjunktnosti skupova pravila sa više grana
+
+Primer 2: LL(1) gramatikom opisati deklaracije u Javi.
+
+
+
+
+
+
+
+
+										SINTAKSNA ANALIZA NAVIŠE
+
+
+
+
+
+
+* Primer1 - izrazi:
+E -> E + T | T
+T -> T * F | F
+F -> ( E ) | BROJ
+
+- Tablica akcija/stek/ulaz u svesci
+
+- Ova analiza se zove LR(1) analiza, tj. analiza naviše.
+
+* Kako razrešiti S/R i R/R konflikte:
+
+- Primer2:
+E -> E + T | T
+T -> num
+
+1) Uvedemo novi startni simbol, koji se ne nalazi ni sa koje desne strane pravila i koji ide u stari startni simbol
+E0 -> E
+E -> E + T | T
+T -> num
+
+2) Numerišemo pravila od nule
+0. E0 -> E
+1. E -> E + T
+2. E -> T
+3. T -> num
+
+3) Konstruišemo konačni automat:
+
+- Stanja konačnog automata će biti skupovi itema.
+Itemi su pravila koja negde sa desne strane imaju tačkicu.
+Tačkica označava dokle smo stigli do prepoznavanja. Na početku uzimamo nulto pravilo i stavljamo tačkicu ispred desne strane,
+što znači da ništa još nismo prepoznali.
+
+- Ako item koji smo dodali ima tačkicu ispred neterminala, onda dodajemo iteme koji imaju taj neterminal.
+Tačkice su takođe ispred celog izraza.
+
+- Prelaze imamo i po terminalima i po neterminalima koji su iza tačkice. Tačkica se u sledećim stanjima pomera.
+
+- Stanjima automata dodeljujemo shift i reduce akcije:
+Ako postoji prelaz po terminalu dodajemo shift akciju po tom terminalu.
+Ako postoji item sa tačkicom na kraju dodajemo reduce akciju po pravilu koje se koristi.
+
+- Ne valjaju stanja koja imaju i R i S stanje ili R i R stanje - to su S/R i R/R konflikti:
+Reduce radimo kada je na ulazu Follow od leve strane, tako da određujemo Follow skupove.
+
+- Kada razrešimo konflikte dobijemo SLR(1) gramatiku.
+
+4) Napravimo action-goto tablicu
+
+- Redovi su stanja, vrste su prvo terminali pa neterminali.
+
+5) Simuliramo ulaz za neku reč (opciono)
+
+
+
+
+
+
+
+
+
+
+
+
+

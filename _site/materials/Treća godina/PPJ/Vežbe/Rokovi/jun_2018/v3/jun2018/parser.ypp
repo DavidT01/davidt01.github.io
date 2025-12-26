@@ -1,0 +1,92 @@
+%{
+    #include <iostream>
+    #include <cstdlib>
+    #include <vector>
+    #include <map>
+
+    using namespace std;
+
+    #include "matrice.hpp"
+
+    extern int yylex();
+
+    void yyerror(string s){
+        cerr << "Sintaksna greska: " << s << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    map<string, Matrica*> promenljive;
+%}
+
+%union{
+    int v;
+    string* s;
+    Matrica* m;
+    vector<int>* vec;
+}
+
+%left PLUS
+%left MUL
+%left '*'
+%left '\''
+
+%token DISP SIZE
+%token<s> ID
+%token<v> BROJ
+
+%type<m> izraz nizvrsta
+%type<vec> vrsta nizbrojeva
+
+%start program
+
+%%
+
+program: program naredba '\n'
+    | naredba '\n'
+    ;
+naredba: ID '=' izraz                                   {
+                                                            auto it = promenljive.find(*$1);
+                                                            if(it != promenljive.end()){
+                                                                delete it->second;
+                                                            }
+
+                                                            promenljive[*$1] = $3;
+                                                            delete $1;
+                                                        }
+    | DISP '(' izraz ')'                                { cout << *$3 << endl; }
+    | SIZE '(' izraz ')'                                { $3->size(); }
+    ;
+izraz: '[' nizvrsta ']'                                 { $$ = $2; }
+    | izraz PLUS izraz                                  { $$ = *$1 + *$3; delete $1; delete $3; }
+    | izraz MUL izraz                                   { $$ = *$1 % *$3; delete $1; delete $3; }
+    | izraz '*' izraz                                   { $$ = *$1 * *$3; delete $1; delete $3; }
+    | izraz '\''                                        { $$ = $1->transp(); delete $1; }
+    | ID                                                {
+                                                            auto it = promenljive.find(*$1);
+                                                            if(it == promenljive.end()){
+                                                                yyerror("Promenljiva nije definisana");
+                                                            }
+
+                                                            $$ = new Matrica(*it->second);
+                                                            delete $1;
+                                                        }
+    ;
+nizvrsta: nizvrsta ';' vrsta                            { $1->dodaj_vrstu(*$3); $$ = $1; }
+    | vrsta                                             { $$ = new Matrica(); $$->dodaj_vrstu(*$1); }
+    ;
+vrsta: '[' nizbrojeva ']'                               { $$ = $2; }
+    ;
+nizbrojeva:  nizbrojeva ',' BROJ                        { $1->push_back($3); $$ = $1; }
+    | BROJ                                              { $$ = new vector<int>(); $$->push_back($1); }
+    ;
+
+%%
+
+int main(){
+    if(yyparse() == 0)
+        cout << "sve ok" << endl;
+    else
+        cout << "sintaksna greska" << endl;
+
+    return 0;
+}

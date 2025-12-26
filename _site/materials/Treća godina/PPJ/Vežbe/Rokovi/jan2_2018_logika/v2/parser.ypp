@@ -1,0 +1,175 @@
+%{
+    #include <iostream>
+    #include <vector>
+    #include <map>
+    #include <vector>
+
+    using namespace std;
+
+    #define FALSE (0)
+    #define TRUE (1)
+    #define UNDEF (2)
+
+    extern int yylex();
+
+    void yyerror(string s){
+        cerr << "Sintaksna greska: " << s << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    map<string, vector<int>*> promenljive;
+%}
+
+%union{
+    string* s;
+    int v;
+    vector<int>* vec;
+}
+
+%left IMPL
+%left EKV
+%left CONJ DISJ
+%right '!'
+%left '['
+
+%token CONJ DISJ IMPL EKV DODELA HEAD TAIL
+%token<s> ID LIST_ID
+%token<v> CONST BROJ
+
+%type<v> izraz
+%type<vec> lista lista_izraza
+
+%start program
+
+%%
+
+program: program naredba '\n'
+    | naredba '\n'
+    ;
+naredba: izraz                                      {
+                                                        if($1 == UNDEF){
+                                                            cout << "Undef" << endl;
+                                                        }else if($1 == TRUE){
+                                                            cout << "True" << endl;
+                                                        }else{
+                                                            cout << "False" << endl;
+                                                        }
+                                                    }
+    | ID DODELA izraz                               {
+                                                        auto it = promenljive.find(*$1);
+                                                        if(it != promenljive.end()){
+                                                            it->second->clear();
+                                                            it->second->push_back($3);
+                                                        }else{
+                                                            vector<int>* vec = new vector<int>();
+                                                            vec->push_back($3);
+
+                                                            promenljive.insert({*$1, vec});
+                                                        }
+                                                        
+                                                        delete $1; 
+                                                    }
+    | LIST_ID DODELA lista                          {
+                                                        auto it = promenljive.find(*$1);
+                                                        if(it != promenljive.end()){
+                                                            delete it->second;
+                                                            it->second = $3;
+                                                        }else{
+                                                            vector<int>* vec = new vector<int>(*$3);
+                                                            promenljive.insert({*$1, vec});
+                                                        }
+
+                                                        delete $1;
+                                                    }
+    ;
+izraz: izraz CONJ izraz                             {
+                                                        if($1 == FALSE && $3 == FALSE){
+                                                            $$ = FALSE;
+                                                        }else if($1 == TRUE && $3 == TRUE){
+                                                            $$ = TRUE;
+                                                        }else{
+                                                            $$ = UNDEF;
+                                                        }
+                                                    }
+    | izraz DISJ izraz                              {
+                                                        if($1 == TRUE && $3 == TRUE){
+                                                            $$ = TRUE;
+                                                        }else if($1 == FALSE){
+                                                            $$ = $3;
+                                                        }else if($3 == FALSE){
+                                                            $$ = $1;
+                                                        }else{
+                                                            $$ = UNDEF;
+                                                        }
+                                                    }
+    | izraz IMPL izraz                              {
+                                                        if($1 == TRUE){
+                                                            $$ = $3;
+                                                        }else{
+                                                            $$ = TRUE;
+                                                        }
+                                                    }
+    | izraz EKV izraz                               { $$ = $1 == $3; }
+    | '(' izraz ')'                                 { $$ = $2; }
+    | '!' izraz                                     {
+                                                        if($2 != UNDEF){
+                                                            $$ = !$2;
+                                                        }else{
+                                                            $2 = UNDEF;
+                                                        }
+                                                    }
+    | ID                                            {
+                                                        auto it = promenljive.find(*$1);
+                                                        if(it == promenljive.end()){
+                                                            vector<int>* vec = new vector<int>();
+                                                            vec->push_back(UNDEF);
+
+                                                            promenljive.insert({*$1, vec});
+                                                        }
+                                                        it = promenljive.find(*$1);
+                                                        $$ = (*it->second)[0];
+                                                        delete $1;
+                                                    }
+    | CONST                                         { $$ = $1; }
+    | HEAD '(' lista ')'                            { $$ = (*$3)[0]; delete $3; }
+    | lista '[' BROJ ']'                            {
+                                                        if($3 > $1->size()){
+                                                            yyerror("Index out of bounds");
+                                                        }
+
+                                                        $$ = (*$1)[$3];
+                                                        delete $1;
+                                                    }
+    ;
+lista: '[' lista_izraza ']'                         { $$ = $2; }
+    | TAIL '(' lista ')'                            {
+                                                        $$ = new vector<int>();
+                                                        for(int i=1; i<$3->size(); i++){
+                                                            $$->push_back((*$3)[i]);
+                                                        }
+
+                                                        delete $3;
+                                                    }
+    | LIST_ID                                       {
+                                                        auto it = promenljive.find(*$1);
+                                                        if(it == promenljive.end()){
+                                                            yyerror("Lista nije definisana");
+                                                        }
+
+                                                        $$ = new vector<int>(*it->second);
+                                                        delete $1;
+                                                    }
+    ;
+lista_izraza: lista_izraza ',' izraz                { $1->push_back($3); $$ = $1; }
+    | izraz                                         { $$ = new vector<int>(); $$->push_back($1); }
+    ;
+%%
+
+int main(){
+    if(yyparse() == 0)
+        cout << "sve ok" << endl;
+    else
+        cout << "sintaksna greska" << endl;
+
+    return 0;
+}

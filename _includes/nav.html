@@ -1,15 +1,11 @@
-<nav class="site-nav">
-  <strong>
-    <a href="{{ '/' | relative_url }}">Početna</a>
-    |
-    <a href="{{ '/main_pages/prva.html' | relative_url }}">Prva godina</a>
-    |
-    <a href="{{ '/main_pages/druga.html' | relative_url }}">Druga godina</a>
-    |
-    <a href="{{ '/main_pages/treca.html' | relative_url }}">Treća godina</a>
-    |
-    <a href="{{ '/main_pages/cetvrta.html' | relative_url }}">Četvrta godina</a>
-    |
-    <a href="{{ '/main_pages/master.html' | relative_url }}">Master</a>
-  </strong>
+{% assign current_url = page.url | default: '/' %}
+<nav class="site-nav" aria-label="Primary navigation">
+  <div class="nav-shell" role="menubar">
+    <a role="menuitem" class="nav-link{% if current_url == '/' or current_url == '/index.html' %} is-active{% endif %}" href="{{ '/' | relative_url }}">Početna</a>
+    <a role="menuitem" class="nav-link{% if current_url contains '/main_pages/prva' %} is-active{% endif %}" href="{{ '/main_pages/prva.html' | relative_url }}">Prva godina</a>
+    <a role="menuitem" class="nav-link{% if current_url contains '/main_pages/druga' %} is-active{% endif %}" href="{{ '/main_pages/druga.html' | relative_url }}">Druga godina</a>
+    <a role="menuitem" class="nav-link{% if current_url contains '/main_pages/treca' %} is-active{% endif %}" href="{{ '/main_pages/treca.html' | relative_url }}">Treća godina</a>
+    <a role="menuitem" class="nav-link{% if current_url contains '/main_pages/cetvrta' %} is-active{% endif %}" href="{{ '/main_pages/cetvrta.html' | relative_url }}">Četvrta godina</a>
+    <a role="menuitem" class="nav-link{% if current_url contains '/main_pages/master' %} is-active{% endif %}" href="{{ '/main_pages/master.html' | relative_url }}">Master</a>
+  </div>
 </nav>

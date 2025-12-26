@@ -1,0 +1,606 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: program naredba ';'
+    2        | naredba ';'
+
+    3 naredba: ID DODELA izraz
+    4        | PRINT '(' izraz ')'
+    5        | izraz '.' izraz
+    6        | '|' izraz '|'
+    7        | UGAO '(' izraz ',' izraz ')'
+    8        | EQV '(' izraz ',' izraz ')'
+
+    9 izraz: '<' listabrojeva '>'
+   10      | ID
+   11      | izraz '+' izraz
+   12      | izraz '-' izraz
+   13      | '(' izraz ')'
+   14      | koef '*' izraz
+
+   15 listabrojeva: listabrojeva ',' koef
+   16             | koef
+
+   17 koef: BROJ
+   18     | '-' BROJ
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '(' (40) 4 7 8 13
+    ')' (41) 4 7 8 13
+    '*' (42) 14
+    '+' (43) 11
+    ',' (44) 7 8 15
+    '-' (45) 12 18
+    '.' (46) 5
+    ';' (59) 1 2
+    '<' (60) 9
+    '>' (62) 9
+    '|' (124) 6
+    error (256)
+    UMINUS (258)
+    PRINT (259) 4
+    DODELA (260) 3
+    UGAO (261) 7
+    EQV (262) 8
+    ID <s> (263) 3 10
+    BROJ <d> (264) 17 18
+
+
+Nonterminals, with rules where they appear
+
+    $accept (21)
+        on left: 0
+    program (22)
+        on left: 1 2
+        on right: 0 1
+    naredba (23)
+        on left: 3 4 5 6 7 8
+        on right: 1 2
+    izraz <v> (24)
+        on left: 9 10 11 12 13 14
+        on right: 3 4 5 6 7 8 11 12 13 14
+    listabrojeva <v> (25)
+        on left: 15 16
+        on right: 9 15
+    koef <d> (26)
+        on left: 17 18
+        on right: 14 15 16
+
+
+State 0
+
+    0 $accept: • program $end
+
+    '-'    shift, and go to state 1
+    PRINT  shift, and go to state 2
+    UGAO   shift, and go to state 3
+    EQV    shift, and go to state 4
+    ID     shift, and go to state 5
+    BROJ   shift, and go to state 6
+    '('    shift, and go to state 7
+    '|'    shift, and go to state 8
+    '<'    shift, and go to state 9
+
+    program  go to state 10
+    naredba  go to state 11
+    izraz    go to state 12
+    koef     go to state 13
+
+
+State 1
+
+   18 koef: '-' • BROJ
+
+    BROJ  shift, and go to state 14
+
+
+State 2
+
+    4 naredba: PRINT • '(' izraz ')'
+
+    '('  shift, and go to state 15
+
+
+State 3
+
+    7 naredba: UGAO • '(' izraz ',' izraz ')'
+
+    '('  shift, and go to state 16
+
+
+State 4
+
+    8 naredba: EQV • '(' izraz ',' izraz ')'
+
+    '('  shift, and go to state 17
+
+
+State 5
+
+    3 naredba: ID • DODELA izraz
+   10 izraz: ID •
+
+    DODELA  shift, and go to state 18
+
+    $default  reduce using rule 10 (izraz)
+
+
+State 6
+
+   17 koef: BROJ •
+
+    $default  reduce using rule 17 (koef)
+
+
+State 7
+
+   13 izraz: '(' • izraz ')'
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 20
+    koef   go to state 13
+
+
+State 8
+
+    6 naredba: '|' • izraz '|'
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 21
+    koef   go to state 13
+
+
+State 9
+
+    9 izraz: '<' • listabrojeva '>'
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 6
+
+    listabrojeva  go to state 22
+    koef          go to state 23
+
+
+State 10
+
+    0 $accept: program • $end
+    1 program: program • naredba ';'
+
+    $end   shift, and go to state 24
+    '-'    shift, and go to state 1
+    PRINT  shift, and go to state 2
+    UGAO   shift, and go to state 3
+    EQV    shift, and go to state 4
+    ID     shift, and go to state 5
+    BROJ   shift, and go to state 6
+    '('    shift, and go to state 7
+    '|'    shift, and go to state 8
+    '<'    shift, and go to state 9
+
+    naredba  go to state 25
+    izraz    go to state 12
+    koef     go to state 13
+
+
+State 11
+
+    2 program: naredba • ';'
+
+    ';'  shift, and go to state 26
+
+
+State 12
+
+    5 naredba: izraz • '.' izraz
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    '.'  shift, and go to state 29
+
+
+State 13
+
+   14 izraz: koef • '*' izraz
+
+    '*'  shift, and go to state 30
+
+
+State 14
+
+   18 koef: '-' BROJ •
+
+    $default  reduce using rule 18 (koef)
+
+
+State 15
+
+    4 naredba: PRINT '(' • izraz ')'
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 31
+    koef   go to state 13
+
+
+State 16
+
+    7 naredba: UGAO '(' • izraz ',' izraz ')'
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 32
+    koef   go to state 13
+
+
+State 17
+
+    8 naredba: EQV '(' • izraz ',' izraz ')'
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 33
+    koef   go to state 13
+
+
+State 18
+
+    3 naredba: ID DODELA • izraz
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 34
+    koef   go to state 13
+
+
+State 19
+
+   10 izraz: ID •
+
+    $default  reduce using rule 10 (izraz)
+
+
+State 20
+
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | '(' izraz • ')'
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    ')'  shift, and go to state 35
+
+
+State 21
+
+    6 naredba: '|' izraz • '|'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    '|'  shift, and go to state 36
+
+
+State 22
+
+    9 izraz: '<' listabrojeva • '>'
+   15 listabrojeva: listabrojeva • ',' koef
+
+    ','  shift, and go to state 37
+    '>'  shift, and go to state 38
+
+
+State 23
+
+   16 listabrojeva: koef •
+
+    $default  reduce using rule 16 (listabrojeva)
+
+
+State 24
+
+    0 $accept: program $end •
+
+    $default  accept
+
+
+State 25
+
+    1 program: program naredba • ';'
+
+    ';'  shift, and go to state 39
+
+
+State 26
+
+    2 program: naredba ';' •
+
+    $default  reduce using rule 2 (program)
+
+
+State 27
+
+   11 izraz: izraz '+' • izraz
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 40
+    koef   go to state 13
+
+
+State 28
+
+   12 izraz: izraz '-' • izraz
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 41
+    koef   go to state 13
+
+
+State 29
+
+    5 naredba: izraz '.' • izraz
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 42
+    koef   go to state 13
+
+
+State 30
+
+   14 izraz: koef '*' • izraz
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 43
+    koef   go to state 13
+
+
+State 31
+
+    4 naredba: PRINT '(' izraz • ')'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    ')'  shift, and go to state 44
+
+
+State 32
+
+    7 naredba: UGAO '(' izraz • ',' izraz ')'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    ','  shift, and go to state 45
+
+
+State 33
+
+    8 naredba: EQV '(' izraz • ',' izraz ')'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    ','  shift, and go to state 46
+
+
+State 34
+
+    3 naredba: ID DODELA izraz •
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+
+    $default  reduce using rule 3 (naredba)
+
+
+State 35
+
+   13 izraz: '(' izraz ')' •
+
+    $default  reduce using rule 13 (izraz)
+
+
+State 36
+
+    6 naredba: '|' izraz '|' •
+
+    $default  reduce using rule 6 (naredba)
+
+
+State 37
+
+   15 listabrojeva: listabrojeva ',' • koef
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 6
+
+    koef  go to state 47
+
+
+State 38
+
+    9 izraz: '<' listabrojeva '>' •
+
+    $default  reduce using rule 9 (izraz)
+
+
+State 39
+
+    1 program: program naredba ';' •
+
+    $default  reduce using rule 1 (program)
+
+
+State 40
+
+   11 izraz: izraz • '+' izraz
+   11      | izraz '+' izraz •
+   12      | izraz • '-' izraz
+
+    $default  reduce using rule 11 (izraz)
+
+
+State 41
+
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   12      | izraz '-' izraz •
+
+    $default  reduce using rule 12 (izraz)
+
+
+State 42
+
+    5 naredba: izraz '.' izraz •
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+
+    $default  reduce using rule 5 (naredba)
+
+
+State 43
+
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   14      | koef '*' izraz •
+
+    $default  reduce using rule 14 (izraz)
+
+
+State 44
+
+    4 naredba: PRINT '(' izraz ')' •
+
+    $default  reduce using rule 4 (naredba)
+
+
+State 45
+
+    7 naredba: UGAO '(' izraz ',' • izraz ')'
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 48
+    koef   go to state 13
+
+
+State 46
+
+    8 naredba: EQV '(' izraz ',' • izraz ')'
+
+    '-'   shift, and go to state 1
+    ID    shift, and go to state 19
+    BROJ  shift, and go to state 6
+    '('   shift, and go to state 7
+    '<'   shift, and go to state 9
+
+    izraz  go to state 49
+    koef   go to state 13
+
+
+State 47
+
+   15 listabrojeva: listabrojeva ',' koef •
+
+    $default  reduce using rule 15 (listabrojeva)
+
+
+State 48
+
+    7 naredba: UGAO '(' izraz ',' izraz • ')'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    ')'  shift, and go to state 50
+
+
+State 49
+
+    8 naredba: EQV '(' izraz ',' izraz • ')'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    ')'  shift, and go to state 51
+
+
+State 50
+
+    7 naredba: UGAO '(' izraz ',' izraz ')' •
+
+    $default  reduce using rule 7 (naredba)
+
+
+State 51
+
+    8 naredba: EQV '(' izraz ',' izraz ')' •
+
+    $default  reduce using rule 8 (naredba)

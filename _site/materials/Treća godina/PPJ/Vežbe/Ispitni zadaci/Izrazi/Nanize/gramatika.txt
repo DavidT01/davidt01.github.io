@@ -1,0 +1,27 @@
+program: program naredba
+	| naredba
+	;
+naredba: INT_T ID '\n'
+	| INT_T ID '=' ID '\n'
+	| ID '=' ID '\n'
+	| PRINT_T '(' ID ')' '\n'
+	| PRINT_T '(' ID ',' BROJ ')' '\n'
+	;
+	
+1) Eliminisemo levu rekurziju i levu faktorizaciju
+
+program: naredba programP      {INT_T, ID, PRINT_T}
+	;
+programP: naredba programP     {INT_T, ID, PRINT_T}
+	| EPSILON				   {EOI}
+	;
+naredba: INT_T ID dodela       {INT_T}
+	| ID '=' ID				   {ID}
+	| PRINT_T '(' ID stampa    {PRINT_T}
+	;
+dodela: '\n'                   {'\n'}
+	| '=' ID '\n'			   {'='}
+	;
+stampa: ')' '\n'               {')'}
+	| ',' BROJ ')' '\n'        {','}
+	;

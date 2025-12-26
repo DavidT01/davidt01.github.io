@@ -1,0 +1,89 @@
+%{
+    #include <iostream>
+    #include <cstdlib>
+    #include <map>
+
+    using namespace std;
+
+    #include "razlomak.hpp"
+
+    extern int yylex();
+
+    void yyerror(string s){
+        cerr << "Sintaksna greska: " << s << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    map<string, Razlomak*> promenljive;
+%}
+
+%union{
+    int val;
+    string* s;
+    Razlomak* r;
+}
+
+%left '+' '-'
+%left '*' '/'
+
+%start program
+
+%token PRINT NOM DEN DOUBLE EQUALS
+%token<val> BROJ
+%token<s> ID
+
+%type<r> izraz
+
+%%
+
+program: program naredba '\n'
+    | naredba '\n'
+    ;
+naredba: izraz                                      { delete $1; }
+    | ID '=' izraz                                  {
+                                                        auto it = promenljive.find(*$1);
+                                                        if(it != promenljive.end()){
+                                                            delete it->second;
+                                                        }
+
+                                                        promenljive[*$1] = $3;
+                                                        delete $1;
+                                                    }
+    | PRINT '(' izraz ')'                           { cout << *$3 << endl; delete $3; }
+    | NOM '(' izraz ')'                             { cout << $3->getBrojilac() << endl; delete $3; }
+    | DEN '(' izraz ')'                             { cout << $3->getImenilac() << endl; delete $3; }
+    | DOUBLE '(' izraz ')'                          { cout << $3->razlomakKaoDouble() << endl; delete $3; }
+    | EQUALS '(' izraz ',' izraz ')'                { 
+                                                        if($3->equals(*$5))
+                                                            cout << "True" << endl;
+                                                        else
+                                                            cout << "False" << endl;
+
+                                                         delete $3; delete $5;
+                                                    }
+    ;
+izraz: '[' BROJ ',' BROJ ']'                        { $$ = new Razlomak($2, $4); }
+    | '[' BROJ ']'                                  { $$ = new Razlomak($2, 1); }
+    | izraz '+' izraz                               { $$ = *$1 + *$3; delete $1; delete $3; }
+    | izraz '-' izraz                               { $$ = *$1 - *$3; delete $1; delete $3; }
+    | izraz '*' izraz                               { $$ = *$1 * *$3; delete $1; delete $3; }
+    | izraz '/' izraz                               { $$ = *$1 / *$3; delete $1; delete $3; }
+    | '(' izraz ')'                                 { $$ = $2; }
+    | ID                                            {
+                                                        auto it = promenljive.find(*$1);
+                                                        if(it == promenljive.end()){
+                                                            yyerror("promenljiva nije definisana");
+                                                        }
+
+                                                        $$ = new Razlomak(*it->second);
+                                                        delete $1;
+                                                    }
+    ;
+%%
+
+int main(){
+    if(yyparse() == 0)
+        cout << "sve ok" << endl;
+    else
+        cout << "sintax greska" << endl;
+}

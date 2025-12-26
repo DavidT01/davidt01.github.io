@@ -1,0 +1,125 @@
+kombinacija 1:
+1. Veb dizajn
+2. Konstruktori i prototipovi
+3. Putanje i upiti (node)
+4. Sgml komentari i instrukcije procesiranja
+5. Logicki tip u js
+
+kombinacija 2:
+1. Funkcionalni opis interneta
+2. Xml prosirenja i restrikcije
+3. Implicitna konverzija
+4. Selektivno hvatanje izuzetaka
+5. Direktan rad sa datotekama
+
+kombinacija 3:
+1. strukturni opis interneta
+2. DTD entiteti. Primeri
+3. Korišćenje povratnog poziva nad svakim članom niza. Primeri
+4. Hvatanje grešaka u programskom kodu. Primeri
+5. Java skript veb programiranje korišćenjem okruženja Node. Obrada veb formulara. Metod GET
+
+kombinacija 4:
+1. Internet servisi. Udaljen pristup
+2. XML. DTD i XML sheme
+3. Objekti
+4. Reagovanje na greške. Primeri
+5. Događaji kod okruženja Node. Primeri
+
+kombinacija 5:
+1. DSL
+2. FTP
+3. Iskakanje i preskakanje iteracije u ciklusu. Primeri
+4. Asinhrono programiranje i obecanja. Primeri
+5. Npm. Primeri
+
+kombinacija 6:
+1. Internet servisi. Veb pretrazivanje
+2. TCP/IP. UDP. IPv4 i IPv6
+3. Niske i primeri
+4. Rukovanje greskama i primeri
+5. JavaScript koriscenje okruzenja node
+
+kombinacija 7:
+1. ISDN
+2. Strukturisanje podataka u XML
+3. Metodi nad niskama
+4. JavaSkript okruzenje i asinhrono programiranje
+5. HTML komponente. Sablon
+
+kombinacija 8:
+1. node okruzenje
+2. nsfnet
+3. es5 nativni moduli
+4. number tip
+5. http dinamicke i staticke veb strane
+
+kombinacija 9:
+1. Internet servisi online ucenje 
+2. Dobro formirani i validni XML. Primeri
+3. Array from
+4. Tipovi programiranja asinhrono ono
+5.shadow dom iscrtavanje
+
+kombinacija 10:
+1. Modularni pristup internetu
+2. IPv4 
+3. Primitivni tipovi,Logički tip
+4. Karakteristike node okruzenja
+5. Selektivno hvatanje izuzetaka
+
+kombinacija 11:
+1. Komunikacioni kanali
+2. Identifikatori i strani kljucevi
+3. Opseg vazenja promenljive i kontekst
+4. Rukovanje greskama
+5. Atributi u html-u
+
+kombinacija 12:
+1. Hfc
+2. Nativni es5  moduli preko funkcijskih izraza
+3. Xml i rel baze podataka
+4. Rad sa datotekama
+5. Fje za dekorisanje
+
+kombinacija 13:
+1. raspon racunarksih
+2. xml atributi
+3. lambda fje
+4. klase
+5. rad sa datotekama preko tokova
+
+kombinacija 14:
+1. osi model
+2. programski interfejs
+3. objekti
+4. prototipsko nasledjivanje
+5. tcp aplikacije
+
+kombinacija 15:
+1. veb pretrazivaci
+2. http protokol. Dinamicke I staticke stranice
+3. reagovanje na greske
+4. reduce kod array-a
+5. tok podataka I dogadjaji
+
+kombinacija 16:
+1. Pristup internetu. HFC
+2. XML i XQuery. Primeri
+3. Metodi objekata. Primeri
+4. Asinhrono programiranje. Obecanja. Primeri
+5. Rad sa datotekama. Rad sa datotekama preko tokova. Primeri
+
+kombinacija 17:
+1. Pristup internetu. HFC
+2. XML i relacione baze podataka
+3. Funkcija za dekorsanje druge funkcije. Primeri
+4. Nativni es5  moduli preko funkcijskih izraza koji se odmah izvrsavaju. Primeri
+5. Rad sa datotekama. Rad sa datotekama preko tokova. Primeri
+
+
+dodatno pitanje 1:
+AJAX i HTML komponente
+
+dodatno pitanje 2:
+obavezno naucite u sgml-u da napravite samozatvarajuci element

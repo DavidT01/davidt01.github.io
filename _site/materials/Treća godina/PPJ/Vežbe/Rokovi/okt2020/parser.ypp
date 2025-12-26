@@ -1,0 +1,147 @@
+%{
+    #include <iostream>
+    #include <cstdlib>
+    #include <map>
+    #include <vector>
+
+    using namespace std;
+
+    #include "broj.hpp"
+
+    extern int yylex();
+
+    void yyerror(string s){
+        cerr << "Sintaksna greska: " << s << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    map<string, Broj*> promenljive;
+%}
+
+%left '|'
+%left '^'
+%left '&'
+%left NEQ EQ
+%left '<' '>'
+%left SHL SHR
+%left '+' '-'
+%left '*' '/' '%'
+%right '~'
+%right UMINUS
+
+%union{
+    int v;
+    string* s;
+    string* str;
+    Broj* b;
+}
+
+%start program
+
+%token PRINT SHL SHR MIN MAX NZS NZD
+%token<s> ID LIST_ID
+%token<str> STRING
+%token<v> BROJ
+
+%type<b> izraz lista
+
+%%
+
+program: program naredba ';'
+    | naredba ';'
+    ;
+naredba: ID '=' izraz                               {
+                                                        auto it = promenljive.find(*$1);
+                                                        if(it != promenljive.end()){
+                                                            delete it->second;
+                                                        }
+
+                                                        promenljive[*$1] = $3;
+                                                        delete $1;
+                                                    }
+    | PRINT '(' izraz ')'                           { $3->show(); delete $3; }
+    | PRINT '(' izraz ',' STRING ')'                { $3->show2(*$5); delete $3; delete $5; }
+    | LIST_ID '=' '[' lista ']'                     {
+                                                        auto it = promenljive.find(*$1);
+                                                        if(it != promenljive.end()){
+                                                            yyerror("Lista vec definisana");
+                                                        }
+
+                                                        promenljive[*$1] = $4;
+                                                        delete $1;
+                                                    }
+    | LIST_ID '=' izraz                             {
+                                                        auto it = promenljive.find(*$1);
+                                                        if(it != promenljive.end()){
+                                                            yyerror("Lista vec definisana");
+                                                        }
+
+                                                        promenljive[*$1] = $3;
+                                                        delete $1;
+                                                    }
+    ;
+izraz: BROJ                                         {
+                                                        $$ = new Broj($1);
+                                                    }
+    | ID                                            {
+                                                        auto it = promenljive.find(*$1);
+                                                        if(it == promenljive.end()){
+                                                            yyerror("Promenljiva ne postoji");
+                                                        }
+
+                                                        $$ = new Broj(*it->second);
+                                                        delete $1;
+                                                    }
+    | '(' izraz ')'                                 { $$ = $2; }
+    | izraz '+' izraz                               { $$ = *$1 + *$3; delete $1; delete $3; }
+    | izraz '-' izraz                               { $$ = *$1 - *$3; delete $1; delete $3; }
+    | izraz '*' izraz                               { $$ = *$1 * *$3; delete $1; delete $3; }
+    | izraz '/' izraz                               { $$ = *$1 / *$3; delete $1; delete $3; }
+    | izraz '%' izraz                               { $$ = *$1 % *$3; delete $1; delete $3; }
+    | izraz '^' izraz                               { $$ = *$1 ^ *$3; delete $1; delete $3; }
+    | izraz '&' izraz                               { $$ = *$1 & *$3; delete $1; delete $3; }
+    | izraz '|' izraz                               { $$ = *$1 | *$3; delete $1; delete $3; }
+    | izraz SHL izraz                               { $$ = *$1 << *$3; delete $1; delete $3; }
+    | izraz SHR izraz                               { $$ = *$1 >> *$3; delete $1; delete $3; }
+    | '~' izraz                                     { $$ = ~*$2; delete $2; }
+    | '-' izraz %prec UMINUS                        { $$ = -*$2; delete $2; }
+    | LIST_ID                                       {
+                                                        auto it = promenljive.find(*$1);
+                                                        if(it == promenljive.end()){
+                                                            yyerror("Lista ne postoji");
+                                                        }
+
+                                                        $$ = new Broj(*it->second);
+                                                        delete $1;
+                                                    }
+    | LIST_ID '>' BROJ                              {}
+    | LIST_ID '<' BROJ                              {}
+    | LIST_ID EQ BROJ                               {}
+    | LIST_ID NEQ BROJ                              {}
+    | MIN '(' LIST_ID ')'                           {}
+    | MAX '(' LIST_ID ')'                           {}
+    | NZD '(' LIST_ID ')'                           {}
+    | NZS '(' LIST_ID ')'                           {}
+    ;
+lista: lista ',' izraz                              {
+                                                        $1->dodaj_broj((*$3)[0]);
+                                                        $$ = $1;
+                                                        delete $3; 
+                                                    }
+    | izraz                                         {
+                                                        $$ = new Broj((*$1)[0]);
+
+                                                        delete $1;
+                                                    }
+    ;
+
+%%
+
+int main(){
+    if(yyparse() == 0)
+        cout << "sve ok" << endl;
+    else
+        cout << "greska" << endl;
+
+    return 0;
+}

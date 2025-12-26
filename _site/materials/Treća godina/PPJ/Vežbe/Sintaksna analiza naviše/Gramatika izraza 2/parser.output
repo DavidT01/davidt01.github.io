@@ -1,0 +1,272 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: program naredba
+    2        | naredba
+
+    3 naredba: e ';'
+
+    4 e: e '+' e
+    5  | e '-' e
+    6  | e '*' e
+    7  | e '/' e
+    8  | '-' e
+    9  | '(' e ')'
+   10  | BROJ
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '(' (40) 9
+    ')' (41) 9
+    '*' (42) 6
+    '+' (43) 4
+    '-' (45) 5 8
+    '/' (47) 7
+    ';' (59) 3
+    error (256)
+    UMINUS (258)
+    BROJ <v> (259) 10
+
+
+Nonterminals, with rules where they appear
+
+    $accept (12)
+        on left: 0
+    program (13)
+        on left: 1 2
+        on right: 0 1
+    naredba (14)
+        on left: 3
+        on right: 1 2
+    e <v> (15)
+        on left: 4 5 6 7 8 9 10
+        on right: 3 4 5 6 7 8 9
+
+
+State 0
+
+    0 $accept: • program $end
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 2
+    '('   shift, and go to state 3
+
+    program  go to state 4
+    naredba  go to state 5
+    e        go to state 6
+
+
+State 1
+
+    8 e: '-' • e
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 2
+    '('   shift, and go to state 3
+
+    e  go to state 7
+
+
+State 2
+
+   10 e: BROJ •
+
+    $default  reduce using rule 10 (e)
+
+
+State 3
+
+    9 e: '(' • e ')'
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 2
+    '('   shift, and go to state 3
+
+    e  go to state 8
+
+
+State 4
+
+    0 $accept: program • $end
+    1 program: program • naredba
+
+    $end  shift, and go to state 9
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 2
+    '('   shift, and go to state 3
+
+    naredba  go to state 10
+    e        go to state 6
+
+
+State 5
+
+    2 program: naredba •
+
+    $default  reduce using rule 2 (program)
+
+
+State 6
+
+    3 naredba: e • ';'
+    4 e: e • '+' e
+    5  | e • '-' e
+    6  | e • '*' e
+    7  | e • '/' e
+
+    '+'  shift, and go to state 11
+    '-'  shift, and go to state 12
+    '*'  shift, and go to state 13
+    '/'  shift, and go to state 14
+    ';'  shift, and go to state 15
+
+
+State 7
+
+    4 e: e • '+' e
+    5  | e • '-' e
+    6  | e • '*' e
+    7  | e • '/' e
+    8  | '-' e •
+
+    $default  reduce using rule 8 (e)
+
+
+State 8
+
+    4 e: e • '+' e
+    5  | e • '-' e
+    6  | e • '*' e
+    7  | e • '/' e
+    9  | '(' e • ')'
+
+    '+'  shift, and go to state 11
+    '-'  shift, and go to state 12
+    '*'  shift, and go to state 13
+    '/'  shift, and go to state 14
+    ')'  shift, and go to state 16
+
+
+State 9
+
+    0 $accept: program $end •
+
+    $default  accept
+
+
+State 10
+
+    1 program: program naredba •
+
+    $default  reduce using rule 1 (program)
+
+
+State 11
+
+    4 e: e '+' • e
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 2
+    '('   shift, and go to state 3
+
+    e  go to state 17
+
+
+State 12
+
+    5 e: e '-' • e
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 2
+    '('   shift, and go to state 3
+
+    e  go to state 18
+
+
+State 13
+
+    6 e: e '*' • e
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 2
+    '('   shift, and go to state 3
+
+    e  go to state 19
+
+
+State 14
+
+    7 e: e '/' • e
+
+    '-'   shift, and go to state 1
+    BROJ  shift, and go to state 2
+    '('   shift, and go to state 3
+
+    e  go to state 20
+
+
+State 15
+
+    3 naredba: e ';' •
+
+    $default  reduce using rule 3 (naredba)
+
+
+State 16
+
+    9 e: '(' e ')' •
+
+    $default  reduce using rule 9 (e)
+
+
+State 17
+
+    4 e: e • '+' e
+    4  | e '+' e •
+    5  | e • '-' e
+    6  | e • '*' e
+    7  | e • '/' e
+
+    '*'  shift, and go to state 13
+    '/'  shift, and go to state 14
+
+    $default  reduce using rule 4 (e)
+
+
+State 18
+
+    4 e: e • '+' e
+    5  | e • '-' e
+    5  | e '-' e •
+    6  | e • '*' e
+    7  | e • '/' e
+
+    '*'  shift, and go to state 13
+    '/'  shift, and go to state 14
+
+    $default  reduce using rule 5 (e)
+
+
+State 19
+
+    4 e: e • '+' e
+    5  | e • '-' e
+    6  | e • '*' e
+    6  | e '*' e •
+    7  | e • '/' e
+
+    $default  reduce using rule 6 (e)
+
+
+State 20
+
+    4 e: e • '+' e
+    5  | e • '-' e
+    6  | e • '*' e
+    7  | e • '/' e
+    7  | e '/' e •
+
+    $default  reduce using rule 7 (e)

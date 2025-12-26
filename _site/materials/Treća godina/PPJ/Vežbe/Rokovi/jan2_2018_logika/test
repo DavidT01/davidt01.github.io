@@ -1,0 +1,6 @@
+p := True
+q := False
+p /\ q \/ Undef
+p
+p \/ Undef
+p

@@ -1,0 +1,18 @@
+v := def(<2.5, 3>, <5,7>)
+print(v)							
+print(def(<-1, 5.2>, <4.0, 3.4>))	
+u := def(<2,3>, <0,1>)
+print(u+v)
+w := -(u-v)
+print(w)
+w := -(3*v + u*4) * 0.5
+print(sim(w))
+z := reflX(reflY(w + def(<1, 2>, <0,0>)*2))
+print(z)
+x := def(rot(u, angle(w, v)))
+print(x)
+y := u * |u|
+print(-y)
+v := def(<2.5, 3>, <5,7>) 
+L := list(v, 2*u, reflX(u))
+print(L[0])

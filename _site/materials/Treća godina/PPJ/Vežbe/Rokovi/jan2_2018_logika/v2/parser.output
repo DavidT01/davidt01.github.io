@@ -1,0 +1,616 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: program naredba '\n'
+    2        | naredba '\n'
+
+    3 naredba: izraz
+    4        | ID DODELA izraz
+    5        | LIST_ID DODELA lista
+
+    6 izraz: izraz CONJ izraz
+    7      | izraz DISJ izraz
+    8      | izraz IMPL izraz
+    9      | izraz EKV izraz
+   10      | '(' izraz ')'
+   11      | '!' izraz
+   12      | ID
+   13      | CONST
+   14      | HEAD '(' lista ')'
+   15      | lista '[' BROJ ']'
+
+   16 lista: '[' lista_izraza ']'
+   17      | TAIL '(' lista ')'
+   18      | LIST_ID
+
+   19 lista_izraza: lista_izraza ',' izraz
+   20             | izraz
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '\n' (10) 1 2
+    '!' (33) 11
+    '(' (40) 10 14 17
+    ')' (41) 10 14 17
+    ',' (44) 19
+    '[' (91) 15 16
+    ']' (93) 15 16
+    error (256)
+    CONJ (258) 6
+    DISJ (259) 7
+    IMPL (260) 8
+    EKV (261) 9
+    DODELA (262) 4 5
+    HEAD (263) 14
+    TAIL (264) 17
+    ID <s> (265) 4 12
+    LIST_ID <s> (266) 5 18
+    CONST <v> (267) 13
+    BROJ <v> (268) 15
+
+
+Nonterminals, with rules where they appear
+
+    $accept (21)
+        on left: 0
+    program (22)
+        on left: 1 2
+        on right: 0 1
+    naredba (23)
+        on left: 3 4 5
+        on right: 1 2
+    izraz <v> (24)
+        on left: 6 7 8 9 10 11 12 13 14 15
+        on right: 3 4 6 7 8 9 10 11 19 20
+    lista <vec> (25)
+        on left: 16 17 18
+        on right: 5 14 15 17
+    lista_izraza <vec> (26)
+        on left: 19 20
+        on right: 16 19
+
+
+State 0
+
+    0 $accept: • program $end
+
+    '!'      shift, and go to state 1
+    '['      shift, and go to state 2
+    HEAD     shift, and go to state 3
+    TAIL     shift, and go to state 4
+    ID       shift, and go to state 5
+    LIST_ID  shift, and go to state 6
+    CONST    shift, and go to state 7
+    '('      shift, and go to state 8
+
+    program  go to state 9
+    naredba  go to state 10
+    izraz    go to state 11
+    lista    go to state 12
+
+
+State 1
+
+   11 izraz: '!' • izraz
+
+    '!'      shift, and go to state 1
+    '['      shift, and go to state 2
+    HEAD     shift, and go to state 3
+    TAIL     shift, and go to state 4
+    ID       shift, and go to state 13
+    LIST_ID  shift, and go to state 14
+    CONST    shift, and go to state 7
+    '('      shift, and go to state 8
+
+    izraz  go to state 15
+    lista  go to state 12
+
+
+State 2
+
+   16 lista: '[' • lista_izraza ']'
+
+    '!'      shift, and go to state 1
+    '['      shift, and go to state 2
+    HEAD     shift, and go to state 3
+    TAIL     shift, and go to state 4
+    ID       shift, and go to state 13
+    LIST_ID  shift, and go to state 14
+    CONST    shift, and go to state 7
+    '('      shift, and go to state 8
+
+    izraz         go to state 16
+    lista         go to state 12
+    lista_izraza  go to state 17
+
+
+State 3
+
+   14 izraz: HEAD • '(' lista ')'
+
+    '('  shift, and go to state 18
+
+
+State 4
+
+   17 lista: TAIL • '(' lista ')'
+
+    '('  shift, and go to state 19
+
+
+State 5
+
+    4 naredba: ID • DODELA izraz
+   12 izraz: ID •
+
+    DODELA  shift, and go to state 20
+
+    $default  reduce using rule 12 (izraz)
+
+
+State 6
+
+    5 naredba: LIST_ID • DODELA lista
+   18 lista: LIST_ID •
+
+    DODELA  shift, and go to state 21
+
+    $default  reduce using rule 18 (lista)
+
+
+State 7
+
+   13 izraz: CONST •
+
+    $default  reduce using rule 13 (izraz)
+
+
+State 8
+
+   10 izraz: '(' • izraz ')'
+
+    '!'      shift, and go to state 1
+    '['      shift, and go to state 2
+    HEAD     shift, and go to state 3
+    TAIL     shift, and go to state 4
+    ID       shift, and go to state 13
+    LIST_ID  shift, and go to state 14
+    CONST    shift, and go to state 7
+    '('      shift, and go to state 8
+
+    izraz  go to state 22
+    lista  go to state 12
+
+
+State 9
+
+    0 $accept: program • $end
+    1 program: program • naredba '\n'
+
+    $end     shift, and go to state 23
+    '!'      shift, and go to state 1
+    '['      shift, and go to state 2
+    HEAD     shift, and go to state 3
+    TAIL     shift, and go to state 4
+    ID       shift, and go to state 5
+    LIST_ID  shift, and go to state 6
+    CONST    shift, and go to state 7
+    '('      shift, and go to state 8
+
+    naredba  go to state 24
+    izraz    go to state 11
+    lista    go to state 12
+
+
+State 10
+
+    2 program: naredba • '\n'
+
+    '\n'  shift, and go to state 25
+
+
+State 11
+
+    3 naredba: izraz •
+    6 izraz: izraz • CONJ izraz
+    7      | izraz • DISJ izraz
+    8      | izraz • IMPL izraz
+    9      | izraz • EKV izraz
+
+    CONJ  shift, and go to state 26
+    DISJ  shift, and go to state 27
+    IMPL  shift, and go to state 28
+    EKV   shift, and go to state 29
+
+    $default  reduce using rule 3 (naredba)
+
+
+State 12
+
+   15 izraz: lista • '[' BROJ ']'
+
+    '['  shift, and go to state 30
+
+
+State 13
+
+   12 izraz: ID •
+
+    $default  reduce using rule 12 (izraz)
+
+
+State 14
+
+   18 lista: LIST_ID •
+
+    $default  reduce using rule 18 (lista)
+
+
+State 15
+
+    6 izraz: izraz • CONJ izraz
+    7      | izraz • DISJ izraz
+    8      | izraz • IMPL izraz
+    9      | izraz • EKV izraz
+   11      | '!' izraz •
+
+    $default  reduce using rule 11 (izraz)
+
+
+State 16
+
+    6 izraz: izraz • CONJ izraz
+    7      | izraz • DISJ izraz
+    8      | izraz • IMPL izraz
+    9      | izraz • EKV izraz
+   20 lista_izraza: izraz •
+
+    CONJ  shift, and go to state 26
+    DISJ  shift, and go to state 27
+    IMPL  shift, and go to state 28
+    EKV   shift, and go to state 29
+
+    $default  reduce using rule 20 (lista_izraza)
+
+
+State 17
+
+   16 lista: '[' lista_izraza • ']'
+   19 lista_izraza: lista_izraza • ',' izraz
+
+    ']'  shift, and go to state 31
+    ','  shift, and go to state 32
+
+
+State 18
+
+   14 izraz: HEAD '(' • lista ')'
+
+    '['      shift, and go to state 2
+    TAIL     shift, and go to state 4
+    LIST_ID  shift, and go to state 14
+
+    lista  go to state 33
+
+
+State 19
+
+   17 lista: TAIL '(' • lista ')'
+
+    '['      shift, and go to state 2
+    TAIL     shift, and go to state 4
+    LIST_ID  shift, and go to state 14
+
+    lista  go to state 34
+
+
+State 20
+
+    4 naredba: ID DODELA • izraz
+
+    '!'      shift, and go to state 1
+    '['      shift, and go to state 2
+    HEAD     shift, and go to state 3
+    TAIL     shift, and go to state 4
+    ID       shift, and go to state 13
+    LIST_ID  shift, and go to state 14
+    CONST    shift, and go to state 7
+    '('      shift, and go to state 8
+
+    izraz  go to state 35
+    lista  go to state 12
+
+
+State 21
+
+    5 naredba: LIST_ID DODELA • lista
+
+    '['      shift, and go to state 2
+    TAIL     shift, and go to state 4
+    LIST_ID  shift, and go to state 14
+
+    lista  go to state 36
+
+
+State 22
+
+    6 izraz: izraz • CONJ izraz
+    7      | izraz • DISJ izraz
+    8      | izraz • IMPL izraz
+    9      | izraz • EKV izraz
+   10      | '(' izraz • ')'
+
+    CONJ  shift, and go to state 26
+    DISJ  shift, and go to state 27
+    IMPL  shift, and go to state 28
+    EKV   shift, and go to state 29
+    ')'   shift, and go to state 37
+
+
+State 23
+
+    0 $accept: program $end •
+
+    $default  accept
+
+
+State 24
+
+    1 program: program naredba • '\n'
+
+    '\n'  shift, and go to state 38
+
+
+State 25
+
+    2 program: naredba '\n' •
+
+    $default  reduce using rule 2 (program)
+
+
+State 26
+
+    6 izraz: izraz CONJ • izraz
+
+    '!'      shift, and go to state 1
+    '['      shift, and go to state 2
+    HEAD     shift, and go to state 3
+    TAIL     shift, and go to state 4
+    ID       shift, and go to state 13
+    LIST_ID  shift, and go to state 14
+    CONST    shift, and go to state 7
+    '('      shift, and go to state 8
+
+    izraz  go to state 39
+    lista  go to state 12
+
+
+State 27
+
+    7 izraz: izraz DISJ • izraz
+
+    '!'      shift, and go to state 1
+    '['      shift, and go to state 2
+    HEAD     shift, and go to state 3
+    TAIL     shift, and go to state 4
+    ID       shift, and go to state 13
+    LIST_ID  shift, and go to state 14
+    CONST    shift, and go to state 7
+    '('      shift, and go to state 8
+
+    izraz  go to state 40
+    lista  go to state 12
+
+
+State 28
+
+    8 izraz: izraz IMPL • izraz
+
+    '!'      shift, and go to state 1
+    '['      shift, and go to state 2
+    HEAD     shift, and go to state 3
+    TAIL     shift, and go to state 4
+    ID       shift, and go to state 13
+    LIST_ID  shift, and go to state 14
+    CONST    shift, and go to state 7
+    '('      shift, and go to state 8
+
+    izraz  go to state 41
+    lista  go to state 12
+
+
+State 29
+
+    9 izraz: izraz EKV • izraz
+
+    '!'      shift, and go to state 1
+    '['      shift, and go to state 2
+    HEAD     shift, and go to state 3
+    TAIL     shift, and go to state 4
+    ID       shift, and go to state 13
+    LIST_ID  shift, and go to state 14
+    CONST    shift, and go to state 7
+    '('      shift, and go to state 8
+
+    izraz  go to state 42
+    lista  go to state 12
+
+
+State 30
+
+   15 izraz: lista '[' • BROJ ']'
+
+    BROJ  shift, and go to state 43
+
+
+State 31
+
+   16 lista: '[' lista_izraza ']' •
+
+    $default  reduce using rule 16 (lista)
+
+
+State 32
+
+   19 lista_izraza: lista_izraza ',' • izraz
+
+    '!'      shift, and go to state 1
+    '['      shift, and go to state 2
+    HEAD     shift, and go to state 3
+    TAIL     shift, and go to state 4
+    ID       shift, and go to state 13
+    LIST_ID  shift, and go to state 14
+    CONST    shift, and go to state 7
+    '('      shift, and go to state 8
+
+    izraz  go to state 44
+    lista  go to state 12
+
+
+State 33
+
+   14 izraz: HEAD '(' lista • ')'
+
+    ')'  shift, and go to state 45
+
+
+State 34
+
+   17 lista: TAIL '(' lista • ')'
+
+    ')'  shift, and go to state 46
+
+
+State 35
+
+    4 naredba: ID DODELA izraz •
+    6 izraz: izraz • CONJ izraz
+    7      | izraz • DISJ izraz
+    8      | izraz • IMPL izraz
+    9      | izraz • EKV izraz
+
+    CONJ  shift, and go to state 26
+    DISJ  shift, and go to state 27
+    IMPL  shift, and go to state 28
+    EKV   shift, and go to state 29
+
+    $default  reduce using rule 4 (naredba)
+
+
+State 36
+
+    5 naredba: LIST_ID DODELA lista •
+
+    $default  reduce using rule 5 (naredba)
+
+
+State 37
+
+   10 izraz: '(' izraz ')' •
+
+    $default  reduce using rule 10 (izraz)
+
+
+State 38
+
+    1 program: program naredba '\n' •
+
+    $default  reduce using rule 1 (program)
+
+
+State 39
+
+    6 izraz: izraz • CONJ izraz
+    6      | izraz CONJ izraz •
+    7      | izraz • DISJ izraz
+    8      | izraz • IMPL izraz
+    9      | izraz • EKV izraz
+
+    $default  reduce using rule 6 (izraz)
+
+
+State 40
+
+    6 izraz: izraz • CONJ izraz
+    7      | izraz • DISJ izraz
+    7      | izraz DISJ izraz •
+    8      | izraz • IMPL izraz
+    9      | izraz • EKV izraz
+
+    $default  reduce using rule 7 (izraz)
+
+
+State 41
+
+    6 izraz: izraz • CONJ izraz
+    7      | izraz • DISJ izraz
+    8      | izraz • IMPL izraz
+    8      | izraz IMPL izraz •
+    9      | izraz • EKV izraz
+
+    CONJ  shift, and go to state 26
+    DISJ  shift, and go to state 27
+    EKV   shift, and go to state 29
+
+    $default  reduce using rule 8 (izraz)
+
+
+State 42
+
+    6 izraz: izraz • CONJ izraz
+    7      | izraz • DISJ izraz
+    8      | izraz • IMPL izraz
+    9      | izraz • EKV izraz
+    9      | izraz EKV izraz •
+
+    CONJ  shift, and go to state 26
+    DISJ  shift, and go to state 27
+
+    $default  reduce using rule 9 (izraz)
+
+
+State 43
+
+   15 izraz: lista '[' BROJ • ']'
+
+    ']'  shift, and go to state 47
+
+
+State 44
+
+    6 izraz: izraz • CONJ izraz
+    7      | izraz • DISJ izraz
+    8      | izraz • IMPL izraz
+    9      | izraz • EKV izraz
+   19 lista_izraza: lista_izraza ',' izraz •
+
+    CONJ  shift, and go to state 26
+    DISJ  shift, and go to state 27
+    IMPL  shift, and go to state 28
+    EKV   shift, and go to state 29
+
+    $default  reduce using rule 19 (lista_izraza)
+
+
+State 45
+
+   14 izraz: HEAD '(' lista ')' •
+
+    $default  reduce using rule 14 (izraz)
+
+
+State 46
+
+   17 lista: TAIL '(' lista ')' •
+
+    $default  reduce using rule 17 (lista)
+
+
+State 47
+
+   15 izraz: lista '[' BROJ ']' •
+
+    $default  reduce using rule 15 (izraz)

@@ -1,0 +1,665 @@
+Terminals unused in grammar
+
+    UMINUS
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: program naredba ';'
+    2        | naredba ';'
+
+    3 naredba: ID '=' izraz
+    4        | LIST_ID '=' '[' lista ']'
+    5        | PRINT '(' izraz ')'
+    6        | izraz
+
+    7 izraz: ugao
+    8      | izraz '+' izraz
+    9      | izraz '-' izraz
+   10      | BROJ '*' izraz
+   11      | izraz '*' BROJ
+   12      | '(' izraz ')'
+   13      | KOM '(' izraz ')'
+   14      | SUP '(' izraz ')'
+   15      | ID
+   16      | LIST_ID '[' BROJ ']'
+   17      | LIST_ID
+
+   18 ugao: '<' BROJ ',' BROJ ',' BROJ '>'
+
+   19 lista: lista ',' izraz
+   20      | izraz
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '(' (40) 5 12 13 14
+    ')' (41) 5 12 13 14
+    '*' (42) 10 11
+    '+' (43) 8
+    ',' (44) 18 19
+    '-' (45) 9
+    ';' (59) 1 2
+    '<' (60) 18
+    '=' (61) 3 4
+    '>' (62) 18
+    '[' (91) 4 16
+    ']' (93) 4 16
+    error (256)
+    UMINUS (258)
+    PRINT (259) 5
+    KOM (260) 13
+    SUP (261) 14
+    ID <s> (262) 3 15
+    LIST_ID <s> (263) 4 16 17
+    BROJ <v> (264) 10 11 16 18
+
+
+Nonterminals, with rules where they appear
+
+    $accept (22)
+        on left: 0
+    program (23)
+        on left: 1 2
+        on right: 0 1
+    naredba (24)
+        on left: 3 4 5 6
+        on right: 1 2
+    izraz <u> (25)
+        on left: 7 8 9 10 11 12 13 14 15 16 17
+        on right: 3 5 6 8 9 10 11 12 13 14 19 20
+    ugao <u> (26)
+        on left: 18
+        on right: 7
+    lista <u> (27)
+        on left: 19 20
+        on right: 4 19
+
+
+State 0
+
+    0 $accept: • program $end
+
+    PRINT    shift, and go to state 1
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 4
+    LIST_ID  shift, and go to state 5
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    program  go to state 9
+    naredba  go to state 10
+    izraz    go to state 11
+    ugao     go to state 12
+
+
+State 1
+
+    5 naredba: PRINT • '(' izraz ')'
+
+    '('  shift, and go to state 13
+
+
+State 2
+
+   13 izraz: KOM • '(' izraz ')'
+
+    '('  shift, and go to state 14
+
+
+State 3
+
+   14 izraz: SUP • '(' izraz ')'
+
+    '('  shift, and go to state 15
+
+
+State 4
+
+    3 naredba: ID • '=' izraz
+   15 izraz: ID •
+
+    '='  shift, and go to state 16
+
+    $default  reduce using rule 15 (izraz)
+
+
+State 5
+
+    4 naredba: LIST_ID • '=' '[' lista ']'
+   16 izraz: LIST_ID • '[' BROJ ']'
+   17      | LIST_ID •
+
+    '='  shift, and go to state 17
+    '['  shift, and go to state 18
+
+    $default  reduce using rule 17 (izraz)
+
+
+State 6
+
+   10 izraz: BROJ • '*' izraz
+
+    '*'  shift, and go to state 19
+
+
+State 7
+
+   12 izraz: '(' • izraz ')'
+
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 20
+    LIST_ID  shift, and go to state 21
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    izraz  go to state 22
+    ugao   go to state 12
+
+
+State 8
+
+   18 ugao: '<' • BROJ ',' BROJ ',' BROJ '>'
+
+    BROJ  shift, and go to state 23
+
+
+State 9
+
+    0 $accept: program • $end
+    1 program: program • naredba ';'
+
+    $end     shift, and go to state 24
+    PRINT    shift, and go to state 1
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 4
+    LIST_ID  shift, and go to state 5
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    naredba  go to state 25
+    izraz    go to state 11
+    ugao     go to state 12
+
+
+State 10
+
+    2 program: naredba • ';'
+
+    ';'  shift, and go to state 26
+
+
+State 11
+
+    6 naredba: izraz •
+    8 izraz: izraz • '+' izraz
+    9      | izraz • '-' izraz
+   11      | izraz • '*' BROJ
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    '*'  shift, and go to state 29
+
+    $default  reduce using rule 6 (naredba)
+
+
+State 12
+
+    7 izraz: ugao •
+
+    $default  reduce using rule 7 (izraz)
+
+
+State 13
+
+    5 naredba: PRINT '(' • izraz ')'
+
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 20
+    LIST_ID  shift, and go to state 21
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    izraz  go to state 30
+    ugao   go to state 12
+
+
+State 14
+
+   13 izraz: KOM '(' • izraz ')'
+
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 20
+    LIST_ID  shift, and go to state 21
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    izraz  go to state 31
+    ugao   go to state 12
+
+
+State 15
+
+   14 izraz: SUP '(' • izraz ')'
+
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 20
+    LIST_ID  shift, and go to state 21
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    izraz  go to state 32
+    ugao   go to state 12
+
+
+State 16
+
+    3 naredba: ID '=' • izraz
+
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 20
+    LIST_ID  shift, and go to state 21
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    izraz  go to state 33
+    ugao   go to state 12
+
+
+State 17
+
+    4 naredba: LIST_ID '=' • '[' lista ']'
+
+    '['  shift, and go to state 34
+
+
+State 18
+
+   16 izraz: LIST_ID '[' • BROJ ']'
+
+    BROJ  shift, and go to state 35
+
+
+State 19
+
+   10 izraz: BROJ '*' • izraz
+
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 20
+    LIST_ID  shift, and go to state 21
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    izraz  go to state 36
+    ugao   go to state 12
+
+
+State 20
+
+   15 izraz: ID •
+
+    $default  reduce using rule 15 (izraz)
+
+
+State 21
+
+   16 izraz: LIST_ID • '[' BROJ ']'
+   17      | LIST_ID •
+
+    '['  shift, and go to state 18
+
+    $default  reduce using rule 17 (izraz)
+
+
+State 22
+
+    8 izraz: izraz • '+' izraz
+    9      | izraz • '-' izraz
+   11      | izraz • '*' BROJ
+   12      | '(' izraz • ')'
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    '*'  shift, and go to state 29
+    ')'  shift, and go to state 37
+
+
+State 23
+
+   18 ugao: '<' BROJ • ',' BROJ ',' BROJ '>'
+
+    ','  shift, and go to state 38
+
+
+State 24
+
+    0 $accept: program $end •
+
+    $default  accept
+
+
+State 25
+
+    1 program: program naredba • ';'
+
+    ';'  shift, and go to state 39
+
+
+State 26
+
+    2 program: naredba ';' •
+
+    $default  reduce using rule 2 (program)
+
+
+State 27
+
+    8 izraz: izraz '+' • izraz
+
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 20
+    LIST_ID  shift, and go to state 21
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    izraz  go to state 40
+    ugao   go to state 12
+
+
+State 28
+
+    9 izraz: izraz '-' • izraz
+
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 20
+    LIST_ID  shift, and go to state 21
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    izraz  go to state 41
+    ugao   go to state 12
+
+
+State 29
+
+   11 izraz: izraz '*' • BROJ
+
+    BROJ  shift, and go to state 42
+
+
+State 30
+
+    5 naredba: PRINT '(' izraz • ')'
+    8 izraz: izraz • '+' izraz
+    9      | izraz • '-' izraz
+   11      | izraz • '*' BROJ
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    '*'  shift, and go to state 29
+    ')'  shift, and go to state 43
+
+
+State 31
+
+    8 izraz: izraz • '+' izraz
+    9      | izraz • '-' izraz
+   11      | izraz • '*' BROJ
+   13      | KOM '(' izraz • ')'
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    '*'  shift, and go to state 29
+    ')'  shift, and go to state 44
+
+
+State 32
+
+    8 izraz: izraz • '+' izraz
+    9      | izraz • '-' izraz
+   11      | izraz • '*' BROJ
+   14      | SUP '(' izraz • ')'
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    '*'  shift, and go to state 29
+    ')'  shift, and go to state 45
+
+
+State 33
+
+    3 naredba: ID '=' izraz •
+    8 izraz: izraz • '+' izraz
+    9      | izraz • '-' izraz
+   11      | izraz • '*' BROJ
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    '*'  shift, and go to state 29
+
+    $default  reduce using rule 3 (naredba)
+
+
+State 34
+
+    4 naredba: LIST_ID '=' '[' • lista ']'
+
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 20
+    LIST_ID  shift, and go to state 21
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    izraz  go to state 46
+    ugao   go to state 12
+    lista  go to state 47
+
+
+State 35
+
+   16 izraz: LIST_ID '[' BROJ • ']'
+
+    ']'  shift, and go to state 48
+
+
+State 36
+
+    8 izraz: izraz • '+' izraz
+    9      | izraz • '-' izraz
+   10      | BROJ '*' izraz •
+   11      | izraz • '*' BROJ
+
+    $default  reduce using rule 10 (izraz)
+
+
+State 37
+
+   12 izraz: '(' izraz ')' •
+
+    $default  reduce using rule 12 (izraz)
+
+
+State 38
+
+   18 ugao: '<' BROJ ',' • BROJ ',' BROJ '>'
+
+    BROJ  shift, and go to state 49
+
+
+State 39
+
+    1 program: program naredba ';' •
+
+    $default  reduce using rule 1 (program)
+
+
+State 40
+
+    8 izraz: izraz • '+' izraz
+    8      | izraz '+' izraz •
+    9      | izraz • '-' izraz
+   11      | izraz • '*' BROJ
+
+    '*'  shift, and go to state 29
+
+    $default  reduce using rule 8 (izraz)
+
+
+State 41
+
+    8 izraz: izraz • '+' izraz
+    9      | izraz • '-' izraz
+    9      | izraz '-' izraz •
+   11      | izraz • '*' BROJ
+
+    '*'  shift, and go to state 29
+
+    $default  reduce using rule 9 (izraz)
+
+
+State 42
+
+   11 izraz: izraz '*' BROJ •
+
+    $default  reduce using rule 11 (izraz)
+
+
+State 43
+
+    5 naredba: PRINT '(' izraz ')' •
+
+    $default  reduce using rule 5 (naredba)
+
+
+State 44
+
+   13 izraz: KOM '(' izraz ')' •
+
+    $default  reduce using rule 13 (izraz)
+
+
+State 45
+
+   14 izraz: SUP '(' izraz ')' •
+
+    $default  reduce using rule 14 (izraz)
+
+
+State 46
+
+    8 izraz: izraz • '+' izraz
+    9      | izraz • '-' izraz
+   11      | izraz • '*' BROJ
+   20 lista: izraz •
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    '*'  shift, and go to state 29
+
+    $default  reduce using rule 20 (lista)
+
+
+State 47
+
+    4 naredba: LIST_ID '=' '[' lista • ']'
+   19 lista: lista • ',' izraz
+
+    ']'  shift, and go to state 50
+    ','  shift, and go to state 51
+
+
+State 48
+
+   16 izraz: LIST_ID '[' BROJ ']' •
+
+    $default  reduce using rule 16 (izraz)
+
+
+State 49
+
+   18 ugao: '<' BROJ ',' BROJ • ',' BROJ '>'
+
+    ','  shift, and go to state 52
+
+
+State 50
+
+    4 naredba: LIST_ID '=' '[' lista ']' •
+
+    $default  reduce using rule 4 (naredba)
+
+
+State 51
+
+   19 lista: lista ',' • izraz
+
+    KOM      shift, and go to state 2
+    SUP      shift, and go to state 3
+    ID       shift, and go to state 20
+    LIST_ID  shift, and go to state 21
+    BROJ     shift, and go to state 6
+    '('      shift, and go to state 7
+    '<'      shift, and go to state 8
+
+    izraz  go to state 53
+    ugao   go to state 12
+
+
+State 52
+
+   18 ugao: '<' BROJ ',' BROJ ',' • BROJ '>'
+
+    BROJ  shift, and go to state 54
+
+
+State 53
+
+    8 izraz: izraz • '+' izraz
+    9      | izraz • '-' izraz
+   11      | izraz • '*' BROJ
+   19 lista: lista ',' izraz •
+
+    '+'  shift, and go to state 27
+    '-'  shift, and go to state 28
+    '*'  shift, and go to state 29
+
+    $default  reduce using rule 19 (lista)
+
+
+State 54
+
+   18 ugao: '<' BROJ ',' BROJ ',' BROJ • '>'
+
+    '>'  shift, and go to state 55
+
+
+State 55
+
+   18 ugao: '<' BROJ ',' BROJ ',' BROJ '>' •
+
+    $default  reduce using rule 18 (ugao)

@@ -1,0 +1,618 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: program naredba '\n'
+    2        | naredba '\n'
+
+    3 naredba: izraz
+    4        | ID '=' izraz
+    5        | PRINT '(' izraz ')'
+    6        | NOM '(' izraz ')'
+    7        | DEN '(' izraz ')'
+    8        | DOUBLE '(' izraz ')'
+    9        | EQUALS '(' izraz ',' izraz ')'
+
+   10 izraz: razlomak
+   11      | izraz '+' izraz
+   12      | izraz '-' izraz
+   13      | izraz '*' izraz
+   14      | izraz '/' izraz
+   15      | '(' izraz ')'
+   16      | ID
+
+   17 razlomak: '[' BROJ ',' BROJ ']'
+   18         | '[' BROJ ']'
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '\n' (10) 1 2
+    '(' (40) 5 6 7 8 9 15
+    ')' (41) 5 6 7 8 9 15
+    '*' (42) 13
+    '+' (43) 11
+    ',' (44) 9 17
+    '-' (45) 12
+    '/' (47) 14
+    '=' (61) 4
+    '[' (91) 17 18
+    ']' (93) 17 18
+    error (256)
+    PRINT (258) 5
+    NOM (259) 6
+    DEN (260) 7
+    DOUBLE (261) 8
+    EQUALS (262) 9
+    ID <s> (263) 4 16
+    BROJ <v> (264) 17 18
+
+
+Nonterminals, with rules where they appear
+
+    $accept (21)
+        on left: 0
+    program (22)
+        on left: 1 2
+        on right: 0 1
+    naredba (23)
+        on left: 3 4 5 6 7 8 9
+        on right: 1 2
+    izraz <r> (24)
+        on left: 10 11 12 13 14 15 16
+        on right: 3 4 5 6 7 8 9 11 12 13 14 15
+    razlomak <r> (25)
+        on left: 17 18
+        on right: 10
+
+
+State 0
+
+    0 $accept: • program $end
+
+    PRINT   shift, and go to state 1
+    NOM     shift, and go to state 2
+    DEN     shift, and go to state 3
+    DOUBLE  shift, and go to state 4
+    EQUALS  shift, and go to state 5
+    ID      shift, and go to state 6
+    '('     shift, and go to state 7
+    '['     shift, and go to state 8
+
+    program   go to state 9
+    naredba   go to state 10
+    izraz     go to state 11
+    razlomak  go to state 12
+
+
+State 1
+
+    5 naredba: PRINT • '(' izraz ')'
+
+    '('  shift, and go to state 13
+
+
+State 2
+
+    6 naredba: NOM • '(' izraz ')'
+
+    '('  shift, and go to state 14
+
+
+State 3
+
+    7 naredba: DEN • '(' izraz ')'
+
+    '('  shift, and go to state 15
+
+
+State 4
+
+    8 naredba: DOUBLE • '(' izraz ')'
+
+    '('  shift, and go to state 16
+
+
+State 5
+
+    9 naredba: EQUALS • '(' izraz ',' izraz ')'
+
+    '('  shift, and go to state 17
+
+
+State 6
+
+    4 naredba: ID • '=' izraz
+   16 izraz: ID •
+
+    '='  shift, and go to state 18
+
+    $default  reduce using rule 16 (izraz)
+
+
+State 7
+
+   15 izraz: '(' • izraz ')'
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 20
+    razlomak  go to state 12
+
+
+State 8
+
+   17 razlomak: '[' • BROJ ',' BROJ ']'
+   18         | '[' • BROJ ']'
+
+    BROJ  shift, and go to state 21
+
+
+State 9
+
+    0 $accept: program • $end
+    1 program: program • naredba '\n'
+
+    $end    shift, and go to state 22
+    PRINT   shift, and go to state 1
+    NOM     shift, and go to state 2
+    DEN     shift, and go to state 3
+    DOUBLE  shift, and go to state 4
+    EQUALS  shift, and go to state 5
+    ID      shift, and go to state 6
+    '('     shift, and go to state 7
+    '['     shift, and go to state 8
+
+    naredba   go to state 23
+    izraz     go to state 11
+    razlomak  go to state 12
+
+
+State 10
+
+    2 program: naredba • '\n'
+
+    '\n'  shift, and go to state 24
+
+
+State 11
+
+    3 naredba: izraz •
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+
+    '+'  shift, and go to state 25
+    '-'  shift, and go to state 26
+    '*'  shift, and go to state 27
+    '/'  shift, and go to state 28
+
+    $default  reduce using rule 3 (naredba)
+
+
+State 12
+
+   10 izraz: razlomak •
+
+    $default  reduce using rule 10 (izraz)
+
+
+State 13
+
+    5 naredba: PRINT '(' • izraz ')'
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 29
+    razlomak  go to state 12
+
+
+State 14
+
+    6 naredba: NOM '(' • izraz ')'
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 30
+    razlomak  go to state 12
+
+
+State 15
+
+    7 naredba: DEN '(' • izraz ')'
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 31
+    razlomak  go to state 12
+
+
+State 16
+
+    8 naredba: DOUBLE '(' • izraz ')'
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 32
+    razlomak  go to state 12
+
+
+State 17
+
+    9 naredba: EQUALS '(' • izraz ',' izraz ')'
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 33
+    razlomak  go to state 12
+
+
+State 18
+
+    4 naredba: ID '=' • izraz
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 34
+    razlomak  go to state 12
+
+
+State 19
+
+   16 izraz: ID •
+
+    $default  reduce using rule 16 (izraz)
+
+
+State 20
+
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+   15      | '(' izraz • ')'
+
+    '+'  shift, and go to state 25
+    '-'  shift, and go to state 26
+    '*'  shift, and go to state 27
+    '/'  shift, and go to state 28
+    ')'  shift, and go to state 35
+
+
+State 21
+
+   17 razlomak: '[' BROJ • ',' BROJ ']'
+   18         | '[' BROJ • ']'
+
+    ','  shift, and go to state 36
+    ']'  shift, and go to state 37
+
+
+State 22
+
+    0 $accept: program $end •
+
+    $default  accept
+
+
+State 23
+
+    1 program: program naredba • '\n'
+
+    '\n'  shift, and go to state 38
+
+
+State 24
+
+    2 program: naredba '\n' •
+
+    $default  reduce using rule 2 (program)
+
+
+State 25
+
+   11 izraz: izraz '+' • izraz
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 39
+    razlomak  go to state 12
+
+
+State 26
+
+   12 izraz: izraz '-' • izraz
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 40
+    razlomak  go to state 12
+
+
+State 27
+
+   13 izraz: izraz '*' • izraz
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 41
+    razlomak  go to state 12
+
+
+State 28
+
+   14 izraz: izraz '/' • izraz
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 42
+    razlomak  go to state 12
+
+
+State 29
+
+    5 naredba: PRINT '(' izraz • ')'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+
+    '+'  shift, and go to state 25
+    '-'  shift, and go to state 26
+    '*'  shift, and go to state 27
+    '/'  shift, and go to state 28
+    ')'  shift, and go to state 43
+
+
+State 30
+
+    6 naredba: NOM '(' izraz • ')'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+
+    '+'  shift, and go to state 25
+    '-'  shift, and go to state 26
+    '*'  shift, and go to state 27
+    '/'  shift, and go to state 28
+    ')'  shift, and go to state 44
+
+
+State 31
+
+    7 naredba: DEN '(' izraz • ')'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+
+    '+'  shift, and go to state 25
+    '-'  shift, and go to state 26
+    '*'  shift, and go to state 27
+    '/'  shift, and go to state 28
+    ')'  shift, and go to state 45
+
+
+State 32
+
+    8 naredba: DOUBLE '(' izraz • ')'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+
+    '+'  shift, and go to state 25
+    '-'  shift, and go to state 26
+    '*'  shift, and go to state 27
+    '/'  shift, and go to state 28
+    ')'  shift, and go to state 46
+
+
+State 33
+
+    9 naredba: EQUALS '(' izraz • ',' izraz ')'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+
+    '+'  shift, and go to state 25
+    '-'  shift, and go to state 26
+    '*'  shift, and go to state 27
+    '/'  shift, and go to state 28
+    ','  shift, and go to state 47
+
+
+State 34
+
+    4 naredba: ID '=' izraz •
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+
+    '+'  shift, and go to state 25
+    '-'  shift, and go to state 26
+    '*'  shift, and go to state 27
+    '/'  shift, and go to state 28
+
+    $default  reduce using rule 4 (naredba)
+
+
+State 35
+
+   15 izraz: '(' izraz ')' •
+
+    $default  reduce using rule 15 (izraz)
+
+
+State 36
+
+   17 razlomak: '[' BROJ ',' • BROJ ']'
+
+    BROJ  shift, and go to state 48
+
+
+State 37
+
+   18 razlomak: '[' BROJ ']' •
+
+    $default  reduce using rule 18 (razlomak)
+
+
+State 38
+
+    1 program: program naredba '\n' •
+
+    $default  reduce using rule 1 (program)
+
+
+State 39
+
+   11 izraz: izraz • '+' izraz
+   11      | izraz '+' izraz •
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+
+    '*'  shift, and go to state 27
+    '/'  shift, and go to state 28
+
+    $default  reduce using rule 11 (izraz)
+
+
+State 40
+
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   12      | izraz '-' izraz •
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+
+    '*'  shift, and go to state 27
+    '/'  shift, and go to state 28
+
+    $default  reduce using rule 12 (izraz)
+
+
+State 41
+
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   13      | izraz '*' izraz •
+   14      | izraz • '/' izraz
+
+    $default  reduce using rule 13 (izraz)
+
+
+State 42
+
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+   14      | izraz '/' izraz •
+
+    $default  reduce using rule 14 (izraz)
+
+
+State 43
+
+    5 naredba: PRINT '(' izraz ')' •
+
+    $default  reduce using rule 5 (naredba)
+
+
+State 44
+
+    6 naredba: NOM '(' izraz ')' •
+
+    $default  reduce using rule 6 (naredba)
+
+
+State 45
+
+    7 naredba: DEN '(' izraz ')' •
+
+    $default  reduce using rule 7 (naredba)
+
+
+State 46
+
+    8 naredba: DOUBLE '(' izraz ')' •
+
+    $default  reduce using rule 8 (naredba)
+
+
+State 47
+
+    9 naredba: EQUALS '(' izraz ',' • izraz ')'
+
+    ID   shift, and go to state 19
+    '('  shift, and go to state 7
+    '['  shift, and go to state 8
+
+    izraz     go to state 49
+    razlomak  go to state 12
+
+
+State 48
+
+   17 razlomak: '[' BROJ ',' BROJ • ']'
+
+    ']'  shift, and go to state 50
+
+
+State 49
+
+    9 naredba: EQUALS '(' izraz ',' izraz • ')'
+   11 izraz: izraz • '+' izraz
+   12      | izraz • '-' izraz
+   13      | izraz • '*' izraz
+   14      | izraz • '/' izraz
+
+    '+'  shift, and go to state 25
+    '-'  shift, and go to state 26
+    '*'  shift, and go to state 27
+    '/'  shift, and go to state 28
+    ')'  shift, and go to state 51
+
+
+State 50
+
+   17 razlomak: '[' BROJ ',' BROJ ']' •
+
+    $default  reduce using rule 17 (razlomak)
+
+
+State 51
+
+    9 naredba: EQUALS '(' izraz ',' izraz ')' •
+
+    $default  reduce using rule 9 (naredba)
