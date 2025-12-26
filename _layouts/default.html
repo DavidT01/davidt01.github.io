@@ -192,14 +192,19 @@
 
       @media (max-width: 640px) {
         .nav-shell {
-          overflow-x: auto;
-          justify-content: flex-start;
-          padding: 0.35rem 0.5rem;
+          flex-wrap: wrap;
+          justify-content: center;
+          padding: 0.5rem;
+          height: auto;
+          border-radius: 1.5rem;
+          overflow-x: visible;
         }
 
         .nav-link {
-          flex: 0 0 auto;
-          min-width: 110px;
+          flex: 1 1 auto;
+          min-width: auto;
+          margin: 2px;
+          font-size: 0.8rem;
         }
 
         .wrapper {
@@ -218,7 +223,12 @@
         table {
           display: block;
           overflow-x: auto;
-          white-space: nowrap;
+          width: 100%;
+        }
+
+        th, td {
+          white-space: normal;
+          min-width: 120px;
         }
       }
 
